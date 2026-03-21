@@ -22,9 +22,26 @@ laws = client.search_laws("민법")
 for law in laws:
     print(f"{law.law_name} (ID: {law.law_id})")
 
-# Get law text
-law_text = client.get_law_text("000001")
-print(law_text.law_name)
+# Get detailed law information with full text
+law_detail = client.get_law_detail(law_id="009682")
+print(f"법령명: {law_detail.law_name_korean}")
+print(f"공포일: {law_detail.promulgation_date}")
+print(f"시행일: {law_detail.enforcement_date}")
+
+# Access articles
+for article in law_detail.articles:
+    print(f"제{article.number}조: {article.title}")
+    for paragraph in article.paragraphs:
+        print(f"  {paragraph.content}")
+
+# Get specific article
+law_detail = client.get_law_detail(law_id="009682", article_number=1)
+
+# Get law by MST (master number)
+law_detail = client.get_law_detail(mst=123456)
+
+# Get original text
+law_detail = client.get_law_detail(law_id="009682", language="ORI")
 ```
 
 ## Development
