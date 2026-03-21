@@ -214,3 +214,89 @@ class TestKoreanLawClient:
                 client.get_law_detail(law_id="999999")
 
             assert "Law not found" in str(exc_info.value)
+
+    def test_get_law_list_success(self, client):
+        """Test successful law list retrieval."""
+        mock_response = Mock()
+        mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+<LawSearch>
+    <law id="1">
+        <법령일련번호>188376</법령일련번호>
+        <법령명한글><![CDATA[민법]]></법령명한글>
+        <법령ID>001706</법령ID>
+        <공포일자>20200101</공포일자>
+        <공포번호>10000</공포번호>
+        <시행일자>20200101</시행일자>
+    </law>
+</LawSearch>""".encode()
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            laws = client.get_law_list(per_page=5)
+
+            assert len(laws) == 1
+            assert laws[0].law_id == "001706"
+            assert laws[0].law_name == "민법"
+            assert laws[0].promulgation_date == "20200101"
+            assert laws[0].enforcement_date == "20200101"
+
+    def test_get_law_list_with_query(self, client):
+        """Test law list retrieval with query."""
+        mock_response = Mock()
+        mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+<LawSearch>
+    <law id="1">
+        <법령명한글><![CDATA[민법]]></법령명한글>
+        <법령ID>001706</법령ID>
+        <공포일자>20200101</공포일자>
+        <시행일자>20200101</시행일자>
+    </law>
+</LawSearch>""".encode()
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            laws = client.get_law_list(query="민법", per_page=5)
+
+            assert len(laws) == 1
+            assert laws[0].law_name == "민법"
+
+    def test_get_law_list_empty(self, client):
+        """Test law list with no results."""
+        mock_response = Mock()
+        mock_response.content = b"""<?xml version="1.0" encoding="UTF-8"?>
+<LawSearch/>"""
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            laws = client.get_law_list(per_page=5)
+
+            assert len(laws) == 0
+
+    def test_get_law_list_with_sort(self, client):
+        """Test law list retrieval with sort."""
+        mock_response = Mock()
+        mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+<LawSearch>
+    <law id="1">
+        <법령명한글><![CDATA[민법]]></법령명한글>
+        <법령ID>001706</법령ID>
+        <시행일자>20200101</시행일자>
+    </law>
+</LawSearch>""".encode()
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            laws = client.get_law_list(sort="ldes", per_page=5)
+
+            assert len(laws) == 1
+            assert laws[0].enforcement_date == "20200101"
+
+    def test_get_law_list_api_error(self, client):
+        """Test law list API error handling."""
+        from httpx import HTTPStatusError
+
+        mock_response = Mock()
+        mock_response.status_code = 500
+        error = HTTPStatusError("Server error", request=Mock(), response=mock_response)
+
+        with patch.object(client._client, "get", side_effect=error):
+            with pytest.raises(APIError) as exc_info:
+                client.get_law_list()
+
+            assert "HTTP error: 500" in str(exc_info.value)

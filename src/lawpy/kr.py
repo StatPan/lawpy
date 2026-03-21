@@ -65,7 +65,7 @@ class KoreanLawClient(LawClient):
             ParseError: If the response cannot be parsed
         """
         params = {
-            "OC": self.api_key,
+            "OC": str(self.api_key),
             "target": target,
             "type": type,
             "query": query,
@@ -144,7 +144,7 @@ class KoreanLawClient(LawClient):
             raise ValueError(msg)
 
         params: dict[str, str | int | None] = {
-            "OC": self.api_key,
+            "OC": str(self.api_key),
             "target": "law",
             "type": output_type,
             "LANG": language,
@@ -207,9 +207,8 @@ class KoreanLawClient(LawClient):
 
                     for 호 in 호_list:  # noqa: N806
                         호번호_str = 호.get("호번호", "0")  # noqa: N806
-                        호번호 = (
-                            int(호번호_str.rstrip(".")) if 호번호_str.rstrip(".").isdigit() else 0
-                        )  # noqa: N806
+                        호번호_str_clean = 호번호_str.rstrip(".")  # noqa: N806
+                        호번호 = int(호번호_str_clean) if 호번호_str_clean.isdigit() else 0  # noqa: N806
                         호내용 = 호.get("호내용", "")  # noqa: N806
 
                         sub_items = []
@@ -253,6 +252,102 @@ class KoreanLawClient(LawClient):
                 articles=articles,
                 language=language,
             )
+
+        except Exception as e:
+            raise ParseError(f"Failed to parse response: {e}") from e
+
+    def get_law_list(
+        self,
+        query: str | None = None,
+        law_id: str | None = None,
+        org_code: str | None = None,
+        date: str | None = None,
+        page: int = 1,
+        per_page: int = 20,
+        sort: str | None = None,
+        output_type: str = "XML",
+    ) -> list[Law]:
+        """Get list of current laws (based on effective date).
+
+        Args:
+            query: Law name search query
+            law_id: Law ID (LID, e.g., '830')
+            org_code: Ministry code (e.g., '1613000' for Ministry of Economy and Finance)
+            date: Effective date search (20090101~20091231)
+            page: Page number (default: 1)
+            per_page: Number of results per page (default: 20, max: 100)
+            sort: Sort option (default: lasc)
+                   lasc: Effective date descending
+                   ldes: Effective date ascending
+                   ddas: Proclamation date descending
+                   ddes: Proclamation date ascending
+                   nasc: Proclamation number ascending
+                   ndes: Proclamation number descending
+                   efasc: Effective date ascending
+                   efdes: Effective date descending
+            output_type: Output type ('HTML', 'XML', or 'JSON')
+
+        Returns:
+            List of Law objects
+
+        Raises:
+            APIError: If the API request fails
+            ParseError: If the response cannot be parsed
+        """
+        params: dict[str, str | int] = {
+            "OC": str(self.api_key),
+            "target": "eflaw",
+            "type": output_type,
+            "display": per_page,
+            "page": page,
+            "sort": sort or "lasc",
+        }
+
+        if query is not None:
+            params["query"] = query
+        if law_id is not None:
+            params["LID"] = law_id
+        if org_code is not None:
+            params["org"] = org_code
+        if date is not None:
+            params["date"] = date
+
+        try:
+            response = self._client.get(self.BASE_URL, params=params)
+            response.raise_for_status()
+        except httpx.HTTPStatusError as e:
+            raise APIError(
+                f"HTTP error: {e.response.status_code}", status_code=e.response.status_code
+            ) from e
+        except httpx.RequestError as e:
+            raise APIError(f"Request error: {e}") from e
+
+        try:
+            data = xmltodict.parse(response.content)
+            if not data or data.get("LawSearch") is None:
+                return []
+
+            law_search_data = data.get("LawSearch", {})
+            laws_data = law_search_data.get("law", [])
+
+            if laws_data is None:
+                return []
+
+            if not isinstance(laws_data, list):
+                laws_data = [laws_data]
+
+            laws = []
+            for law_data in laws_data:
+                law = Law(
+                    law_id=law_data.get("법령ID", ""),
+                    law_name=law_data.get("법령명한글", ""),
+                    law_no=law_data.get("법령일련번호", ""),
+                    promulgation_date=law_data.get("공포일자"),
+                    enforcement_date=law_data.get("시행일자"),
+                )
+                laws.append(law)
+
+            return laws
 
         except Exception as e:
             raise ParseError(f"Failed to parse response: {e}") from e
