@@ -4,8 +4,8 @@ import httpx
 import xmltodict
 
 from lawpy.client import LawClient
-from lawpy.exceptions import APIError, ParseError
-from lawpy.models import Law, LawText
+from lawpy.exceptions import APIError, NotFoundError, ParseError
+from lawpy.models import Article, Item, Law, LawDetail, LawText, Paragraph, SubItem
 
 
 class KoreanLawClient(LawClient):
@@ -142,6 +142,139 @@ class KoreanLawClient(LawClient):
                 law_id=law_id,
                 law_name=law_data.get("법령명한글", ""),
                 articles=[],
+            )
+
+        except Exception as e:
+            raise ParseError(f"Failed to parse response: {e}") from e
+
+    def get_law_detail(
+        self,
+        law_id: str | None = None,
+        mst: int | None = None,
+        article_number: int | None = None,
+        language: str = "KO",
+        output_type: str = "XML",
+    ) -> LawDetail:
+        """Get detailed information and full text of a specific law.
+
+        Args:
+            law_id: The ID of the law (e.g., '009682'). Either law_id or mst must be provided.
+            mst: The master number of the law (lsi_seq value). Either law_id or mst must be provided.
+            article_number: Specific article number to retrieve (default: all articles)
+            language: Language type ('KO' for Korean, 'ORI' for original)
+            output_type: Output type ('HTML', 'XML', or 'JSON')
+
+        Returns:
+            LawDetail object containing detailed law information and full text
+
+        Raises:
+            ValueError: If neither law_id nor mst is provided
+            APIError: If the API request fails
+            ParseError: If the response cannot be parsed
+        """
+        if law_id is None and mst is None:
+            msg = "Either law_id or mst must be provided"
+            raise ValueError(msg)
+
+        params: dict[str, str | int | None] = {
+            "OC": self.api_key,
+            "target": "law",
+            "type": output_type,
+            "LANG": language,
+        }
+
+        if law_id is not None:
+            params["ID"] = law_id
+        if mst is not None:
+            params["MST"] = mst
+        if article_number is not None:
+            jo_str = f"{article_number:04d}00"
+            params["JO"] = jo_str
+
+        url = "http://www.law.go.kr/DRF/lawService.do"
+
+        try:
+            response = self._client.get(url, params=params)
+            response.raise_for_status()
+        except httpx.HTTPStatusError as e:
+            if e.response.status_code == 404:
+                raise NotFoundError("Law not found", status_code=404) from e
+            raise APIError(
+                f"HTTP error: {e.response.status_code}", status_code=e.response.status_code
+            ) from e
+        except httpx.RequestError as e:
+            raise APIError(f"Request error: {e}") from e
+
+        try:
+            data = xmltodict.parse(response.content)
+            law_data = data.get("law", {})
+
+            articles = []
+            if "조문" in law_data:
+                조문_data = law_data.get("조문", {})  # noqa: N806
+                if not isinstance(조문_data, list):  # noqa: N806
+                    조문_data = [조문_data]  # noqa: N806
+
+                for 조 in 조문_data:  # noqa: N806
+                    조문번호 = int(조.get("조문번호", 0))  # noqa: N806
+                    조문제목 = 조.get("조문제목", "")  # noqa: N806
+                    조문내용 = 조.get("조문내용", "")  # noqa: N806
+                    변경여부 = 조.get("조문변경여부") == "Y"  # noqa: N806
+                    시행일자 = 조.get("조문시행일자")  # noqa: N806
+
+                    paragraphs = []
+                    if "항" in 조:
+                        항_data = 조.get("항", [])  # noqa: N806
+                        if not isinstance(항_data, list):  # noqa: N806
+                            항_data = [항_data]  # noqa: N806
+
+                        for 항 in 항_data:  # noqa: N806
+                            항번호 = int(항.get("항번호", 0))  # noqa: N806
+                            항내용 = 항.get("항내용", "")  # noqa: N806
+
+                            items = []
+                            if "호" in 항:
+                                호_data = 항.get("호", [])  # noqa: N806
+                                if not isinstance(호_data, list):  # noqa: N806
+                                    호_data = [호_data]  # noqa: N806
+
+                                for 호 in 호_data:  # noqa: N806
+                                    호번호 = int(호.get("호번호", 0))  # noqa: N806
+                                    호내용 = 호.get("호내용", "")  # noqa: N806
+
+                                    sub_items = []
+                                    if "목" in 호:
+                                        목_data = 호.get("목", [])  # noqa: N806
+                                        if not isinstance(목_data, list):  # noqa: N806
+                                            목_data = [목_data]  # noqa: N806
+
+                                        for 목 in 목_data:  # noqa: N806
+                                            목번호 = int(목.get("목번호", 0))  # noqa: N806
+                                            목내용 = 목.get("목내용", "")  # noqa: N806
+                                            sub_items.append(SubItem(목번호, 목내용))
+
+                                    items.append(Item(호번호, 호내용, sub_items))
+
+                            paragraphs.append(Paragraph(항번호, 항내용, items))
+
+                    articles.append(
+                        Article(조문번호, 조문제목, 조문내용, paragraphs, 변경여부, 시행일자)
+                    )
+
+            return LawDetail(
+                law_id=law_id or str(mst),
+                law_name_korean=law_data.get("법령명한글", ""),
+                law_name_chinese=law_data.get("법령명한자"),
+                law_name_abbr=law_data.get("법령명약칭"),
+                promulgation_date=law_data.get("공포일자"),
+                promulgation_number=int(law_data.get("공포번호", 0))
+                if law_data.get("공포번호")
+                else None,
+                enforcement_date=law_data.get("시행일자"),
+                law_type=law_data.get("법종구분"),
+                ministry=law_data.get("소관부처"),
+                articles=articles,
+                language=language,
             )
 
         except Exception as e:
