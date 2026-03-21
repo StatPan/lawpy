@@ -1,119 +1,72 @@
 """Data models for lawpy."""
 
-from typing import Any
-
-
-class BaseModel:
-    """Base model for all lawpy data models."""
-
-    def to_dict(self) -> dict[str, Any]:
-        """Convert model to dictionary."""
-        return {k: v for k, v in self.__dict__.items() if not k.startswith("_")}
+from pydantic import BaseModel, Field
 
 
 class Law(BaseModel):
     """Law information."""
 
-    def __init__(
-        self,
-        law_id: str,
-        law_name: str,
-        law_no: str,
-        promulgation_date: str | None = None,
-        enforcement_date: str | None = None,
-    ) -> None:
-        self.law_id = law_id
-        self.law_name = law_name
-        self.law_no = law_no
-        self.promulgation_date = promulgation_date
-        self.enforcement_date = enforcement_date
-
-
-class LawText(BaseModel):
-    """Full text of a law."""
-
-    def __init__(
-        self,
-        law_id: str,
-        law_name: str,
-        articles: list[dict[str, Any]],
-    ) -> None:
-        self.law_id = law_id
-        self.law_name = law_name
-        self.articles = articles
+    law_id: str = Field(description="The unique ID of the law")
+    law_name: str = Field(description="Korean name of the law")
+    law_no: str = Field(description="Promulgation number")
+    promulgation_date: str | None = Field(default=None, description="Date of promulgation (YYYYMMDD)")
+    enforcement_date: str | None = Field(default=None, description="Date of enforcement (YYYYMMDD)")
 
 
 class SubItem(BaseModel):
     """목 (sub-item) information."""
 
-    def __init__(self, number: str, content: str) -> None:
-        self.number = number
-        self.content = content
+    number: str = Field(description="Sub-item number or identifier")
+    content: str = Field(description="Content of the sub-item")
 
 
 class Item(BaseModel):
     """호 (item) information."""
 
-    def __init__(self, number: int, content: str, sub_items: list[SubItem]) -> None:
-        self.number = number
-        self.content = content
-        self.sub_items = sub_items
+    number: int = Field(description="Item number")
+    content: str = Field(description="Content of the item")
+    sub_items: list[SubItem] = Field(default_factory=list, description="List of sub-items (목)")
 
 
 class Paragraph(BaseModel):
     """항 (paragraph) information."""
 
-    def __init__(self, number: str, content: str, items: list[Item]) -> None:
-        self.number = number
-        self.content = content
-        self.items = items
+    number: str = Field(description="Paragraph number")
+    content: str = Field(description="Content of the paragraph")
+    items: list[Item] = Field(default_factory=list, description="List of items (호)")
 
 
 class Article(BaseModel):
     """조문 (article) information."""
 
-    def __init__(
-        self,
-        number: int,
-        title: str,
-        content: str,
-        paragraphs: list[Paragraph],
-        changed: bool = False,
-        effective_date: str | None = None,
-    ) -> None:
-        self.number = number
-        self.title = title
-        self.content = content
-        self.paragraphs = paragraphs
-        self.changed = changed
-        self.effective_date = effective_date
+    number: int = Field(description="Article number")
+    title: str = Field(description="Article title")
+    content: str = Field(description="Full content of the article")
+    paragraphs: list[Paragraph] = Field(default_factory=list, description="List of paragraphs (항)")
+    changed: bool = Field(default=False, description="Whether the article was modified")
+    effective_date: str | None = Field(default=None, description="Effective date of this article")
 
 
 class LawDetail(BaseModel):
     """Detailed law information with full text."""
 
-    def __init__(
-        self,
-        law_id: str,
-        law_name_korean: str,
-        law_name_chinese: str | None = None,
-        law_name_abbr: str | None = None,
-        promulgation_date: str | None = None,
-        promulgation_number: int | None = None,
-        enforcement_date: str | None = None,
-        law_type: str | None = None,
-        ministry: str | None = None,
-        articles: list[Article] | None = None,
-        language: str = "KO",
-    ) -> None:
-        self.law_id = law_id
-        self.law_name_korean = law_name_korean
-        self.law_name_chinese = law_name_chinese
-        self.law_name_abbr = law_name_abbr
-        self.promulgation_date = promulgation_date
-        self.promulgation_number = promulgation_number
-        self.enforcement_date = enforcement_date
-        self.law_type = law_type
-        self.ministry = ministry
-        self.articles = articles or []
-        self.language = language
+    law_id: str = Field(description="The unique ID of the law")
+    law_name_korean: str = Field(description="Korean name of the law")
+    law_name_chinese: str | None = Field(default=None, description="Chinese name of the law")
+    law_name_abbr: str | None = Field(default=None, description="Abbreviated name of the law")
+    promulgation_date: str | None = Field(default=None, description="Date of promulgation (YYYYMMDD)")
+    promulgation_number: int | None = Field(default=None, description="Promulgation number")
+    enforcement_date: str | None = Field(default=None, description="Date of enforcement (YYYYMMDD)")
+    law_type: str | None = Field(default=None, description="Type of law (e.g., '법률')")
+    ministry: str | None = Field(default=None, description="Responsible ministry")
+    articles: list[Article] = Field(default_factory=list, description="List of articles (조문)")
+    language: str = Field(default="KO", description="Language code (KO or ORI)")
+
+
+# Deprecated but kept for backward compatibility if needed internally
+class LawText(BaseModel):
+    """Full text of a law."""
+
+    law_id: str
+    law_name: str
+    articles: list[dict]

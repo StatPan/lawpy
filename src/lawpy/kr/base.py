@@ -1,14 +1,14 @@
 """Base class for Korean law API clients."""
 
 import os
-from types import TracebackType
 
 import httpx
 
+from lawpy.client import LawClient
 from lawpy.exceptions import APIError
 
 
-class KoreanBaseClient:
+class KoreanBaseClient(LawClient):
     """Base class for Korean law API clients."""
 
     BASE_URL = "https://www.law.go.kr/DRF/lawSearch.do"
@@ -31,10 +31,7 @@ class KoreanBaseClient:
                 msg = "api_key must be provided or set LAWPY_API_KEY environment variable"
                 raise ValueError(msg)
 
-        self.api_key = api_key
-        self.timeout = timeout
-        self.base_url = self.BASE_URL
-        self._client = httpx.Client(timeout=timeout)
+        super().__init__(api_key=api_key, base_url=self.BASE_URL, timeout=timeout)
 
     def _make_request(
         self,
@@ -70,20 +67,3 @@ class KoreanBaseClient:
             raise APIError(f"Request error: {e}") from e
 
         return response
-
-    def close(self) -> None:
-        """Close HTTP client."""
-        self._client.close()
-
-    def __enter__(self) -> "KoreanBaseClient":
-        """Context manager entry."""
-        return self
-
-    def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_tb: TracebackType | None,
-    ) -> None:
-        """Context manager exit."""
-        self.close()

@@ -37,5 +37,5 @@ Thumbs.db
 .env
 
 # Test scripts
-test_*.py
+temp_*.py
 debug_*.py

@@ -365,7 +365,7 @@ class LawClient(KoreanBaseClient):
                 article_no = int(article.get("조문번호", 0))
                 article_title = article.get("조문제목", "")
                 article_content = article.get("조문내용", "")
-                is_modified = article.get("조문변경여부") == "Y"
+                changed = article.get("조문변경여부") == "Y"
                 effective_date = article.get("조문시행일자")
 
                 paragraphs = []
@@ -396,14 +396,21 @@ class LawClient(KoreanBaseClient):
                         for sub_item in sub_item_list:
                             sub_item_no = sub_item.get("목번호", "")
                             sub_item_content = sub_item.get("목내용", "")
-                            sub_items.append(SubItem(sub_item_no, sub_item_content))
+                            sub_items.append(SubItem(number=sub_item_no, content=sub_item_content))
 
-                        items.append(Item(item_no, item_content, sub_items))
+                        items.append(Item(number=item_no, content=item_content, sub_items=sub_items))
 
-                    paragraphs.append(Paragraph(paragraph_no, paragraph_content, items))
+                    paragraphs.append(Paragraph(number=paragraph_no, content=paragraph_content, items=items))
 
                 articles.append(
-                    Article(article_no, article_title, article_content, paragraphs, is_modified, effective_date)
+                    Article(
+                        number=article_no,
+                        title=article_title,
+                        content=article_content,
+                        paragraphs=paragraphs,
+                        changed=changed,
+                        effective_date=effective_date,
+                    )
                 )
 
             law_type = basic_info.get("법종구분")
@@ -414,15 +421,19 @@ class LawClient(KoreanBaseClient):
             if isinstance(ministry, dict):
                 ministry = ministry.get("#text", "")
 
+            promulgation_number = basic_info.get("공포번호")
+            if promulgation_number and isinstance(promulgation_number, str) and promulgation_number.isdigit():
+                prom_no = int(promulgation_number)
+            else:
+                prom_no = None
+
             return LawDetail(
                 law_id=law_id or str(mst),
                 law_name_korean=basic_info.get("법령명_한글", ""),
                 law_name_chinese=basic_info.get("법령명_한자"),
                 law_name_abbr=basic_info.get("법령명약칭"),
                 promulgation_date=basic_info.get("공포일자"),
-                promulgation_number=int(basic_info.get("공포번호", 0))
-                if basic_info.get("공포번호")
-                else None,
+                promulgation_number=prom_no,
                 enforcement_date=basic_info.get("시행일자"),
                 law_type=law_type,
                 ministry=ministry,
