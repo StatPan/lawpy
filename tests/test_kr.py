@@ -213,7 +213,7 @@ class TestKoreanLawClient:
             with pytest.raises(NotFoundError) as exc_info:
                 client.get_law_detail(law_id="999999")
 
-            assert "Law not found" in str(exc_info.value)
+            assert "Resource not found" in str(exc_info.value)
 
     def test_get_law_list_success(self, client):
         """Test successful law list retrieval."""
@@ -300,3 +300,190 @@ class TestKoreanLawClient:
                 client.get_law_list()
 
             assert "HTTP error: 500" in str(exc_info.value)
+
+    def test_get_law_history_success(self, client):
+        """Test successful law history retrieval."""
+        mock_response = Mock()
+        mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+<LawSearch>
+    <law id="1">
+        <법령일련번호>188376</법령일련번호>
+        <법령명한글><![CDATA[민법]]></법령명한글>
+        <법령ID>001706</법령ID>
+        <공포일자>20200101</공포일자>
+        <공포번호>10000</공포번호>
+        <시행일자>20200101</시행일자>
+    </law>
+</LawSearch>""".encode()
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            laws = client.get_law_history(per_page=5)
+
+            assert len(laws) == 1
+            assert laws[0].law_id == "001706"
+            assert laws[0].law_name == "민법"
+
+    def test_get_law_history_with_query(self, client):
+        """Test law history retrieval with query."""
+        mock_response = Mock()
+        mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+<LawSearch>
+    <law id="1">
+        <법령명한글><![CDATA[민법]]></법령명한글>
+        <법령ID>001706</법령ID>
+        <공포일자>20200101</공포일자>
+        <시행일자>20200101</시행일자>
+    </law>
+</LawSearch>""".encode()
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            laws = client.get_law_history(query="민법", per_page=5)
+
+            assert len(laws) == 1
+            assert laws[0].law_name == "민법"
+
+    def test_get_law_history_with_law_id(self, client):
+        """Test law history retrieval with law ID."""
+        mock_response = Mock()
+        mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+<LawSearch>
+    <law id="1">
+        <법령명한글><![CDATA[민법]]></법령명한글>
+        <법령ID>009682</법령ID>
+        <공포일자>19600101</공포일자>
+        <시행일자>19600101</시행일자>
+    </law>
+</LawSearch>""".encode()
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            laws = client.get_law_history(law_id="009682", per_page=5)
+
+            assert len(laws) == 1
+            assert laws[0].law_id == "009682"
+
+    def test_get_law_history_empty(self, client):
+        """Test law history with no results."""
+        mock_response = Mock()
+        mock_response.content = b"""<?xml version="1.0" encoding="UTF-8"?>
+<LawSearch/>"""
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            laws = client.get_law_history(per_page=5)
+
+            assert len(laws) == 0
+
+    def test_get_law_history_with_sort(self, client):
+        """Test law history retrieval with sort."""
+        mock_response = Mock()
+        mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+<LawSearch>
+    <law id="1">
+        <법령명한글><![CDATA[민법]]></법령명한글>
+        <법령ID>001706</법령ID>
+        <시행일자>20200101</시행일자>
+    </law>
+</LawSearch>""".encode()
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            laws = client.get_law_history(sort="lasc", per_page=5)
+
+            assert len(laws) == 1
+            assert laws[0].enforcement_date == "20200101"
+
+    def test_get_law_history_api_error(self, client):
+        """Test law history API error handling."""
+        from httpx import HTTPStatusError
+
+        mock_response = Mock()
+        mock_response.status_code = 500
+        error = HTTPStatusError("Server error", request=Mock(), response=mock_response)
+
+        with patch.object(client._client, "get", side_effect=error):
+            with pytest.raises(APIError) as exc_info:
+                client.get_law_history()
+
+            assert "HTTP error: 500" in str(exc_info.value)
+
+    def test_get_law_history_detail_by_mst(self, client):
+        """Test successful law history detail retrieval by MST."""
+        mock_response = Mock()
+        mock_response.text = """
+<html>
+<head><title>법령 연혁</title></head>
+<body>
+<div class="history">
+    <h1>민법 개정 연혁</h1>
+</div>
+</body>
+</html>
+        """.strip()
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            result = client.get_law_history_detail(mst=9094)
+
+            assert "<html>" in result
+            assert "민법 개정 연혁" in result
+
+    def test_get_law_history_detail_by_law_id(self, client):
+        """Test successful law history detail retrieval by law ID."""
+        mock_response = Mock()
+        mock_response.text = """
+<html>
+<head><title>법령 연혁</title></head>
+<body>
+<div class="history">
+    <h1>법률 연혁</h1>
+</div>
+</body>
+</html>
+        """.strip()
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            result = client.get_law_history_detail(law_id="009682")
+
+            assert "<html>" in result
+            assert "법률 연혁" in result
+
+    def test_get_law_history_detail_with_params(self, client):
+        """Test law history detail with additional parameters."""
+        mock_response = Mock()
+        mock_response.text = """
+<html>
+<body>
+<div class="history">
+    <h1>특정 공포일자 연혁</h1>
+</div>
+</body>
+</html>
+        """.strip()
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            result = client.get_law_history_detail(
+                mst=166500,
+                promulgation_date="20240101",
+                promulgation_number=12345,
+            )
+
+            assert "<html>" in result
+            assert "특정 공포일자 연혁" in result
+
+    def test_get_law_history_detail_no_id_or_mst(self, client):
+        """Test error when neither law_id nor mst is provided."""
+        with pytest.raises(ValueError) as exc_info:
+            client.get_law_history_detail()
+
+        assert "Either law_id or mst must be provided" in str(exc_info.value)
+
+    def test_get_law_history_detail_api_error(self, client):
+        """Test law history detail API error handling."""
+        from httpx import HTTPStatusError
+
+        mock_response = Mock()
+        mock_response.status_code = 404
+        error = HTTPStatusError("Not found", request=Mock(), response=mock_response)
+
+        with patch.object(client._client, "get", side_effect=error):
+            with pytest.raises(APIError) as exc_info:
+                client.get_law_history_detail(mst=999999)
+
+            assert "HTTP error: 404" in str(exc_info.value)
