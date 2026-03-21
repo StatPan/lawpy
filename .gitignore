@@ -32,3 +32,6 @@ Thumbs.db
 
 # Project specific
 .ruff_cache/
+
+# Environment variables
+.env
