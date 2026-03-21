@@ -1,5 +1,6 @@
 """Tests for Korean law client."""
 
+import os
 from unittest.mock import Mock, patch
 
 import pytest
@@ -22,6 +23,28 @@ class TestKoreanLawClient:
         assert client.api_key == "test_key"
         assert client.base_url == KoreanLawClient.BASE_URL
         assert client.timeout == 30
+
+    def test_init_from_env(self):
+        """Test client initialization from environment variable."""
+        with patch.dict(os.environ, {"LAWPY_API_KEY": "env_key"}):
+            client = KoreanLawClient()
+            assert client.api_key == "env_key"
+
+    def test_init_env_override(self):
+        """Test that explicit api_key overrides environment variable."""
+        with patch.dict(os.environ, {"LAWPY_API_KEY": "env_key"}):
+            client = KoreanLawClient(api_key="explicit_key")
+            assert client.api_key == "explicit_key"
+
+    def test_init_no_api_key(self):
+        """Test error when no api_key is provided."""
+        with patch.dict(os.environ, {}, clear=True):
+            with pytest.raises(ValueError) as exc_info:
+                KoreanLawClient()
+
+            assert "api_key must be provided or set LAWPY_API_KEY environment variable" in str(
+                exc_info.value
+            )
 
     def test_search_laws_success(self, client):
         """Test successful law search."""

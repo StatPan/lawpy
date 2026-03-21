@@ -1,5 +1,7 @@
 """Korean law adapter."""
 
+import os
+
 import httpx
 import xmltodict
 
@@ -13,13 +15,23 @@ class KoreanLawClient(LawClient):
 
     BASE_URL = "https://www.law.go.kr/DRF/lawSearch.do"
 
-    def __init__(self, api_key: str, timeout: int = 30) -> None:
+    def __init__(self, api_key: str | None = None, timeout: int = 30) -> None:
         """Initialize Korean law client.
 
         Args:
-            api_key: API key from National Law Information Center
+            api_key: API key from National Law Information Center (email ID).
+                     If not provided, reads from LAWPY_API_KEY environment variable.
             timeout: Request timeout in seconds
+
+        Raises:
+            ValueError: If api_key is not provided and LAWPY_API_KEY env var is not set
         """
+        if api_key is None:
+            api_key = os.environ.get("LAWPY_API_KEY")
+            if api_key is None:
+                msg = "api_key must be provided or set LAWPY_API_KEY environment variable"
+                raise ValueError(msg)
+
         super().__init__(
             api_key=api_key,
             base_url=self.BASE_URL,
