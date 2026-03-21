@@ -46,7 +46,7 @@ class LawText(BaseModel):
 class SubItem(BaseModel):
     """목 (sub-item) information."""
 
-    def __init__(self, number: int, content: str) -> None:
+    def __init__(self, number: str, content: str) -> None:
         self.number = number
         self.content = content
 
@@ -63,7 +63,7 @@ class Item(BaseModel):
 class Paragraph(BaseModel):
     """항 (paragraph) information."""
 
-    def __init__(self, number: int, content: str, items: list[Item]) -> None:
+    def __init__(self, number: str, content: str, items: list[Item]) -> None:
         self.number = number
         self.content = content
         self.items = items

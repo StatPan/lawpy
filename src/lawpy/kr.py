@@ -7,7 +7,7 @@ import xmltodict
 
 from lawpy.client import LawClient
 from lawpy.exceptions import APIError, NotFoundError, ParseError
-from lawpy.models import Article, Item, Law, LawDetail, LawText, Paragraph, SubItem
+from lawpy.models import Article, Item, Law, LawDetail, Paragraph, SubItem
 
 
 class KoreanLawClient(LawClient):
@@ -86,9 +86,11 @@ class KoreanLawClient(LawClient):
 
         try:
             data = xmltodict.parse(response.content)
-            if not data or data.get("law") is None:
+            if not data or data.get("LawSearch") is None:
                 return []
-            laws_data = data.get("law", {}).get("list", [])
+
+            law_search_data = data.get("LawSearch", {})
+            laws_data = law_search_data.get("law", [])
 
             if laws_data is None:
                 return []
@@ -108,53 +110,6 @@ class KoreanLawClient(LawClient):
                 laws.append(law)
 
             return laws
-
-        except Exception as e:
-            raise ParseError(f"Failed to parse response: {e}") from e
-
-    def get_law_text(self, law_id: str) -> LawText:
-        """Get full text of a specific law.
-
-        Args:
-            law_id: The ID of the law (e.g., '000001')
-
-        Returns:
-            LawText object containing the full text
-
-        Raises:
-            APIError: If the API request fails
-            ParseError: If the response cannot be parsed
-        """
-        params = {
-            "OC": self.api_key,
-            "target": "law",
-            "type": "XML",
-            "ID": law_id,
-        }
-
-        try:
-            response = self._client.get(self.BASE_URL, params=params)
-            response.raise_for_status()
-        except httpx.HTTPStatusError as e:
-            if e.response.status_code == 404:
-                from lawpy.exceptions import NotFoundError
-
-                raise NotFoundError(f"Law not found: {law_id}", status_code=404) from e
-            raise APIError(
-                f"HTTP error: {e.response.status_code}", status_code=e.response.status_code
-            ) from e
-        except httpx.RequestError as e:
-            raise APIError(f"Request error: {e}") from e
-
-        try:
-            data = xmltodict.parse(response.content)
-            law_data = data.get("law", {})
-
-            return LawText(
-                law_id=law_id,
-                law_name=law_data.get("법령명한글", ""),
-                articles=[],
-            )
 
         except Exception as e:
             raise ParseError(f"Failed to parse response: {e}") from e
@@ -219,72 +174,82 @@ class KoreanLawClient(LawClient):
 
         try:
             data = xmltodict.parse(response.content)
-            law_data = data.get("law", {})
+            법령_data = data.get("법령", {})  # noqa: N806
+
+            기본정보 = 법령_data.get("기본정보", {})  # noqa: N806
+            조문_data = 법령_data.get("조문", {})  # noqa: N806
+            조문_list = 조문_data.get("조문단위", [])  # noqa: N806
 
             articles = []
-            if "조문" in law_data:
-                조문_data = law_data.get("조문", {})  # noqa: N806
-                if not isinstance(조문_data, list):  # noqa: N806
-                    조문_data = [조문_data]  # noqa: N806
+            if 조문_list and not isinstance(조문_list, list):  # noqa: N806
+                조문_list = [조문_list]  # noqa: N806
 
-                for 조 in 조문_data:  # noqa: N806
-                    조문번호 = int(조.get("조문번호", 0))  # noqa: N806
-                    조문제목 = 조.get("조문제목", "")  # noqa: N806
-                    조문내용 = 조.get("조문내용", "")  # noqa: N806
-                    변경여부 = 조.get("조문변경여부") == "Y"  # noqa: N806
-                    시행일자 = 조.get("조문시행일자")  # noqa: N806
+            for 조문 in 조문_list:  # noqa: N806
+                조문번호 = int(조문.get("조문번호", 0))  # noqa: N806
+                조문제목 = 조문.get("조문제목", "")  # noqa: N806
+                조문내용 = 조문.get("조문내용", "")  # noqa: N806
+                변경여부 = 조문.get("조문변경여부") == "Y"  # noqa: N806
+                시행일자 = 조문.get("조문시행일자")  # noqa: N806
 
-                    paragraphs = []
-                    if "항" in 조:
-                        항_data = 조.get("항", [])  # noqa: N806
-                        if not isinstance(항_data, list):  # noqa: N806
-                            항_data = [항_data]  # noqa: N806
+                paragraphs = []
+                항_list = 조문.get("항", [])  # noqa: N806
+                if 항_list and not isinstance(항_list, list):  # noqa: N806
+                    항_list = [항_list]  # noqa: N806
 
-                        for 항 in 항_data:  # noqa: N806
-                            항번호 = int(항.get("항번호", 0))  # noqa: N806
-                            항내용 = 항.get("항내용", "")  # noqa: N806
+                for 항 in 항_list:  # noqa: N806
+                    항번호 = 항.get("항번호", "")  # noqa: N806
+                    항내용 = 항.get("항내용", "")  # noqa: N806
 
-                            items = []
-                            if "호" in 항:
-                                호_data = 항.get("호", [])  # noqa: N806
-                                if not isinstance(호_data, list):  # noqa: N806
-                                    호_data = [호_data]  # noqa: N806
+                    items = []
+                    호_list = 항.get("호", [])  # noqa: N806
+                    if 호_list and not isinstance(호_list, list):  # noqa: N806
+                        호_list = [호_list]  # noqa: N806
 
-                                for 호 in 호_data:  # noqa: N806
-                                    호번호 = int(호.get("호번호", 0))  # noqa: N806
-                                    호내용 = 호.get("호내용", "")  # noqa: N806
+                    for 호 in 호_list:  # noqa: N806
+                        호번호_str = 호.get("호번호", "0")  # noqa: N806
+                        호번호 = (
+                            int(호번호_str.rstrip(".")) if 호번호_str.rstrip(".").isdigit() else 0
+                        )  # noqa: N806
+                        호내용 = 호.get("호내용", "")  # noqa: N806
 
-                                    sub_items = []
-                                    if "목" in 호:
-                                        목_data = 호.get("목", [])  # noqa: N806
-                                        if not isinstance(목_data, list):  # noqa: N806
-                                            목_data = [목_data]  # noqa: N806
+                        sub_items = []
+                        목_list = 호.get("목", [])  # noqa: N806
+                        if 목_list and not isinstance(목_list, list):  # noqa: N806
+                            목_list = [목_list]  # noqa: N806
 
-                                        for 목 in 목_data:  # noqa: N806
-                                            목번호 = int(목.get("목번호", 0))  # noqa: N806
-                                            목내용 = 목.get("목내용", "")  # noqa: N806
-                                            sub_items.append(SubItem(목번호, 목내용))
+                        for 목 in 목_list:  # noqa: N806
+                            목번호 = 목.get("목번호", "")  # noqa: N806
+                            목내용 = 목.get("목내용", "")  # noqa: N806
+                            sub_items.append(SubItem(목번호, 목내용))
 
-                                    items.append(Item(호번호, 호내용, sub_items))
+                        items.append(Item(호번호, 호내용, sub_items))
 
-                            paragraphs.append(Paragraph(항번호, 항내용, items))
+                    paragraphs.append(Paragraph(항번호, 항내용, items))
 
-                    articles.append(
-                        Article(조문번호, 조문제목, 조문내용, paragraphs, 변경여부, 시행일자)
-                    )
+                articles.append(
+                    Article(조문번호, 조문제목, 조문내용, paragraphs, 변경여부, 시행일자)
+                )
+
+            법종구분 = 기본정보.get("법종구분")  # noqa: N806
+            if isinstance(법종구분, dict):  # noqa: N806
+                법종구분 = 법종구분.get("#text", "")  # noqa: N806
+
+            소관부처 = 기본정보.get("소관부처")  # noqa: N806
+            if isinstance(소관부처, dict):  # noqa: N806
+                소관부처 = 소관부처.get("#text", "")  # noqa: N806
 
             return LawDetail(
                 law_id=law_id or str(mst),
-                law_name_korean=law_data.get("법령명한글", ""),
-                law_name_chinese=law_data.get("법령명한자"),
-                law_name_abbr=law_data.get("법령명약칭"),
-                promulgation_date=law_data.get("공포일자"),
-                promulgation_number=int(law_data.get("공포번호", 0))
-                if law_data.get("공포번호")
+                law_name_korean=기본정보.get("법령명_한글", ""),  # noqa: N806
+                law_name_chinese=기본정보.get("법령명_한자"),  # noqa: N806
+                law_name_abbr=기본정보.get("법령명약칭"),  # noqa: N806
+                promulgation_date=기본정보.get("공포일자"),  # noqa: N806
+                promulgation_number=int(기본정보.get("공포번호", 0))  # noqa: N806
+                if 기본정보.get("공포번호")  # noqa: N806
                 else None,
-                enforcement_date=law_data.get("시행일자"),
-                law_type=law_data.get("법종구분"),
-                ministry=law_data.get("소관부처"),
+                enforcement_date=기본정보.get("시행일자"),  # noqa: N806
+                law_type=법종구분,  # noqa: N806
+                ministry=소관부처,  # noqa: N806
                 articles=articles,
                 language=language,
             )
