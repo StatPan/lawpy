@@ -84,7 +84,7 @@ def snake_from_str(s: str) -> str:
         return "field_unknown"
     result = result.lower()
     if result[0].isdigit():
-        result = f"field_{result}"
+        result = f"f_{result}"
     return result
 
 
