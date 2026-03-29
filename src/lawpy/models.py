@@ -3,6 +3,37 @@
 from pydantic import BaseModel, Field
 
 
+class Precedent(BaseModel):
+    """Precedent (판례) list item information."""
+
+    prec_id: str = Field(description="Precedent unique ID (판례일련번호)")
+    case_name: str = Field(description="Case name (사건명)")
+    case_number: str = Field(description="Case number (사건번호)")
+    decision_date: str | None = Field(default=None, description="Decision date YYYYMMDD (선고일자)")
+    court_name: str | None = Field(default=None, description="Court name (법원명)")
+    case_type: str | None = Field(default=None, description="Case type (사건분류명, e.g. 민사)")
+    judgment_type: str | None = Field(default=None, description="Judgment type (판결유형, e.g. 판결/결정)")
+    detail_link: str | None = Field(default=None, description="URL link to full detail (판례상세링크)")
+
+
+class PrecedentDetail(BaseModel):
+    """Detailed precedent (판례) information with full text."""
+
+    prec_id: str = Field(description="Precedent unique ID (판례일련번호)")
+    case_name: str = Field(description="Case name (사건명)")
+    case_number: str = Field(description="Case number (사건번호)")
+    decision_date: str | None = Field(default=None, description="Decision date YYYYMMDD (선고일자)")
+    court_name: str | None = Field(default=None, description="Court name (법원명)")
+    case_type: str | None = Field(default=None, description="Case type (사건분류명)")
+    judgment_type: str | None = Field(default=None, description="Judgment type (판결유형)")
+    decision_type: str | None = Field(default=None, description="Decision type (선고, e.g. 선고/자)")
+    ref_statutes: str | None = Field(default=None, description="Referenced statutes (참조조문)")
+    ref_precedents: str | None = Field(default=None, description="Referenced precedents (참조판례)")
+    ruling_summary: str | None = Field(default=None, description="Ruling summary (판시사항)")
+    ruling_gist: str | None = Field(default=None, description="Ruling gist/holding (판결요지)")
+    full_text: str | None = Field(default=None, description="Full text of the decision (판례내용)")
+
+
 class Law(BaseModel):
     """Law information."""
 

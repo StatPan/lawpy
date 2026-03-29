@@ -2,21 +2,21 @@ name: API Spec & Drift Detection
 
 on:
   schedule:
-    # 매일 09:00 KST (UTC 00:00)
+    # Daily at 09:00 KST (UTC 00:00)
     - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
       force_rescrape:
-        description: 'Force full re-scrape even if no count change'
+        description: 'Force full re-scrape + codegen even if no spec change'
         type: boolean
         default: false
 
 jobs:
   # ──────────────────────────────────────────────
-  # Step 1: Detect if API guide changed
+  # Job 1: Detect spec changes and live API drift
   # ──────────────────────────────────────────────
   spec-check:
-    name: Check spec and API drift
+    name: Detect spec and drift changes
     runs-on: ubuntu-latest
     outputs:
       spec_changed: ${{ steps.spec-diff.outputs.changed }}
@@ -31,14 +31,14 @@ jobs:
       - name: Install dependencies
         run: uv sync --extra dev
 
-      # ── 1a. Quick API count check ──────────────
-      - name: Scrape current spec list (quick)
+      # 1a. Re-scrape guide list from open.law.go.kr
+      - name: Scrape current API specs
         run: |
           uv run python scripts/scrape_specs.py \
             --output /tmp/specs_new \
             --delay 0.2
 
-      # ── 1b. Diff new vs committed specs ────────
+      # 1b. Diff new specs vs committed specs/kr/
       - name: Diff specs
         id: spec-diff
         run: |
@@ -53,11 +53,11 @@ jobs:
       - name: Show spec diff summary
         run: cat /tmp/spec_diff_result.json | python3 -m json.tool || true
 
-      # ── 1c. Live API probe diff ────────────────
-      - name: Run probe diff (live API vs snapshots)
+      # 1c. Live API probe diff (response schema vs snapshots)
+      - name: Run probe diff
         id: probe-diff
         env:
-          LAWPY_API_KEY: ${{ secrets.LAWPY_API_KEY }}
+          LAWPY_KR_API_KEY: ${{ secrets.LAWPY_KR_API_KEY }}
         run: |
           uv run lawpy-probe diff --all --output json > /tmp/probe_drift.json \
             && echo "drift=false" >> $GITHUB_OUTPUT \
@@ -75,10 +75,10 @@ jobs:
           retention-days: 30
 
   # ──────────────────────────────────────────────
-  # Step 2: If changed → re-scrape + codegen + PR
+  # Job 2: If specs changed → full pipeline + PR
   # ──────────────────────────────────────────────
   update-and-pr:
-    name: Re-scrape and regenerate code
+    name: Re-scrape, discover root keys, regenerate code
     needs: spec-check
     if: needs.spec-check.outputs.spec_changed == 'true' || github.event.inputs.force_rescrape == 'true'
     runs-on: ubuntu-latest
@@ -95,57 +95,73 @@ jobs:
       - name: Install dependencies
         run: uv sync --extra dev
 
-      - name: Full re-scrape
+      # Step 1: Re-scrape all 195 API spec pages
+      - name: Full re-scrape specs
         run: |
           uv run python scripts/scrape_specs.py \
             --output specs/kr/ \
             --delay 0.2
 
+      # Step 2: Re-discover JSON root/item keys from live API
+      - name: Discover root keys
+        env:
+          LAWPY_KR_API_KEY: ${{ secrets.LAWPY_KR_API_KEY }}
+        run: |
+          uv run python scripts/probe_root_keys.py \
+            --specs specs/kr/ \
+            --delay 0.3
+
+      # Step 3: Regenerate all client stubs from specs + root keys
       - name: Regenerate client stubs
         run: |
           uv run python scripts/codegen.py \
             --specs specs/kr/ \
             --out src/lawpy/kr/generated/
 
+      # Step 4: Refresh probe snapshots
       - name: Update probe snapshots
         env:
-          LAWPY_API_KEY: ${{ secrets.LAWPY_API_KEY }}
+          LAWPY_KR_API_KEY: ${{ secrets.LAWPY_KR_API_KEY }}
         run: |
           uv run lawpy-probe capture --all || true
 
+      # Step 5: Run tests to catch regressions
+      - name: Run tests
+        run: uv run pytest tests/ -q --no-header --tb=short
+
+      # Step 6: Open a PR with all changes
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: chore/auto-spec-update-${{ github.run_id }}
-          title: '🔄 Auto: API spec update detected'
+          commit-message: 'chore: auto-update specs + regenerate clients [bot]'
+          title: '🔄 Auto: API spec change detected'
           body: |
             ## Automated API Spec Update
 
-            The daily spec check detected changes in the Korean Law OpenAPI guide.
+            The daily check detected changes in the Korean Law OpenAPI guide pages.
 
-            ### What changed
-            See attached `spec_diff_result.json` in the Actions run artifacts.
-
-            ### Changes in this PR
-            - Updated `specs/kr/*.json` (re-scraped from open.law.go.kr)
-            - Regenerated `src/lawpy/kr/generated/*.py` stubs
-            - Updated `src/lawpy/snapshots/*.json` probe snapshots
+            ### Pipeline executed
+            1. ✅ Re-scraped `specs/kr/` from `open.law.go.kr`
+            2. ✅ Re-discovered JSON root/item keys (`specs/kr/_root_keys.json`)
+            3. ✅ Regenerated `src/lawpy/kr/generated/*.py` client stubs
+            4. ✅ Updated `src/lawpy/snapshots/*.json` probe snapshots
+            5. ✅ Tests passed
 
             ### Review checklist
-            - [ ] Check `spec_diff_result.json` for breaking changes (removed params/fields)
-            - [ ] Update hand-written parsers in `src/lawpy/kr/law.py`, `precedent.py` etc. if needed
-            - [ ] Run tests: `uv run pytest`
-            - [ ] Bump version if breaking changes
+            - [ ] Review `spec_diff_result.json` artifact for breaking changes (removed params/fields)
+            - [ ] Update hand-written parsers in `src/lawpy/kr/law.py`, `precedent.py` if needed
+            - [ ] Bump version if there are breaking changes
           labels: |
             api-spec-update
             automated-pr
 
   # ──────────────────────────────────────────────
-  # Step 3: If live API drifted → create issue
+  # Job 3: If live responses drifted → open issue
   # ──────────────────────────────────────────────
   notify-drift:
-    name: Notify on API drift
+    name: Notify on live API response drift
     needs: spec-check
     if: needs.spec-check.outputs.drift_detected == 'true'
     runs-on: ubuntu-latest
@@ -176,18 +192,19 @@ jobs:
 
             const body = [
               '## 🚨 Live API Response Drift Detected',
-              `Detected on: ${new Date().toISOString()}`,
+              `Detected: ${new Date().toISOString()}`,
               '',
-              '### Breaking Changes (fields removed from API responses)',
+              '### Breaking Changes (fields removed from live API responses)',
               '```json',
               JSON.stringify(breaking, null, 2),
               '```',
               '',
               '### Action Required',
-              '1. Run locally: `LAWPY_API_KEY=your_key lawpy-probe diff --all`',
+              '1. Run locally: `LAWPY_KR_API_KEY=<key> lawpy-probe diff --all`',
               '2. Fix parsers in `src/lawpy/kr/` to match new schema',
               '3. Run `lawpy-probe capture --all` to update snapshots',
-              '4. Commit + release',
+              '4. Run `scripts/codegen.py` if generated stubs are affected',
+              '5. Commit + release new version',
             ].join('\n');
 
             const existing = await github.rest.issues.listForRepo({
