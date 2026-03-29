@@ -1,0 +1,34 @@
+{
+  "html_name": "deccInfoGuide",
+  "label": "행정심판례 본문 조회",
+  "request_url": "http://www.law.go.kr/DRF/lawService.do?target=decc요청",
+  "params": [
+    {
+      "요청변수": "OC",
+      "값": "string(필수)",
+      "설명": "신청한 API인증값"
+    },
+    {
+      "요청변수": "target",
+      "값": "string : decc(필수)",
+      "설명": "서비스 대상"
+    },
+    {
+      "요청변수": "type",
+      "값": "char(필수)",
+      "설명": "출력 형태 : HTML/XML/JSON"
+    },
+    {
+      "요청변수": "ID",
+      "값": "char(필수)",
+      "설명": "행정심판례 일련번호"
+    },
+    {
+      "요청변수": "LM",
+      "값": "string",
+      "설명": "행정심판례명"
+    }
+  ],
+  "response": [],
+  "raw_url": "https://open.law.go.kr/LSO/openApi/guideResult.do"
+}

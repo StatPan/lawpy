@@ -1,0 +1,80 @@
+{
+  "name": "kr.prec.search",
+  "lawpy_version": "0.1.0",
+  "captured_at": "2026-03-29T07:42:30.290880+00:00",
+  "endpoint": "https://www.law.go.kr/DRF/lawSearch.do",
+  "params": {
+    "target": "prec",
+    "type": "JSON",
+    "query": "손해배상",
+    "display": "1"
+  },
+  "schema_path": "PrecSearch.prec",
+  "schema": {
+    "id": {
+      "type": "str",
+      "sample": "1",
+      "nullable": false
+    },
+    "사건번호": {
+      "type": "str",
+      "sample": "2022다287284",
+      "nullable": false
+    },
+    "데이터출처명": {
+      "type": "str",
+      "sample": "대법원",
+      "nullable": false
+    },
+    "사건종류코드": {
+      "type": "str",
+      "sample": "400101",
+      "nullable": false
+    },
+    "사건종류명": {
+      "type": "str",
+      "sample": "민사",
+      "nullable": false
+    },
+    "선고": {
+      "type": "str",
+      "sample": "선고",
+      "nullable": false
+    },
+    "선고일자": {
+      "type": "str",
+      "sample": "2026.01.29",
+      "nullable": false
+    },
+    "판례일련번호": {
+      "type": "str",
+      "sample": "616249",
+      "nullable": false
+    },
+    "판결유형": {
+      "type": "str",
+      "sample": "판결",
+      "nullable": false
+    },
+    "법원종류코드": {
+      "type": "str",
+      "sample": "",
+      "nullable": false
+    },
+    "법원명": {
+      "type": "str",
+      "sample": "대법원",
+      "nullable": false
+    },
+    "판례상세링크": {
+      "type": "str",
+      "sample": "/DRF/lawService.do?OC=dlfrnaos19&target=prec&ID=616249&type=HTML&mobileYn=",
+      "nullable": false
+    },
+    "사건명": {
+      "type": "str",
+      "sample": "손해배상(기)",
+      "nullable": false
+    }
+  }
+}

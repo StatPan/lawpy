@@ -1,0 +1,39 @@
+{
+  "html_name": "cgmExpcPpsInfoGuide",
+  "label": "조달청 법령해석 본문",
+  "request_url": "http://www.law.go.kr/DRF/lawService.do?target=ppsCgmExpc요청",
+  "params": [
+    {
+      "요청변수": "OC",
+      "값": "string(필수)",
+      "설명": "신청한 API인증값"
+    },
+    {
+      "요청변수": "target",
+      "값": "string : ppsCgmExpc(필수)",
+      "설명": "서비스 대상"
+    },
+    {
+      "요청변수": "type",
+      "값": "char(필수)",
+      "설명": "출력 형태 : HTML/XML/JSON"
+    },
+    {
+      "요청변수": "ID",
+      "값": "int(필수)",
+      "설명": "법령해석일련번호"
+    },
+    {
+      "요청변수": "LM",
+      "값": "string",
+      "설명": "법령해석명"
+    },
+    {
+      "요청변수": "fields",
+      "값": "string",
+      "설명": "응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능"
+    }
+  ],
+  "response": [],
+  "raw_url": "https://open.law.go.kr/LSO/openApi/guideResult.do"
+}

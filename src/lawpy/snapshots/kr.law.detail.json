@@ -1,0 +1,284 @@
+{
+  "name": "kr.law.detail",
+  "lawpy_version": "0.1.0",
+  "captured_at": "2026-03-29T07:42:37.740227+00:00",
+  "endpoint": "http://www.law.go.kr/DRF/lawService.do",
+  "params": {
+    "target": "law",
+    "type": "JSON",
+    "MST": "188376"
+  },
+  "schema_path": "법령",
+  "schema": {
+    "개정문": {
+      "type": "dict",
+      "sample": null,
+      "nullable": false
+    },
+    "개정문.개정문내용": {
+      "type": "list",
+      "sample": "[1 items]",
+      "nullable": false
+    },
+    "개정문.개정문내용[]": {
+      "type": "str",
+      "sample": "국회에서 의결된 난민법 일부개정법률을 이에 공포한다.",
+      "nullable": false
+    },
+    "법령키": {
+      "type": "str",
+      "sample": "0115462016122014408",
+      "nullable": false
+    },
+    "기본정보": {
+      "type": "dict",
+      "sample": null,
+      "nullable": false
+    },
+    "기본정보.법령명_한글": {
+      "type": "str",
+      "sample": "난민법",
+      "nullable": false
+    },
+    "기본정보.공포번호": {
+      "type": "str",
+      "sample": "14408",
+      "nullable": false
+    },
+    "기본정보.전화번호": {
+      "type": "str",
+      "sample": "02-2110-4160",
+      "nullable": false
+    },
+    "기본정보.언어": {
+      "type": "str",
+      "sample": "한글",
+      "nullable": false
+    },
+    "기본정보.제개정구분": {
+      "type": "str",
+      "sample": "일부개정",
+      "nullable": false
+    },
+    "기본정보.법령ID": {
+      "type": "str",
+      "sample": "011546",
+      "nullable": false
+    },
+    "기본정보.공동부령정보": {
+      "type": "str",
+      "sample": "",
+      "nullable": false
+    },
+    "기본정보.소관부처": {
+      "type": "dict",
+      "sample": null,
+      "nullable": false
+    },
+    "기본정보.소관부처.content": {
+      "type": "str",
+      "sample": "법무부",
+      "nullable": false
+    },
+    "기본정보.소관부처.소관부처코드": {
+      "type": "str",
+      "sample": "1270000",
+      "nullable": false
+    },
+    "기본정보.공포법령여부": {
+      "type": "str",
+      "sample": "Y",
+      "nullable": false
+    },
+    "기본정보.법종구분": {
+      "type": "dict",
+      "sample": null,
+      "nullable": false
+    },
+    "기본정보.법종구분.content": {
+      "type": "str",
+      "sample": "법률",
+      "nullable": false
+    },
+    "기본정보.법종구분.법종구분코드": {
+      "type": "str",
+      "sample": "A0002",
+      "nullable": false
+    },
+    "기본정보.제명변경여부": {
+      "type": "str",
+      "sample": "N",
+      "nullable": false
+    },
+    "기본정보.시행일자": {
+      "type": "str",
+      "sample": "20161220",
+      "nullable": false
+    },
+    "기본정보.별표편집여부": {
+      "type": "str",
+      "sample": "Y",
+      "nullable": false
+    },
+    "기본정보.연락부서": {
+      "type": "dict",
+      "sample": null,
+      "nullable": false
+    },
+    "기본정보.연락부서.부서단위": {
+      "type": "dict",
+      "sample": null,
+      "nullable": false
+    },
+    "기본정보.연락부서.부서단위.부서연락처": {
+      "type": "str",
+      "sample": "02-2110-4160",
+      "nullable": false
+    },
+    "기본정보.연락부서.부서단위.부서키": {
+      "type": "str",
+      "sample": "234145",
+      "nullable": false
+    },
+    "기본정보.연락부서.부서단위.부서명": {
+      "type": "str",
+      "sample": "난민과",
+      "nullable": false
+    },
+    "기본정보.연락부서.부서단위.소관부처명": {
+      "type": "str",
+      "sample": "법무부",
+      "nullable": false
+    },
+    "기본정보.연락부서.부서단위.소관부처코드": {
+      "type": "str",
+      "sample": "1270000",
+      "nullable": false
+    },
+    "기본정보.법령명_한자": {
+      "type": "str",
+      "sample": "난민법",
+      "nullable": false
+    },
+    "기본정보.법령명약칭": {
+      "type": "str",
+      "sample": "",
+      "nullable": false
+    },
+    "기본정보.공포일자": {
+      "type": "str",
+      "sample": "20161220",
+      "nullable": false
+    },
+    "기본정보.한글법령여부": {
+      "type": "str",
+      "sample": "Y",
+      "nullable": false
+    },
+    "기본정보.편장절관": {
+      "type": "str",
+      "sample": "07040000",
+      "nullable": false
+    },
+    "부칙": {
+      "type": "dict",
+      "sample": null,
+      "nullable": false
+    },
+    "부칙.부칙단위": {
+      "type": "list",
+      "sample": "[3 items]",
+      "nullable": false
+    },
+    "부칙.부칙단위[].부칙키": {
+      "type": "str",
+      "sample": "2012021011298",
+      "nullable": false
+    },
+    "부칙.부칙단위[].부칙공포일자": {
+      "type": "str",
+      "sample": "20120210",
+      "nullable": false
+    },
+    "부칙.부칙단위[].부칙내용": {
+      "type": "list",
+      "sample": "[1 items]",
+      "nullable": false
+    },
+    "부칙.부칙단위[].부칙내용[]": {
+      "type": "str",
+      "sample": "부칙 <제11298호,2012.2.10>",
+      "nullable": false
+    },
+    "부칙.부칙단위[].부칙공포번호": {
+      "type": "str",
+      "sample": "11298",
+      "nullable": false
+    },
+    "조문": {
+      "type": "dict",
+      "sample": null,
+      "nullable": false
+    },
+    "조문.조문단위": {
+      "type": "list",
+      "sample": "[57 items]",
+      "nullable": false
+    },
+    "조문.조문단위[].조문번호": {
+      "type": "str",
+      "sample": "1",
+      "nullable": false
+    },
+    "조문.조문단위[].조문시행일자": {
+      "type": "str",
+      "sample": "20161220",
+      "nullable": false
+    },
+    "조문.조문단위[].조문변경여부": {
+      "type": "str",
+      "sample": "N",
+      "nullable": false
+    },
+    "조문.조문단위[].조문이동이전": {
+      "type": "str",
+      "sample": "000000",
+      "nullable": false
+    },
+    "조문.조문단위[].조문키": {
+      "type": "str",
+      "sample": "0001000",
+      "nullable": false
+    },
+    "조문.조문단위[].조문내용": {
+      "type": "str",
+      "sample": "        제1장 총칙",
+      "nullable": false
+    },
+    "조문.조문단위[].조문이동이후": {
+      "type": "str",
+      "sample": "000000",
+      "nullable": false
+    },
+    "조문.조문단위[].조문여부": {
+      "type": "str",
+      "sample": "전문",
+      "nullable": false
+    },
+    "제개정이유": {
+      "type": "dict",
+      "sample": null,
+      "nullable": false
+    },
+    "제개정이유.제개정이유내용": {
+      "type": "list",
+      "sample": "[1 items]",
+      "nullable": false
+    },
+    "제개정이유.제개정이유내용[]": {
+      "type": "str",
+      "sample": "[일부개정]",
+      "nullable": false
+    }
+  }
+}

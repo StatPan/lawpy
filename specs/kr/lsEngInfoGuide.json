@@ -1,0 +1,71 @@
+{
+  "html_name": "lsEngInfoGuide",
+  "label": "영문 법령 본문 조회",
+  "request_url": "http://www.law.go.kr/DRF/lawService.do?target=elaw요청",
+  "params": [
+    {
+      "요청변수": "OC",
+      "값": "string(필수)",
+      "설명": "신청한 API인증값"
+    },
+    {
+      "요청변수": "target",
+      "값": "string : elaw(필수)",
+      "설명": "서비스 대상"
+    },
+    {
+      "요청변수": "ID",
+      "값": "char",
+      "설명": "법령 ID (ID 또는 MST 중 하나는 반드시 입력)"
+    },
+    {
+      "요청변수": "MST",
+      "값": "char",
+      "설명": "법령 마스터 번호 법령테이블의 lsi_seq 값을 의미함"
+    },
+    {
+      "요청변수": "LM",
+      "값": "string",
+      "설명": "법령의 법령명(법령명 입력시 해당 법령 링크)"
+    },
+    {
+      "요청변수": "LD",
+      "값": "int",
+      "설명": "법령의 공포일자"
+    },
+    {
+      "요청변수": "LN",
+      "값": "int",
+      "설명": "법령의 공포번호"
+    },
+    {
+      "요청변수": "type",
+      "값": "char",
+      "설명": "출력 형태 : HTML/XML/JSON"
+    }
+  ],
+  "response": [
+    {
+      "col0": "샘플 URL"
+    },
+    {
+      "col0": "1. 표준시에 관한 법률 ID HTML 조회"
+    },
+    {
+      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=elaw&ID=000744&type=HTML"
+    },
+    {
+      "col0": "2. 상호저축은행법 시행령 seq XML 조회"
+    },
+    {
+      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=elaw&MST=127280&type=XML"
+    },
+    {
+      "col0": "3. 상호저축은행법 시행령 seq JSON 조회"
+    },
+    {
+      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=elaw&MST=127280&type=JSON"
+    }
+  ],
+  "raw_url": "https://open.law.go.kr/LSO/openApi/guideResult.do"
+}

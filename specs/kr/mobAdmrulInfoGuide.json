@@ -1,0 +1,49 @@
+{
+  "html_name": "mobAdmrulInfoGuide",
+  "label": "행정규칙 본문 조회",
+  "request_url": "http://www.law.go.kr/DRF/lawService.do?target=admrul&mobileYn=Y요청",
+  "params": [
+    {
+      "요청변수": "OC",
+      "값": "string(필수)",
+      "설명": "신청한 API인증값"
+    },
+    {
+      "요청변수": "target",
+      "값": "string : admrul(필수)",
+      "설명": "서비스 대상"
+    },
+    {
+      "요청변수": "ID",
+      "값": "char",
+      "설명": "행정규칙 일련번호"
+    },
+    {
+      "요청변수": "LM",
+      "값": "Char",
+      "설명": "행정규칙명 조회하고자 하는 정확한 행정규칙명을 입력"
+    },
+    {
+      "요청변수": "type",
+      "값": "Char",
+      "설명": "출력 형태 : HTML"
+    },
+    {
+      "요청변수": "mobileYn",
+      "값": "char : Y (필수)",
+      "설명": "모바일여부"
+    }
+  ],
+  "response": [
+    {
+      "col0": "샘플 URL"
+    },
+    {
+      "col0": "1. 행정규칙 HTML 상세조회"
+    },
+    {
+      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=62505&type=HTML&mobileYn=Y"
+    }
+  ],
+  "raw_url": "https://open.law.go.kr/LSO/openApi/guideResult.do"
+}

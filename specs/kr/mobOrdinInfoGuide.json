@@ -1,0 +1,55 @@
+{
+  "html_name": "mobOrdinInfoGuide",
+  "label": "자치법규 본문 조회",
+  "request_url": "http://www.law.go.kr/DRF/lawService.do?target=ordin요청",
+  "params": [
+    {
+      "요청변수": "OC",
+      "값": "string(필수)",
+      "설명": "신청한 API인증값"
+    },
+    {
+      "요청변수": "target",
+      "값": "string : ordin(필수)",
+      "설명": "서비스 대상"
+    },
+    {
+      "요청변수": "ID",
+      "값": "char",
+      "설명": "자치법규 ID"
+    },
+    {
+      "요청변수": "MST",
+      "값": "string",
+      "설명": "자치법규 마스터 번호"
+    },
+    {
+      "요청변수": "type",
+      "값": "char",
+      "설명": "출력 형태 : HTML"
+    },
+    {
+      "요청변수": "mobileYn",
+      "값": "char : Y (필수)",
+      "설명": "모바일여부"
+    }
+  ],
+  "response": [
+    {
+      "col0": "샘플 URL"
+    },
+    {
+      "col0": "1. 자치법규 ID HTML 조회"
+    },
+    {
+      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=ordin&ID=2047729&type=HTML&mobileYn=Y"
+    },
+    {
+      "col0": "2. 자치법규 MST HTML 조회"
+    },
+    {
+      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=ordin&type=HTML&mobileYn=Y&MST=1062134"
+    }
+  ],
+  "raw_url": "https://open.law.go.kr/LSO/openApi/guideResult.do"
+}

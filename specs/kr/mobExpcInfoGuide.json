@@ -1,0 +1,55 @@
+{
+  "html_name": "mobExpcInfoGuide",
+  "label": "법령해석례 본문 조회",
+  "request_url": "http://www.law.go.kr/DRF/lawService.do?target=expc&mobileYn=Y요청",
+  "params": [
+    {
+      "요청변수": "OC",
+      "값": "string(필수)",
+      "설명": "신청한 API인증값"
+    },
+    {
+      "요청변수": "target",
+      "값": "string : expc(필수)",
+      "설명": "서비스 대상"
+    },
+    {
+      "요청변수": "ID",
+      "값": "int",
+      "설명": "법령해석례 일련번호"
+    },
+    {
+      "요청변수": "LM",
+      "값": "string",
+      "설명": "법령해석례명"
+    },
+    {
+      "요청변수": "type",
+      "값": "string",
+      "설명": "출력 형태 : HTML"
+    },
+    {
+      "요청변수": "mobileYn",
+      "값": "char : Y (필수)",
+      "설명": "모바일여부"
+    }
+  ],
+  "response": [
+    {
+      "col0": "샘플 URL"
+    },
+    {
+      "col0": "1. 법령해석례일련번호가 281909인 해석례 HTML 조회"
+    },
+    {
+      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=expc&ID=334617&type=HTML&mobileYn=Y"
+    },
+    {
+      "col0": "2. 여성가족부 - 건강가정기본법 제35조 제2항 관련 법령해석례 조회"
+    },
+    {
+      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=expc&ID=315191&LM=여성가족부 - 건강가정기본법 제35조 제2항 관련&type=HTML&mobileYn=Y"
+    }
+  ],
+  "raw_url": "https://open.law.go.kr/LSO/openApi/guideResult.do"
+}

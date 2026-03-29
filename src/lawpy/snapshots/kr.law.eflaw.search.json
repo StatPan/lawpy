@@ -1,0 +1,95 @@
+{
+  "name": "kr.law.eflaw.search",
+  "lawpy_version": "0.1.0",
+  "captured_at": "2026-03-29T07:42:37.033324+00:00",
+  "endpoint": "https://www.law.go.kr/DRF/lawSearch.do",
+  "params": {
+    "target": "eflaw",
+    "type": "JSON",
+    "query": "민법",
+    "display": "1"
+  },
+  "schema_path": "LawSearch.law",
+  "schema": {
+    "현행연혁코드": {
+      "type": "str",
+      "sample": "현행",
+      "nullable": false
+    },
+    "법령일련번호": {
+      "type": "str",
+      "sample": "188376",
+      "nullable": false
+    },
+    "자법타법여부": {
+      "type": "str",
+      "sample": "",
+      "nullable": false
+    },
+    "법령상세링크": {
+      "type": "str",
+      "sample": "/DRF/lawService.do?OC=dlfrnaos19&target=eflaw&MST=188376&type=HTML&mobileYn=&efYd=20161220",
+      "nullable": false
+    },
+    "법령명한글": {
+      "type": "str",
+      "sample": "난민법",
+      "nullable": false
+    },
+    "법령구분명": {
+      "type": "str",
+      "sample": "법률",
+      "nullable": false
+    },
+    "소관부처명": {
+      "type": "str",
+      "sample": "법무부",
+      "nullable": false
+    },
+    "공포번호": {
+      "type": "str",
+      "sample": "14408",
+      "nullable": false
+    },
+    "제개정구분명": {
+      "type": "str",
+      "sample": "일부개정",
+      "nullable": false
+    },
+    "소관부처코드": {
+      "type": "str",
+      "sample": "1270000",
+      "nullable": false
+    },
+    "id": {
+      "type": "str",
+      "sample": "1",
+      "nullable": false
+    },
+    "법령ID": {
+      "type": "str",
+      "sample": "011546",
+      "nullable": false
+    },
+    "공동부령정보": {
+      "type": "str",
+      "sample": "",
+      "nullable": false
+    },
+    "시행일자": {
+      "type": "str",
+      "sample": "20161220",
+      "nullable": false
+    },
+    "공포일자": {
+      "type": "str",
+      "sample": "20161220",
+      "nullable": false
+    },
+    "법령약칭명": {
+      "type": "str",
+      "sample": "",
+      "nullable": false
+    }
+  }
+}

@@ -37,6 +37,12 @@ dev = [
     "types-requests>=2.32.0",
     "bump-my-version>=0.27.0",
 ]
+# probe extra: required only for `lawpy-probe` CLI (capture/diff)
+# httpx is already a core dependency, no additional deps needed for now
+probe = []
+
+[project.scripts]
+lawpy-probe = "lawpy.probe.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/statpan/lawpy"
@@ -116,3 +122,8 @@ replace = 'version = "{new_version}"'
 filename = "src/lawpy/__init__.py"
 search = '__version__ = "{current_version}"'
 replace = '__version__ = "{new_version}"'
+
+[dependency-groups]
+dev = [
+    "beautifulsoup4>=4.14.3",
+]
