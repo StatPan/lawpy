@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=eflawjosub
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=eflawjosub
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,15 +8,19 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class EflawjosubClient(KoreanBaseClient):
-    """Auto-generated client for target=eflawjosub."""
+    """Auto-generated client for target=eflawjosub.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── eflawjosub ──────────────────────────────────────
     def search_eflawjosubs(
         self,
         id: str | None = None,
         mst: str | None = None,
-        efyd: str,
-        jo: str,
+        efyd: int | None = None,
+        jo: str | None = None,
         hang: str | None = None,
         ho: str | None = None,
         mok: str | None = None,
@@ -30,19 +34,13 @@ class EflawjosubClient(KoreanBaseClient):
         jo: 조 번호 6자리숫자 예) 제2조 : 000200, 제10조의2 : 001002
         hang: 항 번호 6자리숫자 예) 제2항 : 000200
         ho: 호 번호 6자리숫자 예) 제2호 : 000200, 제10호의2 : 001002
-        mok: 목 한자리 문자 예) 가,나,다,라, … 카,타,파,하 한글은 인코딩 하여 사용하여야 정상적으로 사용이가능 URLDecoder.decode("다", "UTF-8")
+        mok: 목 한자리 문자 예) 가,나,다,라, … 카,타,파,하 한글은 인코딩 하여 사용하여야 정상적으로 사용이가능 URLDecoder.decode('다', 'UTF-8')
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/lsEfYdJoListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Root key not discovered — using best-effort extraction
         """
-        params: dict = {
-            "target": "eflawjosub",
-            "type": "JSON",
-        }
+        params: dict = {"target": "eflawjosub", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if mst is not None:
@@ -59,5 +57,11 @@ class EflawjosubClient(KoreanBaseClient):
             params["MOK"] = mok
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
+        # root key not discovered — returning raw response
+        if isinstance(data, list):
+            return data
+        for v in data.values():
+            if isinstance(v, list): return v
+            if isinstance(v, dict): return [v]
         return []
+

@@ -1,0 +1,516 @@
+{
+  "acrSpecialDecc": {
+    "target": "acrSpecialDecc",
+    "root_key": "Decc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "adapSpecialDecc": {
+    "target": "adapSpecialDecc",
+    "root_key": "Decc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "admbyl": {
+    "target": "admbyl",
+    "root_key": "admRulBylSearch",
+    "item_key": "admrulbyl",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "admrul": {
+    "target": "admrul",
+    "root_key": "AdmRulSearch",
+    "item_key": "admrul",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "admrulOldAndNew": {
+    "target": "admrulOldAndNew",
+    "root_key": "OldAndNewLawSearch",
+    "item_key": "oldAndNew",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "baiPvcs": {
+    "target": "baiPvcs",
+    "status": "error",
+    "error": "Client error '404 Not Found' for url 'https://www.law.go.kr/DRF/lawSearch.do?OC=dlfrnaos19&target=baiPvcs&type=JSON&display=1&query=%EB%AF%BC%EB%B2%95'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+  },
+  "couseAdmrul": {
+    "target": "couseAdmrul",
+    "status": "error",
+    "error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  "couseLs": {
+    "target": "couseLs",
+    "status": "error",
+    "error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  "couseOrdin": {
+    "target": "couseOrdin",
+    "status": "error",
+    "error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  "dapaCgmExpc": {
+    "target": "dapaCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "decc": {
+    "target": "decc",
+    "root_key": "Decc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "detc": {
+    "target": "detc",
+    "root_key": "DetcSearch",
+    "item_key": "Detc",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "drlaw": {
+    "target": "drlaw",
+    "status": "error",
+    "error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  "eflaw": {
+    "target": "eflaw",
+    "root_key": "LawSearch",
+    "item_key": "law",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "eflawjosub": {
+    "target": "eflawjosub",
+    "status": "error",
+    "error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  "elaw": {
+    "target": "elaw",
+    "root_key": "LawSearch",
+    "item_key": "law",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "expc": {
+    "target": "expc",
+    "root_key": "Expc",
+    "item_key": "expc",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "kcgCgmExpc": {
+    "target": "kcgCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "kcsCgmExpc": {
+    "target": "kcsCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "kdcaCgmExpc": {
+    "target": "kdcaCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "kfsCgmExpc": {
+    "target": "kfsCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": "cgmExpc",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "khsCgmExpc": {
+    "target": "khsCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "kipoCgmExpc": {
+    "target": "kipoCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": "cgmExpc",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "kmaCgmExpc": {
+    "target": "kmaCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "kmstSpecialDecc": {
+    "target": "kmstSpecialDecc",
+    "root_key": "Decc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "kostatCgmExpc": {
+    "target": "kostatCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "law": {
+    "target": "law",
+    "root_key": "LawSearch",
+    "item_key": "law",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "lawjosub": {
+    "target": "lawjosub",
+    "status": "error",
+    "error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  "licbyl": {
+    "target": "licbyl",
+    "root_key": "licBylSearch",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "lnkLs": {
+    "target": "lnkLs",
+    "root_key": "LawSearch",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "lnkOrd": {
+    "target": "lnkOrd",
+    "root_key": "OrdinSearch",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "lsAbrv": {
+    "target": "lsAbrv",
+    "root_key": "LawSearch",
+    "item_key": "law",
+    "item_type": "list",
+    "status": "ok"
+  },
+  "lsDelegated": {
+    "target": "lsDelegated",
+    "status": "error",
+    "error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  "lsHistory": {
+    "target": "lsHistory",
+    "status": "error",
+    "error": "Expecting value: line 27 column 1 (char 52)"
+  },
+  "lsHstInf": {
+    "target": "lsHstInf",
+    "root_key": "LawSearch",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "lsJoHstInf": {
+    "target": "lsJoHstInf",
+    "root_key": "LawSearch",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "lsStmd": {
+    "target": "lsStmd",
+    "root_key": "LsStmdSearch",
+    "item_key": "law",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "lstrm": {
+    "target": "lstrm",
+    "root_key": "LsTrmSearch",
+    "item_key": "lstrm",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "mafraCgmExpc": {
+    "target": "mafraCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mcstCgmExpc": {
+    "target": "mcstCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "meCgmExpc": {
+    "target": "meCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mfdsCgmExpc": {
+    "target": "mfdsCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mmaCgmExpc": {
+    "target": "mmaCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mndCgmExpc": {
+    "target": "mndCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "moeCgmExpc": {
+    "target": "moeCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "moefCgmExpc": {
+    "target": "moefCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "moelCgmExpc": {
+    "target": "moelCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": "cgmExpc",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "mofCgmExpc": {
+    "target": "mofCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mofaCgmExpc": {
+    "target": "mofaCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mogefCgmExpc": {
+    "target": "mogefCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mohwCgmExpc": {
+    "target": "mohwCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": "cgmExpc",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "moisCgmExpc": {
+    "target": "moisCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mojCgmExpc": {
+    "target": "mojCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": "cgmExpc",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "molegCgmExpc": {
+    "target": "molegCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "molitCgmExpc": {
+    "target": "molitCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": "cgmExpc",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "motieCgmExpc": {
+    "target": "motieCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mouCgmExpc": {
+    "target": "mouCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mpmCgmExpc": {
+    "target": "mpmCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mpvaCgmExpc": {
+    "target": "mpvaCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "msitCgmExpc": {
+    "target": "msitCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "mssCgmExpc": {
+    "target": "mssCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "naaccCgmExpc": {
+    "target": "naaccCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "nfaCgmExpc": {
+    "target": "nfaCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "npaCgmExpc": {
+    "target": "npaCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "ntsCgmExpc": {
+    "target": "ntsCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": "cgmExpc",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "okaCgmExpc": {
+    "target": "okaCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "oldAndNew": {
+    "target": "oldAndNew",
+    "root_key": "OldAndNewLawSearch",
+    "item_key": "oldAndNew",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "oneview": {
+    "target": "oneview",
+    "root_key": "items",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "ordin": {
+    "target": "ordin",
+    "root_key": "OrdinSearch",
+    "item_key": "law",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "ordinbyl": {
+    "target": "ordinbyl",
+    "root_key": "licBylSearch",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "ppsCgmExpc": {
+    "target": "ppsCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "prec": {
+    "target": "prec",
+    "root_key": "PrecSearch",
+    "item_key": "prec",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "rdaCgmExpc": {
+    "target": "rdaCgmExpc",
+    "root_key": "CgmExpc",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
+  },
+  "thdCmp": {
+    "target": "thdCmp",
+    "root_key": "thdCmpLawSearch",
+    "item_key": "thdCmp",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "trty": {
+    "target": "trty",
+    "root_key": "TrtySearch",
+    "item_key": "Trty",
+    "item_type": "dict",
+    "status": "ok"
+  },
+  "ttSpecialDecc": {
+    "target": "ttSpecialDecc",
+    "root_key": "Decc",
+    "item_key": "decc",
+    "item_type": "dict",
+    "status": "ok"
+  }
+}

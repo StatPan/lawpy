@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=adapSpecialDecc
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=adapSpecialDecc
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class AdapspecialdeccClient(KoreanBaseClient):
-    """Auto-generated client for target=adapSpecialDecc."""
+    """Auto-generated client for target=adapSpecialDecc.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── adapSpecialDecc ──────────────────────────────────────
     def search_adapSpecialDeccs(
@@ -30,7 +34,7 @@ class AdapspecialdeccClient(KoreanBaseClient):
 
         Args:
         search: 검색범위 (기본 : 1 특별행정심판재결례명) 2 : 본문검색
-        query: 검색범위에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query="자동차")
+        query: 검색범위에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query='자동차')
         display: 검색된 결과 개수 (default=20 max=100)
         page: 검색 결과 페이지 (default=1)
         cls: 재결례유형 (출력 결과 필드에 있는 재결구분코드)
@@ -43,16 +47,10 @@ class AdapspecialdeccClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 사건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/specialDeccAdapListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: Decc (item key not discovered)
         """
-        params: dict = {
-            "target": "adapSpecialDecc",
-            "type": "JSON",
-        }
+        params: dict = {"target": "adapSpecialDecc", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -79,8 +77,10 @@ class AdapspecialdeccClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("Decc", {})
+        # item key unknown — return raw root
+        return root if isinstance(root, list) else [root] if root else []
+
     def get_adapSpecialDecc_detail(
         self,
         id: str | None = None,
@@ -95,16 +95,10 @@ class AdapspecialdeccClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 사건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/specialDeccAdapInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: Decc
         """
-        params: dict = {
-            "target": "adapSpecialDecc",
-            "type": "JSON",
-        }
+        params: dict = {"target": "adapSpecialDecc", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if lm is not None:
@@ -112,4 +106,6 @@ class AdapspecialdeccClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("Decc", data)
+

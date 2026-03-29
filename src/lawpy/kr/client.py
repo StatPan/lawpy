@@ -1,28 +1,35 @@
 """Integrated client for Korean law APIs."""
 
 from lawpy.kr.law import LawClient
+from lawpy.kr.precedent import PrecedentClient
 
 
-class KoreanLawClient(LawClient):
+class KoreanLawClient(LawClient, PrecedentClient):
     """Integrated client for Korean National Law Information Center API.
 
-    This client provides access to all Korean law APIs including:
-    - Law (법령): search_laws, get_law_detail, get_law_list, get_law_history, get_law_history_detail
-    - Administrative Rules (행정규칙): to be implemented
-    - Autonomous Ordinances (자치법규): to be implemented
-    - Precedents (판례): to be implemented
-    - Constitutional Court Decisions (헌재결정례): to be implemented
-    - Legal Interpretation Cases (법령해석례): to be implemented
-    - Administrative Review Cases (행정심판례): to be implemented
-    - Committee Decisions (위원회결정문): to be implemented
-    - Treaties (조약): to be implemented
-    - Annexes and Forms (별표·서식): to be implemented
-    - School Regulations (학칙·공단·공공기관): to be implemented
-    - Legal Terminology (법령용어): to be implemented
-    - Mobile APIs: to be implemented
-    - Customized Services (맞춤형): to be implemented
-    - Legal Knowledge Base (법령정보지식베이스): to be implemented
-    - Ministry Interpretations (중앙부처 1차 해석): to be implemented
+    Provides a single entry-point for all implemented Korean law open-data APIs.
+
+    **법령 (Law) — implemented**:
+      - :meth:`search_laws`            법령명/전문 검색
+      - :meth:`get_law_detail`         법령 본문 조회 (by ID or MST)
+      - :meth:`get_law_list`           현행법령 목록 조회
+      - :meth:`get_law_history`        연혁법령 목록 조회
+      - :meth:`get_law_history_detail` 연혁법령 상세 조회
+
+    **판례 (Precedent) — implemented**:
+      - :meth:`search_precedents`      판례 목록 조회
+      - :meth:`get_precedent_detail`   판례 본문 조회
+
+    **향후 구현 예정**:
+      - 행정규칙 (Administrative Rules)
+      - 자치법규 (Autonomous Ordinances)
+      - 헌재결정례 (Constitutional Court Decisions)
+      - 법령해석례 (Legal Interpretation Cases)
+      - 행정심판례 (Administrative Review Cases)
+      - 위원회결정문 (Committee Decisions)
+      - 조약 (Treaties)
+      - 별표·서식 (Annexes and Forms)
+      - 법령용어 (Legal Terminology)
     """
 
     pass

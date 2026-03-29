@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=nhrck
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=nhrck
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class NhrckClient(KoreanBaseClient):
-    """Auto-generated client for target=nhrck."""
+    """Auto-generated client for target=nhrck.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── nhrck ──────────────────────────────────────
     def search_nhrcks(
@@ -35,16 +39,10 @@ class NhrckClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 사건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/nhrckListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Root key not discovered — using best-effort extraction
         """
-        params: dict = {
-            "target": "nhrck",
-            "type": "JSON",
-        }
+        params: dict = {"target": "nhrck", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -63,8 +61,14 @@ class NhrckClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
+        # root key not discovered — returning raw response
+        if isinstance(data, list):
+            return data
+        for v in data.values():
+            if isinstance(v, list): return v
+            if isinstance(v, dict): return [v]
         return []
+
     def get_nhrck_detail(
         self,
         id: str | None = None,
@@ -79,16 +83,10 @@ class NhrckClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 사건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/nhrckInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Root key not discovered — returning raw response
         """
-        params: dict = {
-            "target": "nhrck",
-            "type": "JSON",
-        }
+        params: dict = {"target": "nhrck", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if lm is not None:
@@ -97,3 +95,4 @@ class NhrckClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
         return response.json()
+

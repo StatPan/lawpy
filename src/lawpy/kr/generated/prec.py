@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=prec
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=prec
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class PrecClient(KoreanBaseClient):
-    """Auto-generated client for target=prec."""
+    """Auto-generated client for target=prec.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── prec ──────────────────────────────────────
     def search_precs(
@@ -26,7 +30,7 @@ class PrecClient(KoreanBaseClient):
         prncyd: str | None = None,
         nb: int | None = None,
         datsrcnm: str | None = None,
-        mobileyn: str,
+        mobileyn: str | None = None,
     ) -> list[dict]:
         """[GENERATED] 판례 목록 조회
 
@@ -47,16 +51,10 @@ class PrecClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobPrecListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: PrecSearch.prec
         """
-        params: dict = {
-            "target": "prec",
-            "type": "JSON",
-        }
+        params: dict = {"target": "prec", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -87,8 +85,12 @@ class PrecClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("PrecSearch", {})
+        items = root.get("prec", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
     def get_prec_detail(
         self,
         id: str | None = None,
@@ -103,16 +105,10 @@ class PrecClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobPrecInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: PrecSearch
         """
-        params: dict = {
-            "target": "prec",
-            "type": "JSON",
-        }
+        params: dict = {"target": "prec", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if lm is not None:
@@ -120,4 +116,6 @@ class PrecClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("PrecSearch", data)
+

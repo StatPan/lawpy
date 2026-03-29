@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=lsJoHstInf
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=lsJoHstInf
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,13 +8,17 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class LsjohstinfClient(KoreanBaseClient):
-    """Auto-generated client for target=lsJoHstInf."""
+    """Auto-generated client for target=lsJoHstInf.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── lsJoHstInf ──────────────────────────────────────
     def search_lsJoHstInfs(
         self,
-        id: str,
-        jo: str,
+        id: str | None = None,
+        jo: int | None = None,
         display: int | None = None,
         page: int | None = None,
     ) -> list[dict]:
@@ -27,16 +31,10 @@ class LsjohstinfClient(KoreanBaseClient):
         page: 검색 결과 페이지 (default=1)
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/lsJoChgListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: LawSearch (item key not discovered)
         """
-        params: dict = {
-            "target": "lsJoHstInf",
-            "type": "JSON",
-        }
+        params: dict = {"target": "lsJoHstInf", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if jo is not None:
@@ -47,5 +45,7 @@ class LsjohstinfClient(KoreanBaseClient):
             params["page"] = page
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("LawSearch", {})
+        # item key unknown — return raw root
+        return root if isinstance(root, list) else [root] if root else []
+

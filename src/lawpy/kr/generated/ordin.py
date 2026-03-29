@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=ordin
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=ordin
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class OrdinClient(KoreanBaseClient):
-    """Auto-generated client for target=ordin."""
+    """Auto-generated client for target=ordin.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── ordin ──────────────────────────────────────
     def search_ordins(
@@ -30,8 +34,8 @@ class OrdinClient(KoreanBaseClient):
         rrclscd: str | None = None,
         ordinfd: int | None = None,
         lschapno: str | None = None,
-        gana: str,
-        mobileyn: str,
+        gana: str | None = None,
+        mobileyn: str | None = None,
     ) -> list[dict]:
         """[GENERATED] 자치법규 목록 조회
 
@@ -57,16 +61,10 @@ class OrdinClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobOrdinListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: OrdinSearch.law
         """
-        params: dict = {
-            "target": "ordin",
-            "type": "JSON",
-        }
+        params: dict = {"target": "ordin", "type": "JSON"}
         if nw is not None:
             params["nw"] = nw
         if search is not None:
@@ -107,8 +105,12 @@ class OrdinClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("OrdinSearch", {})
+        items = root.get("law", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
     def get_ordin_detail(
         self,
         id: str | None = None,
@@ -123,16 +125,10 @@ class OrdinClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobOrdinInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: OrdinSearch
         """
-        params: dict = {
-            "target": "ordin",
-            "type": "JSON",
-        }
+        params: dict = {"target": "ordin", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if mst is not None:
@@ -140,4 +136,6 @@ class OrdinClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("OrdinSearch", data)
+

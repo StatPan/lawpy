@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=thdCmp
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=thdCmp
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class ThdcmpClient(KoreanBaseClient):
-    """Auto-generated client for target=thdCmp."""
+    """Auto-generated client for target=thdCmp.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── thdCmp ──────────────────────────────────────
     def search_thdCmps(
@@ -47,16 +51,10 @@ class ThdcmpClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/thdCmpListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: thdCmpLawSearch.thdCmp
         """
-        params: dict = {
-            "target": "thdCmp",
-            "type": "JSON",
-        }
+        params: dict = {"target": "thdCmp", "type": "JSON"}
         if query is not None:
             params["query"] = query
         if display is not None:
@@ -87,8 +85,12 @@ class ThdcmpClient(KoreanBaseClient):
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("thdCmpLawSearch", {})
+        items = root.get("thdCmp", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
     def get_thdCmp_detail(
         self,
         knd: int | None = None,
@@ -109,16 +111,10 @@ class ThdcmpClient(KoreanBaseClient):
         ln: 법령의 공포번호
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/thdCmpInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: thdCmpLawSearch
         """
-        params: dict = {
-            "target": "thdCmp",
-            "type": "JSON",
-        }
+        params: dict = {"target": "thdCmp", "type": "JSON"}
         if knd is not None:
             params["knd"] = knd
         if id is not None:
@@ -132,4 +128,6 @@ class ThdcmpClient(KoreanBaseClient):
         if ln is not None:
             params["LN"] = ln
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("thdCmpLawSearch", data)
+

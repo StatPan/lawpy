@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=eiac
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=eiac
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class EiacClient(KoreanBaseClient):
-    """Auto-generated client for target=eiac."""
+    """Auto-generated client for target=eiac.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── eiac ──────────────────────────────────────
     def search_eiacs(
@@ -33,16 +37,10 @@ class EiacClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/eiacListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Root key not discovered — using best-effort extraction
         """
-        params: dict = {
-            "target": "eiac",
-            "type": "JSON",
-        }
+        params: dict = {"target": "eiac", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -59,8 +57,14 @@ class EiacClient(KoreanBaseClient):
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
+        # root key not discovered — returning raw response
+        if isinstance(data, list):
+            return data
+        for v in data.values():
+            if isinstance(v, list): return v
+            if isinstance(v, dict): return [v]
         return []
+
     def get_eiac_detail(
         self,
         id: str | None = None,
@@ -71,17 +75,12 @@ class EiacClient(KoreanBaseClient):
         id: 결정문 일련번호
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/eiacInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Root key not discovered — returning raw response
         """
-        params: dict = {
-            "target": "eiac",
-            "type": "JSON",
-        }
+        params: dict = {"target": "eiac", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         response = self._make_request(self.SERVICE_URL, params=params)
         return response.json()
+

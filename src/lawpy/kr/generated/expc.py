@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=expc
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=expc
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class ExpcClient(KoreanBaseClient):
-    """Auto-generated client for target=expc."""
+    """Auto-generated client for target=expc.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── expc ──────────────────────────────────────
     def search_expcs(
@@ -24,7 +28,7 @@ class ExpcClient(KoreanBaseClient):
         regyd: str | None = None,
         explyd: str | None = None,
         sort: str | None = None,
-        mobileyn: str,
+        mobileyn: str | None = None,
     ) -> list[dict]:
         """[GENERATED] 법령해석례 목록 조회
 
@@ -43,16 +47,10 @@ class ExpcClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobExpcListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: Expc.expc
         """
-        params: dict = {
-            "target": "expc",
-            "type": "JSON",
-        }
+        params: dict = {"target": "expc", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -79,8 +77,12 @@ class ExpcClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("Expc", {})
+        items = root.get("expc", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
     def get_expc_detail(
         self,
         id: int | None = None,
@@ -95,16 +97,10 @@ class ExpcClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobExpcInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: Expc
         """
-        params: dict = {
-            "target": "expc",
-            "type": "JSON",
-        }
+        params: dict = {"target": "expc", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if lm is not None:
@@ -112,4 +108,6 @@ class ExpcClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("Expc", data)
+

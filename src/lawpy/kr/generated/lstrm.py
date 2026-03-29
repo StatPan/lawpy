@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=lstrm
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=lstrm
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class LstrmClient(KoreanBaseClient):
-    """Auto-generated client for target=lstrm."""
+    """Auto-generated client for target=lstrm.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── lstrm ──────────────────────────────────────
     def search_lstrms(
@@ -19,7 +23,7 @@ class LstrmClient(KoreanBaseClient):
         sort: str | None = None,
         gana: str | None = None,
         dickndcd: int | None = None,
-        mobileyn: str,
+        mobileyn: str | None = None,
     ) -> list[dict]:
         """[GENERATED] 법령 용어 목록 조회
 
@@ -33,16 +37,10 @@ class LstrmClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobLsTrmListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: LsTrmSearch.lstrm
         """
-        params: dict = {
-            "target": "lstrm",
-            "type": "JSON",
-        }
+        params: dict = {"target": "lstrm", "type": "JSON"}
         if query is not None:
             params["query"] = query
         if display is not None:
@@ -59,8 +57,12 @@ class LstrmClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("LsTrmSearch", {})
+        items = root.get("lstrm", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
     def get_lstrm_detail(
         self,
         query: str | None = None,
@@ -71,17 +73,13 @@ class LstrmClient(KoreanBaseClient):
         query: 상세조회하고자 하는 법령용어 명
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/lsTrmInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: LsTrmSearch
         """
-        params: dict = {
-            "target": "lstrm",
-            "type": "JSON",
-        }
+        params: dict = {"target": "lstrm", "type": "JSON"}
         if query is not None:
             params["query"] = query
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("LsTrmSearch", data)
+

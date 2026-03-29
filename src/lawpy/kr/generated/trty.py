@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=trty
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=trty
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class TrtyClient(KoreanBaseClient):
-    """Auto-generated client for target=trty."""
+    """Auto-generated client for target=trty.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── trty ──────────────────────────────────────
     def search_trtys(
@@ -22,7 +26,7 @@ class TrtyClient(KoreanBaseClient):
         concyd: str | None = None,
         cls: int | None = None,
         sort: str | None = None,
-        mobileyn: str,
+        mobileyn: str | None = None,
     ) -> list[dict]:
         """[GENERATED] 조약 목록 조회
 
@@ -39,16 +43,10 @@ class TrtyClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobTrtyListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: TrtySearch.Trty
         """
-        params: dict = {
-            "target": "trty",
-            "type": "JSON",
-        }
+        params: dict = {"target": "trty", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -71,8 +69,12 @@ class TrtyClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("TrtySearch", {})
+        items = root.get("Trty", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
     def get_trty_detail(
         self,
         id: str | None = None,
@@ -85,19 +87,15 @@ class TrtyClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobTrtyInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: TrtySearch
         """
-        params: dict = {
-            "target": "trty",
-            "type": "JSON",
-        }
+        params: dict = {"target": "trty", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("TrtySearch", data)
+

@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=admrul
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=admrul
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class AdmrulClient(KoreanBaseClient):
-    """Auto-generated client for target=admrul."""
+    """Auto-generated client for target=admrul.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── admrul ──────────────────────────────────────
     def search_admruls(
@@ -33,7 +37,7 @@ class AdmrulClient(KoreanBaseClient):
         Args:
         nw: (1: 현행, 2: 연혁, 기본값: 현행)
         search: 검색범위 (기본 : 1 행정규칙명) 2 : 본문검색
-        query: 검색범위에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query="자동차")
+        query: 검색범위에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query='자동차')
         display: 검색된 결과 개수 (default=20 max=100)
         page: 검색 결과 페이지 (default=1)
         org: 소관부처별 검색(코드별도제공)
@@ -47,16 +51,10 @@ class AdmrulClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/admrulListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: AdmRulSearch.admrul
         """
-        params: dict = {
-            "target": "admrul",
-            "type": "JSON",
-        }
+        params: dict = {"target": "admrul", "type": "JSON"}
         if nw is not None:
             params["nw"] = nw
         if search is not None:
@@ -87,8 +85,12 @@ class AdmrulClient(KoreanBaseClient):
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("AdmRulSearch", {})
+        items = root.get("admrul", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
     def get_admrul_detail(
         self,
         id: str | None = None,
@@ -103,16 +105,10 @@ class AdmrulClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobAdmrulInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: AdmRulSearch
         """
-        params: dict = {
-            "target": "admrul",
-            "type": "JSON",
-        }
+        params: dict = {"target": "admrul", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if lm is not None:
@@ -120,4 +116,6 @@ class AdmrulClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("AdmRulSearch", data)
+

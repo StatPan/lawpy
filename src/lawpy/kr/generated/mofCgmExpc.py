@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=mofCgmExpc
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=mofCgmExpc
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class MofcgmexpcClient(KoreanBaseClient):
-    """Auto-generated client for target=mofCgmExpc."""
+    """Auto-generated client for target=mofCgmExpc.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── mofCgmExpc ──────────────────────────────────────
     def search_mofCgmExpcs(
@@ -30,7 +34,7 @@ class MofcgmexpcClient(KoreanBaseClient):
 
         Args:
         search: 검색범위 (기본 : 1 법령해석명, 2: 본문검색)
-        query: 검색범위에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query="폐기물")
+        query: 검색범위에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query='폐기물')
         display: 검색된 결과 개수 (default=20 max=100)
         page: 검색 결과 페이지 (default=1)
         inq: 질의기관코드
@@ -43,16 +47,10 @@ class MofcgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/cgmExpcMofListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: CgmExpc (item key not discovered)
         """
-        params: dict = {
-            "target": "mofCgmExpc",
-            "type": "JSON",
-        }
+        params: dict = {"target": "mofCgmExpc", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -79,8 +77,10 @@ class MofcgmexpcClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("CgmExpc", {})
+        # item key unknown — return raw root
+        return root if isinstance(root, list) else [root] if root else []
+
     def get_mofCgmExpc_detail(
         self,
         id: int | None = None,
@@ -95,16 +95,10 @@ class MofcgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/cgmExpcMofInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: CgmExpc
         """
-        params: dict = {
-            "target": "mofCgmExpc",
-            "type": "JSON",
-        }
+        params: dict = {"target": "mofCgmExpc", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if lm is not None:
@@ -112,4 +106,6 @@ class MofcgmexpcClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("CgmExpc", data)
+

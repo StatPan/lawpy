@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=oneview
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=oneview
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class OneviewClient(KoreanBaseClient):
-    """Auto-generated client for target=oneview."""
+    """Auto-generated client for target=oneview.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── oneview ──────────────────────────────────────
     def search_oneviews(
@@ -25,16 +29,10 @@ class OneviewClient(KoreanBaseClient):
         page: 검색 결과 페이지 (default=1)
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/oneViewListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: items (item key not discovered)
         """
-        params: dict = {
-            "target": "oneview",
-            "type": "JSON",
-        }
+        params: dict = {"target": "oneview", "type": "JSON"}
         if query is not None:
             params["query"] = query
         if display is not None:
@@ -43,8 +41,10 @@ class OneviewClient(KoreanBaseClient):
             params["page"] = page
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("items", {})
+        # item key unknown — return raw root
+        return root if isinstance(root, list) else [root] if root else []
+
     def get_oneview_detail(
         self,
         mst: str | None = None,
@@ -63,16 +63,10 @@ class OneviewClient(KoreanBaseClient):
         jo: 조번호 생략(기본값) : 모든 조를 표시함 6자리숫자 : 조번호(4자리)+조가지번호(2자리) (000200 : 2조, 001002 : 10조의 2)
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/oneViewInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: items
         """
-        params: dict = {
-            "target": "oneview",
-            "type": "JSON",
-        }
+        params: dict = {"target": "oneview", "type": "JSON"}
         if mst is not None:
             params["MST"] = mst
         if lm is not None:
@@ -84,4 +78,6 @@ class OneviewClient(KoreanBaseClient):
         if jo is not None:
             params["JO"] = jo
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("items", data)
+

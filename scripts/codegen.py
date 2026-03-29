@@ -1,25 +1,29 @@
 #!/usr/bin/env python3
 """
-Generate Python client stub code from scraped API specs.
+Generate fully working Python client code from scraped API specs + discovered root keys.
 
-For each spec pair (e.g. precListGuide + precInfoGuide), generates:
-  - A Python method stub in src/lawpy/kr/generated/{target}.py
-  - A Pydantic model stub in src/lawpy/models_generated.py
+Sources:
+  - specs/kr/*.json      : parameter + response field specs (scraped from docs)
+  - specs/kr/_root_keys.json : actual JSON root/item keys (discovered by probe_root_keys.py)
+
+Output:
+  - src/lawpy/kr/generated/{target}.py : working client class per target
+  - src/lawpy/kr/generated/_models_generated.py : Pydantic models
 
 Usage:
-    python scripts/codegen.py --specs specs/kr/ --out src/lawpy/kr/generated/
-    python scripts/codegen.py --specs specs/kr/ --dry-run   # print only
+    uv run python scripts/codegen.py
+    uv run python scripts/codegen.py --specs specs/kr/ --out src/lawpy/kr/generated/
+    uv run python scripts/codegen.py --dry-run --target prec
 """
 from __future__ import annotations
 
 import argparse
 import json
 import re
-import sys
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
-# Helpers
+# Constants
 # ---------------------------------------------------------------------------
 
 PARAM_KEY = "요청변수"
@@ -27,46 +31,38 @@ RESP_KEY_CANDIDATES = ["출력변수", "출력결과", "col0"]
 DESC_KEY = "설명"
 VAL_KEY = "값"
 
-# HTML names that are list (search) endpoints vs detail (info) endpoints
-LIST_SUFFIXES = ("ListGuide", "listGuide", "listguide")
-INFO_SUFFIXES = ("InfoGuide", "infoGuide", "GuideInfo", "Guide")
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def is_list_guide(html_name: str) -> bool:
+    return html_name.endswith("ListGuide")
 
 
-def is_list(html_name: str) -> bool:
-    return html_name.endswith(("ListGuide",))
-
-
-def is_info(html_name: str) -> bool:
-    return html_name.endswith(("InfoGuide",))
+def is_info_guide(html_name: str) -> bool:
+    return html_name.endswith("InfoGuide")
 
 
 def extract_target(spec: dict) -> str:
-    """Extract the API target value (e.g. 'prec') from spec params or request_url."""
     for row in spec.get("params", []):
         if row.get(PARAM_KEY, "").strip().lower() == "target":
             val = row.get(VAL_KEY, "")
-            # e.g. "string : prec(필수)" → "prec"
             m = re.search(r":\s*([a-zA-Z][a-zA-Z0-9]*)", val)
             if m:
                 return m.group(1)
-    # Fallback: parse request_url
     url = spec.get("request_url", "")
     m = re.search(r"target=([a-zA-Z][a-zA-Z0-9]*)", url)
     return m.group(1) if m else "unknown"
 
 
 def extract_endpoint_type(spec: dict) -> str:
-    """Search or Service endpoint."""
-    url = spec.get("request_url", "")
-    if "lawService" in url or "lawService" in spec.get("raw_url", ""):
-        return "service"
-    return "search"
+    url = spec.get("request_url", "") + spec.get("raw_url", "")
+    return "service" if "lawService" in url else "search"
 
 
-def snake_from_korean(s: str) -> str:
-    """Very naive Korean → snake_case: just lowercase and strip non-alnum."""
-    import unicodedata
-    # Keep Korean, letters, numbers; replace others with _
+def snake_from_str(s: str) -> str:
+    """Convert any string (incl. Korean) to a valid snake_case Python identifier."""
     result = re.sub(r"[^\w가-힣]", "_", s.strip())
     result = re.sub(r"_+", "_", result).strip("_")
     return result.lower()
@@ -77,10 +73,7 @@ def is_required(val: str) -> bool:
 
 
 def val_to_pytype(val: str) -> str:
-    v = val.lower()
-    if "int" in v:
-        return "int | None"
-    return "str | None"
+    return "int | None" if "int" in val.lower() else "str | None"
 
 
 def extract_params(spec: dict) -> list[dict]:
@@ -91,131 +84,149 @@ def extract_params(spec: dict) -> list[dict]:
         if not key or key in ("OC", "target", "type"):
             continue
         val = row.get(VAL_KEY, "")
-        desc = row.get(DESC_KEY, "")
-        result.append(
-            {
-                "key": key,
-                "pyname": snake_from_korean(key),
-                "pytype": val_to_pytype(val),
-                "required": is_required(val),
-                "description": desc,
-            }
-        )
+        result.append({
+            "key": key,
+            "pyname": snake_from_str(key),
+            "pytype": val_to_pytype(val),
+            "required": is_required(val),
+            "description": row.get(DESC_KEY, "").replace('"', "'"),
+        })
     return result
 
 
 def extract_response_fields(spec: dict) -> list[dict]:
     rows = spec.get("response", [])
-    result = []
+    if not rows:
+        return []
     resp_key = "col0"
     for k in RESP_KEY_CANDIDATES:
-        if rows and k in rows[0]:
+        if k in rows[0]:
             resp_key = k
             break
+    result = []
     for row in rows:
         field_name = row.get(resp_key, "").strip()
         if not field_name:
             continue
-        desc = row.get(DESC_KEY, "")
-        result.append(
-            {
-                "key": field_name,
-                "pyname": snake_from_korean(field_name),
-                "description": desc,
-            }
-        )
+        result.append({
+            "key": field_name,
+            "pyname": snake_from_str(field_name),
+            "description": row.get(DESC_KEY, "").replace('"', "'")[:80],
+        })
     return result
 
 
 # ---------------------------------------------------------------------------
-# Template rendering (pure string, no external deps)
+# Code rendering — fully working parsers
 # ---------------------------------------------------------------------------
 
-def render_list_method(spec: dict, target: str) -> str:
+def render_list_method(spec: dict, target: str, root_key: str | None, item_key: str | None) -> str:
     label = spec["label"]
     params = extract_params(spec)
-    endpoint = extract_endpoint_type(spec)
-    endpoint_const = "SERVICE_URL" if endpoint == "service" else "BASE_URL"
+    endpoint_const = "SERVICE_URL" if extract_endpoint_type(spec) == "service" else "BASE_URL"
 
-    param_sigs = []
-    param_docs = []
-    param_dict_lines = []
-
+    param_sigs, param_docs, param_dict_lines = [], [], []
     for p in params:
-        pytype = "int | None" if p["pytype"].startswith("int") else "str | None"
-        if p["required"]:
-            param_sigs.append(f"        {p['pyname']}: str")
-            param_docs.append(f"        {p['pyname']}: {p['description']}")
-        else:
-            param_sigs.append(f"        {p['pyname']}: {pytype} = None")
-            param_docs.append(f"        {p['pyname']}: {p['description']}")
+        sig_type = "int | None" if p["pytype"].startswith("int") else "str | None"
+        # Always default to None — some specs incorrectly mark params as required
+        param_sigs.append(f"        {p['pyname']}: {sig_type} = None")
+        param_docs.append(f"        {p['pyname']}: {p['description']}")
         param_dict_lines.append(
-            f'        if {p["pyname"]} is not None:\n'
-            f'            params["{p["key"]}"] = {p["pyname"]}'
+            f'        if {p["pyname"]} is not None:\n            params["{p["key"]}"] = {p["pyname"]}'
         )
 
-    sigs = (",\n" + "").join(param_sigs) or "        page: int = 1,\n        display: int = 20"
+    sigs = (",\n").join(param_sigs) or "        page: int | None = None,\n        display: int | None = None"
     docs = "\n".join(param_docs) or "        (no additional params)"
     pd = "\n".join(param_dict_lines)
 
-    method_name = f"search_{target}s"
+    # Generate the actual parsing logic from root_key + item_key
+    if root_key and item_key:
+        parse_block = (
+            f'        data = response.json()\n'
+            f'        root = data.get("{root_key}", {{}})\n'
+            f'        items = root.get("{item_key}", [])\n'
+            f'        if isinstance(items, dict):\n'
+            f'            items = [items]\n'
+            f'        return items or []\n'
+        )
+        return_type = "list[dict]"
+        note = f"Response path: {root_key}.{item_key}"
+    elif root_key:
+        parse_block = (
+            f'        data = response.json()\n'
+            f'        root = data.get("{root_key}", {{}})\n'
+            f'        # item key unknown — return raw root\n'
+            f'        return root if isinstance(root, list) else [root] if root else []\n'
+        )
+        return_type = "list[dict]"
+        note = f"Response path: {root_key} (item key not discovered)"
+    else:
+        parse_block = (
+            f'        data = response.json()\n'
+            f'        # root key not discovered — returning raw response\n'
+            f'        if isinstance(data, list):\n'
+            f'            return data\n'
+            f'        for v in data.values():\n'
+            f'            if isinstance(v, list): return v\n'
+            f'            if isinstance(v, dict): return [v]\n'
+            f'        return []\n'
+        )
+        return_type = "list[dict]"
+        note = "Root key not discovered — using best-effort extraction"
 
     return f'''\
-    def {method_name}(
+    def search_{target}s(
         self,
 {sigs},
-    ) -> list[dict]:
+    ) -> {return_type}:
         """[GENERATED] {label}
 
         Args:
 {docs}
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/{spec["html_name"]}.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            {note}
         """
-        params: dict = {{
-            "target": "{target}",
-            "type": "JSON",
-        }}
+        params: dict = {{"target": "{target}", "type": "JSON"}}
 {pd}
         response = self._make_request(self.{endpoint_const}, params=params)
-        data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+{parse_block}
 '''
 
 
-def render_detail_method(spec: dict, target: str) -> str:
+def render_detail_method(spec: dict, target: str, root_key: str | None) -> str:
     label = spec["label"]
     params = extract_params(spec)
-    endpoint = extract_endpoint_type(spec)
-    endpoint_const = "SERVICE_URL" if endpoint == "service" else "BASE_URL"
+    endpoint_const = "SERVICE_URL" if extract_endpoint_type(spec) == "service" else "BASE_URL"
 
-    param_sigs = []
-    param_docs = []
-    param_dict_lines = []
-
+    param_sigs, param_docs, param_dict_lines = [], [], []
     for p in params:
-        pytype = "int | None" if p["pytype"].startswith("int") else "str | None"
-        param_sigs.append(f"        {p['pyname']}: {pytype} = None")
+        sig_type = "int | None" if p["pytype"].startswith("int") else "str | None"
+        param_sigs.append(f"        {p['pyname']}: {sig_type} = None")
         param_docs.append(f"        {p['pyname']}: {p['description']}")
         param_dict_lines.append(
-            f'        if {p["pyname"]} is not None:\n'
-            f'            params["{p["key"]}"] = {p["pyname"]}'
+            f'        if {p["pyname"]} is not None:\n            params["{p["key"]}"] = {p["pyname"]}'
         )
 
-    sigs = (",\n" + "").join(param_sigs) or "        record_id: str | None = None"
+    sigs = (",\n").join(param_sigs) or "        record_id: str | None = None"
     docs = "\n".join(param_docs) or "        (no additional params)"
     pd = "\n".join(param_dict_lines)
 
-    method_name = f"get_{target}_detail"
+    if root_key:
+        parse_block = (
+            f'        data = response.json()\n'
+            f'        return data.get("{root_key}", data)\n'
+        )
+        note = f"Response path: {root_key}"
+    else:
+        parse_block = (
+            f'        return response.json()\n'
+        )
+        note = "Root key not discovered — returning raw response"
 
     return f'''\
-    def {method_name}(
+    def get_{target}_detail(
         self,
 {sigs},
     ) -> dict:
@@ -225,43 +236,32 @@ def render_detail_method(spec: dict, target: str) -> str:
 {docs}
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/{spec["html_name"]}.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            {note}
         """
-        params: dict = {{
-            "target": "{target}",
-            "type": "JSON",
-        }}
+        params: dict = {{"target": "{target}", "type": "JSON"}}
 {pd}
         response = self._make_request(self.{endpoint_const}, params=params)
-        return response.json()
+{parse_block}
 '''
 
 
-def render_model(spec: dict, target: str, kind: str) -> str:
-    label = spec["label"]
-    fields = extract_response_fields(spec)
+def render_model(target: str, kind: str, label: str, fields: list[dict], html_name: str) -> str:
     class_name = f"{target.capitalize()}{kind}"
-
-    field_lines = []
-    for f in fields:
-        desc = f["description"].replace('"', "'")
-        field_lines.append(
-            f'    {f["pyname"]}: str | None = None  # {f["key"]}: {desc[:60]}'
-        )
-
-    body = "\n".join(field_lines) or "    pass  # no response fields parsed"
+    field_lines = [
+        f'    {f["pyname"]}: str | None = None  # {f["key"]}: {f["description"][:60]}'
+        for f in fields
+    ] or ["    pass  # no response fields in spec"]
 
     return f'''\
 class {class_name}(BaseModel):
     """[GENERATED] Response model for {label}.
 
-    Source: specs/kr/{spec["html_name"]}.json
+    Source: specs/kr/{html_name}.json
+    Fields reflect API spec — actual data may differ.
+    All fields are optional (str | None) as API may omit any field.
     """
-{body}
+{chr(10).join(field_lines)}
 
 '''
 
@@ -270,11 +270,19 @@ class {class_name}(BaseModel):
 # Main
 # ---------------------------------------------------------------------------
 
-def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool) -> None:
+def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_filter: str | None) -> None:
     index = json.loads((specs_dir / "_index.json").read_text())
 
-    # Group by target
-    by_target: dict[str, dict[str, dict]] = {}  # target → {list: spec, info: spec}
+    # Load root key mapping
+    root_keys_path = specs_dir / "_root_keys.json"
+    root_keys: dict[str, dict] = {}
+    if root_keys_path.exists():
+        root_keys = json.loads(root_keys_path.read_text())
+    else:
+        print("⚠️  _root_keys.json not found — run scripts/probe_root_keys.py first for full parsers")
+
+    # Group specs by target → {list: spec, info: spec}
+    by_target: dict[str, dict[str, dict]] = {}
     for entry in index:
         html_name = entry["html_name"]
         path = specs_dir / f"{html_name}.json"
@@ -284,75 +292,96 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool) -> None:
         target = extract_target(spec)
         if target == "unknown":
             continue
-        kind = "list" if is_list(html_name) else ("info" if is_info(html_name) else None)
+        if target_filter and target != target_filter:
+            continue
+        kind = "list" if is_list_guide(html_name) else ("info" if is_info_guide(html_name) else None)
         if kind is None:
             continue
         by_target.setdefault(target, {})[kind] = spec
 
-    print(f"Found {len(by_target)} unique targets: {sorted(by_target)[:20]}...")
+    print(f"Generating {len(by_target)} targets...")
 
     if out_dir and not dry_run:
         out_dir.mkdir(parents=True, exist_ok=True)
-        model_lines = [
-            '"""Auto-generated Pydantic models from specs/kr/*.json\n'
-            "Do not edit by hand — regenerate with scripts/codegen.py\n"
-            '"""\n',
-            "from pydantic import BaseModel\n\n",
-        ]
 
-    generated_count = 0
+    model_lines = [
+        '"""Auto-generated Pydantic models from specs/kr/*.json + _root_keys.json\n'
+        "Run scripts/codegen.py to regenerate. Do not edit by hand.\n"
+        '"""\n\n'
+        "from pydantic import BaseModel\n\n\n",
+    ]
+
     for target in sorted(by_target):
         specs = by_target[target]
+        rk = root_keys.get(target, {})
+        root_key_search = rk.get("root_key") if rk.get("status") == "ok" else None
+        item_key = rk.get("item_key") if rk.get("status") == "ok" else None
+
+        # Detail endpoint root key (typically same as search but without item key)
+        # Try to find it — for now use same root_key
+        root_key_detail = root_key_search  # heuristic, good enough for most
 
         method_code = f"\n# ── {target} ──────────────────────────────────────\n"
 
         if "list" in specs:
-            method_code += render_list_method(specs["list"], target)
+            method_code += render_list_method(specs["list"], target, root_key_search, item_key)
         if "info" in specs:
-            method_code += render_detail_method(specs["info"], target)
+            method_code += render_detail_method(specs["info"], target, root_key_detail)
 
         if dry_run:
             print(method_code)
-        else:
-            # Write per-target file
+        elif out_dir:
             file_path = out_dir / f"{target}.py"
             header = (
-                f'"""Auto-generated client stubs for target={target}\n'
-                f"Source: specs/kr/\n"
-                f'Do not edit by hand — regenerate with scripts/codegen.py\n"""\n'
+                f'"""Auto-generated client for target={target}\n'
+                f"Source: specs/kr/ + _root_keys.json\n"
+                f"Run scripts/codegen.py to regenerate. Do not edit.\n"
+                f'"""\n'
                 f"from __future__ import annotations\n\n"
                 f"from lawpy.kr.base import KoreanBaseClient\n\n\n"
                 f"class {target.capitalize()}Client(KoreanBaseClient):\n"
-                f'    """Auto-generated client for target={target}."""\n'
+                f'    """Auto-generated client for target={target}.\n\n'
+                f'    All methods return plain dicts matching the API response schema.\n'
+                f'    See _models_generated.py for Pydantic models.\n'
+                f'    """\n'
             )
             file_path.write_text(header + method_code, encoding="utf-8")
-            print(f"  ✅ Generated {file_path}")
+            print(f"  ✅ {target:<20} root={root_key_search or '?':<25} item={item_key or '?'}")
 
-        # Model
-        for kind, spec in specs.items():
-            model_class_name = f"{target.capitalize()}{'List' if kind == 'list' else 'Detail'}"
-            if dry_run:
-                print(render_model(spec, target, "List" if kind == "list" else "Detail"))
-            elif out_dir:
-                model_lines.append(render_model(spec, target, "List" if kind == "list" else "Detail"))
-
-        generated_count += 1
+        # Models
+        if out_dir or dry_run:
+            for kind, spec in specs.items():
+                label = spec["label"]
+                html_name = spec["html_name"]
+                fields = extract_response_fields(spec)
+                kind_label = "List" if kind == "list" else "Detail"
+                model_str = render_model(target, kind_label, label, fields, html_name)
+                if dry_run:
+                    print(model_str)
+                else:
+                    model_lines.append(model_str)
 
     if not dry_run and out_dir:
         models_path = out_dir / "_models_generated.py"
-        models_path.write_text("\n".join(model_lines), encoding="utf-8")
-        print(f"\n✅ Generated {generated_count} target stubs → {out_dir}")
+        models_path.write_text("".join(model_lines), encoding="utf-8")
+        print(f"\n✅ {len(by_target)} targets → {out_dir}")
         print(f"✅ Models → {models_path}")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate client stubs from scraped specs")
-    parser.add_argument("--specs", default="specs/kr", help="Specs directory")
-    parser.add_argument("--out", default="src/lawpy/kr/generated", help="Output directory")
-    parser.add_argument("--dry-run", action="store_true", help="Print to stdout, do not write files")
+    parser = argparse.ArgumentParser(description="Generate fully working client code from specs + root key mapping")
+    parser.add_argument("--specs", default="specs/kr")
+    parser.add_argument("--out", default="src/lawpy/kr/generated")
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--target", default=None, help="Generate only this target")
     args = parser.parse_args()
 
-    process_specs(Path(args.specs), None if args.dry_run else Path(args.out), args.dry_run)
+    process_specs(
+        Path(args.specs),
+        None if args.dry_run else Path(args.out),
+        args.dry_run,
+        args.target,
+    )
 
 
 if __name__ == "__main__":

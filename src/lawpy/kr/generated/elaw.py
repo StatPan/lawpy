@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=elaw
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=elaw
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class ElawClient(KoreanBaseClient):
-    """Auto-generated client for target=elaw."""
+    """Auto-generated client for target=elaw.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── elaw ──────────────────────────────────────
     def search_elaws(
@@ -49,16 +53,10 @@ class ElawClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/lsEngListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: LawSearch.law
         """
-        params: dict = {
-            "target": "elaw",
-            "type": "JSON",
-        }
+        params: dict = {"target": "elaw", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -91,8 +89,12 @@ class ElawClient(KoreanBaseClient):
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("LawSearch", {})
+        items = root.get("law", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
     def get_elaw_detail(
         self,
         id: str | None = None,
@@ -111,16 +113,10 @@ class ElawClient(KoreanBaseClient):
         ln: 법령의 공포번호
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/lsEngInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: LawSearch
         """
-        params: dict = {
-            "target": "elaw",
-            "type": "JSON",
-        }
+        params: dict = {"target": "elaw", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if mst is not None:
@@ -132,4 +128,6 @@ class ElawClient(KoreanBaseClient):
         if ln is not None:
             params["LN"] = ln
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("LawSearch", data)
+

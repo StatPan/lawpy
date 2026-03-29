@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=ttSpecialDecc
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=ttSpecialDecc
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class TtspecialdeccClient(KoreanBaseClient):
-    """Auto-generated client for target=ttSpecialDecc."""
+    """Auto-generated client for target=ttSpecialDecc.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── ttSpecialDecc ──────────────────────────────────────
     def search_ttSpecialDeccs(
@@ -30,7 +34,7 @@ class TtspecialdeccClient(KoreanBaseClient):
 
         Args:
         search: 검색범위 (기본 : 1 특별행정심판재결례명) 2 : 본문검색
-        query: 검색범위에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query="자동차")
+        query: 검색범위에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query='자동차')
         display: 검색된 결과 개수 (default=20 max=100)
         page: 검색 결과 페이지 (default=1)
         cls: 재결례유형 (출력 결과 필드에 있는 재결구분코드)
@@ -43,16 +47,10 @@ class TtspecialdeccClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 청구번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/specialDeccTtListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: Decc.decc
         """
-        params: dict = {
-            "target": "ttSpecialDecc",
-            "type": "JSON",
-        }
+        params: dict = {"target": "ttSpecialDecc", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -79,8 +77,12 @@ class TtspecialdeccClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("Decc", {})
+        items = root.get("decc", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
     def get_ttSpecialDecc_detail(
         self,
         id: str | None = None,
@@ -95,16 +97,10 @@ class TtspecialdeccClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 사건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/specialDeccTtInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: Decc
         """
-        params: dict = {
-            "target": "ttSpecialDecc",
-            "type": "JSON",
-        }
+        params: dict = {"target": "ttSpecialDecc", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if lm is not None:
@@ -112,4 +108,6 @@ class TtspecialdeccClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("Decc", data)
+

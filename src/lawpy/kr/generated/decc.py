@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=decc
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=decc
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class DeccClient(KoreanBaseClient):
-    """Auto-generated client for target=decc."""
+    """Auto-generated client for target=decc.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── decc ──────────────────────────────────────
     def search_deccs(
@@ -23,7 +27,7 @@ class DeccClient(KoreanBaseClient):
         dpayd: str | None = None,
         rslyd: str | None = None,
         sort: str | None = None,
-        mobileyn: str,
+        mobileyn: str | None = None,
     ) -> list[dict]:
         """[GENERATED] 행정심판례 목록 조회
 
@@ -41,16 +45,10 @@ class DeccClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobDeccListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: Decc (item key not discovered)
         """
-        params: dict = {
-            "target": "decc",
-            "type": "JSON",
-        }
+        params: dict = {"target": "decc", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -75,8 +73,10 @@ class DeccClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("Decc", {})
+        # item key unknown — return raw root
+        return root if isinstance(root, list) else [root] if root else []
+
     def get_decc_detail(
         self,
         id: str | None = None,
@@ -91,16 +91,10 @@ class DeccClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobDeccInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: Decc
         """
-        params: dict = {
-            "target": "decc",
-            "type": "JSON",
-        }
+        params: dict = {"target": "decc", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if lm is not None:
@@ -108,4 +102,6 @@ class DeccClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("Decc", data)
+

@@ -69,7 +69,8 @@ class KoreanBaseClient(LawClient):
             APIError: If the request fails
         """
         try:
-            response = self._client.get(url, params=params)
+            full_params = {"OC": str(self.api_key), **params}
+            response = self._client.get(url, params=full_params)
             response.raise_for_status()
         except httpx.HTTPStatusError as e:
             from lawpy.exceptions import NotFoundError

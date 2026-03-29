@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=eflaw
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=eflaw
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class EflawClient(KoreanBaseClient):
-    """Auto-generated client for target=eflaw."""
+    """Auto-generated client for target=eflaw.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── eflaw ──────────────────────────────────────
     def search_eflaws(
@@ -35,7 +39,7 @@ class EflawClient(KoreanBaseClient):
 
         Args:
         search: 검색범위 (기본 : 1 법령명) 2 : 본문검색
-        query: 법령명에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query="자동차")
+        query: 법령명에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query='자동차')
         nw: 1: 연혁, 2: 시행예정, 3: 현행 (기본값: 전체) 연혁+예정 : nw=1,2 예정+현행 : nw=2,3 연혁+현행 : nw=1,3 연혁+예정+현행 : nw=1,2,3
         lid: 법령ID (LID=830)
         display: 검색된 결과 개수 (default=20 max=100)
@@ -53,16 +57,10 @@ class EflawClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/lsEfYdListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: LawSearch.law
         """
-        params: dict = {
-            "target": "eflaw",
-            "type": "JSON",
-        }
+        params: dict = {"target": "eflaw", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -99,8 +97,12 @@ class EflawClient(KoreanBaseClient):
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("LawSearch", {})
+        items = root.get("law", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
     def get_eflaw_detail(
         self,
         id: str | None = None,
@@ -119,16 +121,10 @@ class EflawClient(KoreanBaseClient):
         chrclscd: 원문/한글 여부 생략(기본값) : 한글 (010202 : 한글, 010201 : 원문)
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/lsEfYdInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Response path: LawSearch
         """
-        params: dict = {
-            "target": "eflaw",
-            "type": "JSON",
-        }
+        params: dict = {"target": "eflaw", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if mst is not None:
@@ -140,4 +136,6 @@ class EflawClient(KoreanBaseClient):
         if chrclscd is not None:
             params["chrClsCd"] = chrclscd
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        return data.get("LawSearch", data)
+

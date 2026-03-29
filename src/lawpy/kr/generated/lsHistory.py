@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=lsHistory
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=lsHistory
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class LshistoryClient(KoreanBaseClient):
-    """Auto-generated client for target=lsHistory."""
+    """Auto-generated client for target=lsHistory.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── lsHistory ──────────────────────────────────────
     def search_lsHistorys(
@@ -31,7 +35,7 @@ class LshistoryClient(KoreanBaseClient):
         """[GENERATED] 법령 연혁 목록 조회
 
         Args:
-        query: 법령명에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query="자동차")
+        query: 법령명에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query='자동차')
         display: 검색된 결과 개수 (default=20 max=100)
         page: 검색 결과 페이지 (default=1)
         sort: 정렬옵션(기본 : lasc 법령오름차순) ldes : 법령내림차순 dasc : 공포일자 오름차순 ddes : 공포일자 내림차순 nasc : 공포번호 오름차순 ndes : 공포번호 내림차순 efasc : 시행일자 오름차순 efdes : 시행일자 내림차순
@@ -47,16 +51,10 @@ class LshistoryClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/lsHstListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Root key not discovered — using best-effort extraction
         """
-        params: dict = {
-            "target": "lsHistory",
-            "type": "JSON",
-        }
+        params: dict = {"target": "lsHistory", "type": "JSON"}
         if query is not None:
             params["query"] = query
         if display is not None:
@@ -87,8 +85,14 @@ class LshistoryClient(KoreanBaseClient):
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
+        # root key not discovered — returning raw response
+        if isinstance(data, list):
+            return data
+        for v in data.values():
+            if isinstance(v, list): return v
+            if isinstance(v, dict): return [v]
         return []
+
     def get_lsHistory_detail(
         self,
         id: str | None = None,
@@ -109,16 +113,10 @@ class LshistoryClient(KoreanBaseClient):
         chrclscd: 원문/한글 여부 생략(기본값) : 한글 (010202 : 한글, 010201 : 원문)
 
         Returns:
-            Detail dict.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/lsHstInfoGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            Detail dict. Fields match the API response schema.
+            Root key not discovered — returning raw response
         """
-        params: dict = {
-            "target": "lsHistory",
-            "type": "JSON",
-        }
+        params: dict = {"target": "lsHistory", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         if mst is not None:
@@ -133,3 +131,4 @@ class LshistoryClient(KoreanBaseClient):
             params["chrClsCd"] = chrclscd
         response = self._make_request(self.SERVICE_URL, params=params)
         return response.json()
+

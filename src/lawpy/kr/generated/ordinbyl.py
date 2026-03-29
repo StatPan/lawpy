@@ -1,6 +1,6 @@
-"""Auto-generated client stubs for target=ordinbyl
-Source: specs/kr/
-Do not edit by hand — regenerate with scripts/codegen.py
+"""Auto-generated client for target=ordinbyl
+Source: specs/kr/ + _root_keys.json
+Run scripts/codegen.py to regenerate. Do not edit.
 """
 from __future__ import annotations
 
@@ -8,7 +8,11 @@ from lawpy.kr.base import KoreanBaseClient
 
 
 class OrdinbylClient(KoreanBaseClient):
-    """Auto-generated client for target=ordinbyl."""
+    """Auto-generated client for target=ordinbyl.
+
+    All methods return plain dicts matching the API response schema.
+    See _models_generated.py for Pydantic models.
+    """
 
 # ── ordinbyl ──────────────────────────────────────
     def search_ordinbyls(
@@ -21,7 +25,7 @@ class OrdinbylClient(KoreanBaseClient):
         org: str | None = None,
         knd: str | None = None,
         gana: str | None = None,
-        mobileyn: str,
+        mobileyn: str | None = None,
     ) -> list[dict]:
         """[GENERATED] 자치법규 별표ㆍ서식 목록 조회
 
@@ -37,16 +41,10 @@ class OrdinbylClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts.  Parse/validate with a Pydantic model.
-
-        Note:
-            This is an auto-generated stub from specs/kr/mobOrdinBylListGuide.json.
-            Implement the actual xmltodict parsing logic before use.
+            List of result dicts. Fields match the API response schema.
+            Response path: licBylSearch (item key not discovered)
         """
-        params: dict = {
-            "target": "ordinbyl",
-            "type": "JSON",
-        }
+        params: dict = {"target": "ordinbyl", "type": "JSON"}
         if search is not None:
             params["search"] = search
         if query is not None:
@@ -67,5 +65,7 @@ class OrdinbylClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # TODO: navigate to the root list object and return items
-        return []
+        root = data.get("licBylSearch", {})
+        # item key unknown — return raw root
+        return root if isinstance(root, list) else [root] if root else []
+
