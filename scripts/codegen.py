@@ -27,7 +27,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 PARAM_KEY = "요청변수"
-RESP_KEY_CANDIDATES = ["출력변수", "출력결과", "col0"]
+RESP_KEY_CANDIDATES = ["출력변수", "출력결과", "필드", "col0"]
 DESC_KEY = "설명"
 VAL_KEY = "값"
 
@@ -61,11 +61,31 @@ def extract_endpoint_type(spec: dict) -> str:
     return "service" if "lawService" in url else "search"
 
 
+_URL_RE = re.compile(r"https?://\S+")
+
+
+def _is_valid_field_name(name: str) -> bool:
+    if not name:
+        return False
+    if _URL_RE.match(name):
+        return False
+    if re.match(r"^\d+\.", name):
+        return False
+    if name in ("샘플 URL", "샘플 URL:"):
+        return False
+    return True
+
+
 def snake_from_str(s: str) -> str:
     """Convert any string (incl. Korean) to a valid snake_case Python identifier."""
     result = re.sub(r"[^\w가-힣]", "_", s.strip())
     result = re.sub(r"_+", "_", result).strip("_")
-    return result.lower()
+    if not result:
+        return "field_unknown"
+    result = result.lower()
+    if result[0].isdigit():
+        result = f"field_{result}"
+    return result
 
 
 def is_required(val: str) -> bool:
@@ -103,14 +123,19 @@ def extract_response_fields(spec: dict) -> list[dict]:
         if k in rows[0]:
             resp_key = k
             break
+    seen: set[str] = set()
     result = []
     for row in rows:
         field_name = row.get(resp_key, "").strip()
-        if not field_name:
+        if not field_name or not _is_valid_field_name(field_name):
             continue
+        pyname = snake_from_str(field_name)
+        if pyname in seen:
+            continue
+        seen.add(pyname)
         result.append({
             "key": field_name,
-            "pyname": snake_from_str(field_name),
+            "pyname": pyname,
             "description": row.get(DESC_KEY, "").replace('"', "'")[:80],
         })
     return result
@@ -155,20 +180,21 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
         parse_block = (
             f'        data = response.json()\n'
             f'        root = data.get("{root_key}", {{}})\n'
-            f'        # item key unknown — return raw root\n'
-            f'        return root if isinstance(root, list) else [root] if root else []\n'
+            f'        result = root if isinstance(root, list) else [root] if root else []\n'
+            f'        return result\n'
         )
         return_type = "list[dict]"
         note = f"Response path: {root_key} (item key not discovered)"
     else:
         parse_block = (
             f'        data = response.json()\n'
-            f'        # root key not discovered — returning raw response\n'
             f'        if isinstance(data, list):\n'
             f'            return data\n'
             f'        for v in data.values():\n'
-            f'            if isinstance(v, list): return v\n'
-            f'            if isinstance(v, dict): return [v]\n'
+            f'            if isinstance(v, list):\n'
+            f'                return v\n'
+            f'            if isinstance(v, dict):\n'
+            f'                return [v]\n'
             f'        return []\n'
         )
         return_type = "list[dict]"
@@ -308,6 +334,7 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
         '"""Auto-generated Pydantic models from specs/kr/*.json + _root_keys.json\n'
         "Run scripts/codegen.py to regenerate. Do not edit by hand.\n"
         '"""\n\n'
+        "# ruff: noqa: E501\n\n"
         "from pydantic import BaseModel\n\n\n",
     ]
 
@@ -337,6 +364,7 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
                 f"Source: specs/kr/ + _root_keys.json\n"
                 f"Run scripts/codegen.py to regenerate. Do not edit.\n"
                 f'"""\n'
+                f"# ruff: noqa: N802, E501\n"
                 f"from __future__ import annotations\n\n"
                 f"from lawpy.kr.base import KoreanBaseClient\n\n\n"
                 f"class {target.capitalize()}Client(KoreanBaseClient):\n"

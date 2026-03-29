@@ -2,6 +2,7 @@
 Source: specs/kr/ + _root_keys.json
 Run scripts/codegen.py to regenerate. Do not edit.
 """
+# ruff: noqa: N802, E501
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
@@ -50,6 +51,6 @@ class LshstinfClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("LawSearch", {})
-        # item key unknown — return raw root
-        return root if isinstance(root, list) else [root] if root else []
+        result = root if isinstance(root, list) else [root] if root else []
+        return result
 

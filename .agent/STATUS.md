@@ -1,7 +1,7 @@
 # STATUS.md — Current development status
 
 ## Last Updated
-2026-03-29
+2026-03-30
 
 ## Overall Progress
 
@@ -53,4 +53,8 @@
 - EU — EUR-Lex API
 
 ## Active Blockers
-None. Probe pipeline operational. Generated stubs ready for parser implementation.
+
+None.
+
+## See Also
+- Full roadmap with phases, milestones, dependencies: `.agent/ROADMAP.md`
