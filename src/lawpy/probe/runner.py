@@ -49,10 +49,14 @@ class ProbeRunner:
     """
 
     def __init__(self, api_key: str | None = None, timeout: int = 30) -> None:
-        self.api_key = api_key or os.environ.get("LAWPY_API_KEY", "")
+        self.api_key = (
+            api_key
+            or os.environ.get("LAWPY_KR_API_KEY")
+            or os.environ.get("LAWPY_API_KEY")  # backwards compat
+        )
         if not self.api_key:
             raise ValueError(
-                "api_key must be provided or set LAWPY_API_KEY environment variable"
+                "api_key must be provided or set LAWPY_KR_API_KEY environment variable"
             )
         self._http = httpx.Client(timeout=timeout)
 

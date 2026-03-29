@@ -42,9 +42,7 @@ class TestKoreanLawClient:
             with pytest.raises(ValueError) as exc_info:
                 KoreanLawClient()
 
-            assert "api_key must be provided or set LAWPY_API_KEY environment variable" in str(
-                exc_info.value
-            )
+            assert "LAWPY_KR_API_KEY" in str(exc_info.value)
 
     def test_search_laws_success(self, client):
         """Test successful law search."""

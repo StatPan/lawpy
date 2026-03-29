@@ -18,17 +18,33 @@ class KoreanBaseClient(LawClient):
         """Initialize Korean law client.
 
         Args:
-            api_key: API key from National Law Information Center (email ID).
-                     If not provided, reads from LAWPY_API_KEY environment variable.
-            timeout: Request timeout in seconds
+            api_key: API key for the National Law Information Center (법제처 OpenAPI).
+
+                     **What is the API key?**
+                     It is the **email username** (the part before ``@``) of the email
+                     address you registered at https://open.law.go.kr.
+
+                     Example: if you registered with ``user@example.com``,
+                     set ``api_key="user"``.
+
+                     If not provided, reads from the ``LAWPY_KR_API_KEY`` environment
+                     variable (falls back to ``LAWPY_API_KEY`` for backwards compatibility).
+            timeout: Request timeout in seconds.
 
         Raises:
-            ValueError: If api_key is not provided and LAWPY_API_KEY env var is not set
+            ValueError: If api_key is not provided and no env var is set.
         """
         if api_key is None:
-            api_key = os.environ.get("LAWPY_API_KEY")
-            if api_key is None:
-                msg = "api_key must be provided or set LAWPY_API_KEY environment variable"
+            api_key = (
+                os.environ.get("LAWPY_KR_API_KEY")
+                or os.environ.get("LAWPY_API_KEY")  # backwards compat
+            )
+            if not api_key:
+                msg = (
+                    "api_key must be provided or set the LAWPY_KR_API_KEY "
+                    "environment variable (your law.go.kr email username, "
+                    "e.g. 'user' for 'user@example.com')."
+                )
                 raise ValueError(msg)
 
         super().__init__(api_key=api_key, base_url=self.BASE_URL, timeout=timeout)
