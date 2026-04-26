@@ -1,10 +1,11 @@
 """Integrated client for Korean law APIs."""
 
+from lawpy.kr.constitutional_decision import ConstitutionalDecisionClient
 from lawpy.kr.law import LawClient
 from lawpy.kr.precedent import PrecedentClient
 
 
-class KoreanLawClient(LawClient, PrecedentClient):
+class KoreanLawClient(LawClient, PrecedentClient, ConstitutionalDecisionClient):
     """Integrated client for Korean National Law Information Center API.
 
     Provides a single entry-point for all implemented Korean law open-data APIs.
@@ -20,12 +21,15 @@ class KoreanLawClient(LawClient, PrecedentClient):
       - :meth:`search_precedents`      판례 목록 조회
       - :meth:`get_precedent_detail`   판례 본문 조회
 
+    **헌재결정례 (Constitutional Court Decisions) — implemented**:
+      - :meth:`search_decisions`       헌재결정례 목록 조회
+      - :meth:`get_decision_detail`    헌재결정례 본문 조회
+
     **향후 구현 예정**:
       - 행정규칙 (Administrative Rules)
       - 자치법규 (Autonomous Ordinances)
-      - 헌재결정례 (Constitutional Court Decisions)
-      - 법령해석례 (Legal Interpretation Cases)
       - 행정심판례 (Administrative Review Cases)
+      - 법령해석례 (Legal Interpretation Cases)
       - 위원회결정문 (Committee Decisions)
       - 조약 (Treaties)
       - 별표·서식 (Annexes and Forms)

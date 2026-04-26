@@ -101,3 +101,28 @@ class LawText(BaseModel):
     law_id: str
     law_name: str
     articles: list[dict]
+
+
+class ConstitutionalDecision(BaseModel):
+    """Constitutional Court decision (헌재결정례) list item."""
+
+    decision_id: str = Field(description="Decision serial number (헌재결정례일련번호)")
+    case_name: str = Field(description="Case name (사건명)")
+    case_number: str = Field(description="Case number (사건번호)")
+    final_date: str | None = Field(default=None, description="Final decision date YYYYMMDD (종국일자)")
+    detail_link: str | None = Field(default=None, description="URL link to full decision (헌재결정례상세링크)")
+
+
+class ConstitutionalDecisionDetail(BaseModel):
+    """Constitutional Court decision (헌재결정례) with full text."""
+
+    decision_id: str = Field(description="Decision serial number (헌재결정례일련번호)")
+    case_name: str = Field(description="Case name (사건명)")
+    case_number: str = Field(description="Case number (사건번호)")
+    final_date: str | None = Field(default=None, description="Final decision date YYYYMMDD (종국일자)")
+    case_type: str | None = Field(default=None, description="Case type (사건종류)")
+    decision_type: str | None = Field(default=None, description="Decision type (결정유형, e.g. 인용/기각/각하)")
+    ref_statutes: str | None = Field(default=None, description="Referenced statutes (참조조문)")
+    ruling_summary: str | None = Field(default=None, description="Ruling summary (판시사항)")
+    decision_gist: str | None = Field(default=None, description="Decision gist (결정요지)")
+    full_text: str | None = Field(default=None, description="Full text of the decision (결정내용)")
