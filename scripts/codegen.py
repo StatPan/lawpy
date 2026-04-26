@@ -187,15 +187,15 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
         note = f"Response path: {root_key} (item key not discovered)"
     else:
         parse_block = (
-            f'        data = response.json()\n'
-            f'        if isinstance(data, list):\n'
-            f'            return data\n'
-            f'        for v in data.values():\n'
-            f'            if isinstance(v, list):\n'
-            f'                return v\n'
-            f'            if isinstance(v, dict):\n'
-            f'                return [v]\n'
-            f'        return []\n'
+            '        data = response.json()\n'
+            '        if isinstance(data, list):\n'
+            '            return data\n'
+            '        for v in data.values():\n'
+            '            if isinstance(v, list):\n'
+            '                return v\n'
+            '            if isinstance(v, dict):\n'
+            '                return [v]\n'
+            '        return []\n'
         )
         return_type = "list[dict]"
         note = "Root key not discovered — using best-effort extraction"
@@ -247,7 +247,7 @@ def render_detail_method(spec: dict, target: str, root_key: str | None) -> str:
         note = f"Response path: {root_key}"
     else:
         parse_block = (
-            f'        return response.json()\n'
+            '        return response.json()\n'
         )
         note = "Root key not discovered — returning raw response"
 
