@@ -90,16 +90,17 @@ def cmd_diff(names: list[str] | None, api_key: str | None, output_json: bool) ->
                 print(f"  ❌ Unknown probe: {n}", file=sys.stderr)
                 exit_code = 1
                 continue
-            print(f"  Checking {n}...", end=" ", flush=True)
+            progress_stream = sys.stderr if output_json else sys.stdout
+            print(f"  Checking {n}...", end=" ", flush=True, file=progress_stream)
             try:
                 run = runner.diff(n)
                 summary = run.diff.summary()
-                print(summary)
+                print(summary, file=progress_stream)
                 results.append(run.diff.to_dict())
                 if run.diff.has_breaking_changes:
                     exit_code = 1
             except Exception as e:
-                print(f"❌  {e}")
+                print(f"❌  {e}", file=progress_stream)
                 results.append({"name": n, "error": str(e), "status": "error"})
                 exit_code = 1
     finally:

@@ -37,3 +37,28 @@ def test_get_runner_prefers_explicit_api_key(monkeypatch):
 
     assert isinstance(runner, FakeRunner)
     assert created["api_key"] == "explicit-secret"
+
+
+def test_cmd_diff_json_stdout_is_valid_json(monkeypatch, capsys):
+    from lawpy.probe.differ import DiffResult
+
+    class FakeRun:
+        diff = DiffResult(name="sample")
+
+    class FakeRunner:
+        def diff(self, name: str) -> FakeRun:
+            assert name == "sample"
+            return FakeRun()
+
+        def close(self) -> None:
+            pass
+
+    monkeypatch.setattr(cli, "_get_runner", lambda api_key: FakeRunner())
+    monkeypatch.setattr(cli, "CONFIGS_BY_NAME", {"sample": object()})
+
+    exit_code = cli.cmd_diff(["sample"], api_key="secret", output_json=True)
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert captured.out.startswith("[\n")
+    assert "Checking sample" not in captured.out
