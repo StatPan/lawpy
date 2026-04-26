@@ -17,7 +17,6 @@ from pathlib import Path
 from typing import Any
 
 import lawpy.snapshots as _snapshots_pkg
-
 from lawpy.probe.schema import FieldSpec
 
 # Directory where snapshots are written by `probe capture`
@@ -64,7 +63,7 @@ class Snapshot:
         }
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "Snapshot":
+    def from_dict(cls, d: dict[str, Any]) -> Snapshot:
         return cls(
             name=d["name"],
             endpoint=d["endpoint"],
@@ -145,7 +144,7 @@ class SnapshotStore:
         # importlib.resources
         try:
             pkg = importlib.resources.files(_snapshots_pkg)
-            for item in pkg.iterdir():  # type: ignore[attr-defined]
+            for item in pkg.iterdir():
                 n = getattr(item, "name", "")
                 if n.endswith(".json"):
                     names.append(n[: -len(".json")])

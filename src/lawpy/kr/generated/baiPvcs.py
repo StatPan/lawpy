@@ -2,6 +2,7 @@
 Source: specs/kr/ + _root_keys.json
 Run scripts/codegen.py to regenerate. Do not edit.
 """
+# ruff: noqa: N802, E501
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
@@ -69,12 +70,13 @@ class BaipvcsClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        # root key not discovered — returning raw response
         if isinstance(data, list):
             return data
         for v in data.values():
-            if isinstance(v, list): return v
-            if isinstance(v, dict): return [v]
+            if isinstance(v, list):
+                return v
+            if isinstance(v, dict):
+                return [v]
         return []
 
     def get_baiPvcs_detail(

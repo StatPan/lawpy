@@ -1,7 +1,7 @@
 # STATUS.md — Current development status
 
 ## Last Updated
-2026-03-29
+2026-03-30
 
 ## Overall Progress
 
@@ -53,4 +53,14 @@
 - EU — EUR-Lex API
 
 ## Active Blockers
-None. Probe pipeline operational. Generated stubs ready for parser implementation.
+
+None. CI fix committed (fce6b57) — pending push to remote.
+
+## Recent Fixes (2026-03-30)
+
+- `scripts/codegen.py`: Changed numeric field prefix from `field_` to `f_` in `snake_from_str()`.
+  Fixes Python identifier rule violation for fields starting with a digit (e.g., `1년` → `f_1년`).
+- Regenerated all 87 stubs + fixed ruff errors (I001, E701, E501) in `fce6b57`.
+
+## See Also
+- Full roadmap with phases, milestones, dependencies: `.agent/ROADMAP.md`

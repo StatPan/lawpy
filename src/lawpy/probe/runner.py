@@ -2,17 +2,15 @@
 
 from __future__ import annotations
 
-import json
 import os
 from dataclasses import dataclass
 
 import httpx
 
-from lawpy.probe.configs.kr import CONFIGS_BY_NAME, ALL_CONFIGS, ProbeConfig
+from lawpy.probe.configs.kr import ALL_CONFIGS, CONFIGS_BY_NAME, ProbeConfig
 from lawpy.probe.differ import DiffResult, SchemaDiffer
 from lawpy.probe.schema import FieldSpec, extract_schema, navigate
 from lawpy.probe.snapshot import Snapshot, SnapshotStore
-
 
 try:
     from lawpy import __version__ as _lawpy_version
@@ -63,10 +61,10 @@ class ProbeRunner:
     def close(self) -> None:
         self._http.close()
 
-    def __enter__(self) -> "ProbeRunner":
+    def __enter__(self) -> ProbeRunner:
         return self
 
-    def __exit__(self, *_) -> None:
+    def __exit__(self, *_: object) -> None:
         self.close()
 
     # ------------------------------------------------------------------ #
@@ -133,8 +131,8 @@ class ProbeRunner:
 
     def _fetch_schema(self, config: ProbeConfig) -> tuple[dict[str, FieldSpec], Snapshot]:
         """Fetch the API and return (extracted schema, Snapshot(not yet saved))."""
-        params = dict(config.fixed_params)
-        params["OC"] = self.api_key
+        params: dict[str, str | int] = dict(config.fixed_params)
+        params["OC"] = self.api_key  # type: ignore[assignment]
 
         response = self._http.get(config.url, params=params)
         response.raise_for_status()

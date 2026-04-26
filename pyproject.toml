@@ -85,6 +85,11 @@ strict_equality = true
 module = "xmltodict.*"
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+module = "lawpy.kr.generated.*"
+disallow_untyped_defs = false
+warn_return_any = false
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]

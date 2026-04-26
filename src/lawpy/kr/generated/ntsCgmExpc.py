@@ -2,6 +2,7 @@
 Source: specs/kr/ + _root_keys.json
 Run scripts/codegen.py to regenerate. Do not edit.
 """
+# ruff: noqa: N802, E501
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient

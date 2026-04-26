@@ -15,7 +15,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-
 BASE_SEARCH = "https://www.law.go.kr/DRF/lawSearch.do"
 BASE_SERVICE = "http://www.law.go.kr/DRF/lawService.do"
 

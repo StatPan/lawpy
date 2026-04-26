@@ -7,7 +7,7 @@ store in snapshots and diff against future responses.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 
@@ -28,7 +28,7 @@ class FieldSpec:
         return {"type": self.type, "sample": self.sample, "nullable": self.nullable}
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "FieldSpec":
+    def from_dict(cls, d: dict[str, Any]) -> FieldSpec:
         return cls(type=d["type"], sample=d.get("sample"), nullable=d.get("nullable", False))
 
 
