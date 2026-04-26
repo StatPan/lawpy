@@ -59,7 +59,7 @@ jobs:
         env:
           LAWPY_KR_API_KEY: ${{ secrets.LAWPY_KR_API_KEY }}
         run: |
-          uv run lawpy-probe diff --all --output json > /tmp/probe_drift.json \
+          uv run lawpy-probe --output json diff --all > /tmp/probe_drift.json \
             && echo "drift=false" >> $GITHUB_OUTPUT \
             || echo "drift=true" >> $GITHUB_OUTPUT
         continue-on-error: true
@@ -182,10 +182,14 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            let probe = '{}';
-            try { probe = fs.readFileSync('/tmp/probe_drift.json', 'utf8'); } catch(e) {}
+            let parsed = [];
+            try {
+              const raw = fs.readFileSync('/tmp/probe_drift.json', 'utf8').trim();
+              if (raw) parsed = JSON.parse(raw);
+            } catch(e) {
+              core.warning(`Could not parse probe_drift.json: ${e.message}`);
+            }
 
-            const parsed = JSON.parse(probe);
             const breaking = Array.isArray(parsed)
               ? parsed.filter(r => r.has_breaking_changes)
               : [];
