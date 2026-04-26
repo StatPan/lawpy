@@ -12,10 +12,10 @@ from lawpy.probe.snapshot import SnapshotStore
 
 
 def _get_runner(api_key: str | None) -> ProbeRunner:
-    key = api_key or os.environ.get("LAWPY_API_KEY")
+    key = api_key or os.environ.get("LAWPY_KR_API_KEY") or os.environ.get("LAWPY_API_KEY")
     if not key:
         print(
-            "Error: API key required. Set LAWPY_API_KEY env var or use --api-key.",
+            "Error: API key required. Set LAWPY_KR_API_KEY or LAWPY_API_KEY env var, or use --api-key.",
             file=sys.stderr,
         )
         sys.exit(1)
