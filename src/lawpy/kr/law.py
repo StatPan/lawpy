@@ -3,7 +3,6 @@
 import xmltodict
 
 from lawpy.exceptions import ParseError
-from lawpy.kr.base import KoreanBaseClient
 from lawpy.kr.generated.elaw import ElawClient
 from lawpy.kr.generated.lsAbrv import LsabrvClient
 from lawpy.kr.generated.lsHstInf import LshstinfClient
@@ -24,7 +23,7 @@ from lawpy.models import (
 )
 
 
-class LawClient(KoreanBaseClient):
+class LawClient(ElawClient, OldandnewClient, LsabrvClient, LshstinfClient, LsjohstinfClient):
     """Client for Law (법령) APIs."""
 
     def search_laws(
@@ -400,7 +399,10 @@ class LawClient(KoreanBaseClient):
 
         response = self._make_request(self.SERVICE_URL, params)
         data = response.json()
-        return data.get("OldAndNewLawSearch", data)
+        root = data.get("OldAndNewLawSearch", data)
+        if isinstance(root, dict):
+            return root
+        return {}
 
     def get_law_abbreviations(
         self,
@@ -497,7 +499,7 @@ class LawClient(KoreanBaseClient):
         sort: str = "lasc",
     ) -> list[Law]:
         """Search English laws via generated ``elaw.search_elaws`` wrapper."""
-        rows = ElawClient.search_elaws(self, query=query, page=page, display=per_page, sort=sort)
+        rows = self.search_elaws(query=query, page=page, display=per_page, sort=sort)
         return [self._law_from_generated_dict(row) for row in rows]
 
     def get_english_law_detail(
@@ -509,7 +511,7 @@ class LawClient(KoreanBaseClient):
         if law_id is None and mst is None:
             msg = "Either law_id or mst must be provided"
             raise ValueError(msg)
-        detail = ElawClient.get_elaw_detail(self, id=law_id, mst=mst)
+        detail = self.get_elaw_detail(id=law_id, mst=mst)
         return self._law_detail_from_generated_dict(detail, law_id=law_id, mst=mst, language="EN")
 
     def search_law_old_and_new(
@@ -520,7 +522,7 @@ class LawClient(KoreanBaseClient):
         sort: str = "lasc",
     ) -> list[LawOldAndNewSummary]:
         """Search old/new law list via generated ``oldAndNew.search_oldAndNews`` wrapper."""
-        rows = OldandnewClient.search_oldAndNews(self, query=query, page=page, display=per_page, sort=sort)
+        rows = self.search_oldAndNews(query=query, page=page, display=per_page, sort=sort)
         return [
             LawOldAndNewSummary(
                 law_id=row.get("법령ID") or row.get("ID"),
@@ -541,7 +543,7 @@ class LawClient(KoreanBaseClient):
         if law_id is None and mst is None:
             msg = "Either law_id or mst must be provided"
             raise ValueError(msg)
-        row = OldandnewClient.get_oldAndNew_detail(self, id=law_id, mst=mst)
+        row = self.get_oldAndNew_detail(id=law_id, mst=mst)
         return LawOldAndNewDetail(
             law_id=row.get("법령ID") or row.get("ID"),
             law_name=row.get("법령명한글") or row.get("법령명"),
@@ -555,7 +557,7 @@ class LawClient(KoreanBaseClient):
         end_date: int | None = None,
     ) -> list[LawAbbreviation]:
         """Search law abbreviations via generated ``lsAbrv.search_lsAbrvs`` wrapper."""
-        rows = LsabrvClient.search_lsAbrvs(self, stddt=start_date, enddt=end_date)
+        rows = self.search_lsAbrvs(stddt=start_date, enddt=end_date)
         return [
             LawAbbreviation(
                 law_id=row.get("법령ID") or row.get("ID"),
@@ -574,8 +576,7 @@ class LawClient(KoreanBaseClient):
         per_page: int = 20,
     ) -> list[LawChangeHistoryEntry]:
         """Search law-level change history via generated ``lsHstInf.search_lsHstInfs`` wrapper."""
-        rows = LshstinfClient.search_lsHstInfs(
-            self,
+        rows = self.search_lsHstInfs(
             regdt=registered_date,
             org=org_code,
             page=page,
@@ -603,7 +604,7 @@ class LawClient(KoreanBaseClient):
             msg = "law_id is required"
             raise ValueError(msg)
         jo = int(f"{article_number:04d}00")
-        rows = LsjohstinfClient.search_lsJoHstInfs(self, id=law_id, jo=jo, page=page, display=per_page)
+        rows = self.search_lsJoHstInfs(id=law_id, jo=jo, page=page, display=per_page)
         return [
             LawArticleChangeHistoryEntry(
                 law_id=row.get("법령ID") or row.get("ID"),
