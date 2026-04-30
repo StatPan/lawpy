@@ -101,3 +101,39 @@ class LawText(BaseModel):
     law_id: str
     law_name: str
     articles: list[dict]
+
+
+class LawOldAndNewSummary(BaseModel):
+    law_id: str | None = Field(default=None, description="Law ID")
+    law_name: str | None = Field(default=None, description="Law name")
+    promulgation_date: str | None = Field(default=None, description="Promulgation date (YYYYMMDD)")
+    promulgation_number: str | None = Field(default=None, description="Promulgation number")
+    raw: dict = Field(default_factory=dict, description="Raw generated payload")
+
+
+class LawOldAndNewDetail(BaseModel):
+    law_id: str | None = Field(default=None, description="Law ID")
+    law_name: str | None = Field(default=None, description="Law name")
+    comparison_text: str | None = Field(default=None, description="Comparison content text")
+    raw: dict = Field(default_factory=dict, description="Raw generated payload")
+
+
+class LawAbbreviation(BaseModel):
+    law_id: str | None = Field(default=None, description="Law ID")
+    law_name: str | None = Field(default=None, description="Law name")
+    abbreviation: str | None = Field(default=None, description="Abbreviation")
+    raw: dict = Field(default_factory=dict, description="Raw generated payload")
+
+
+class LawChangeHistoryEntry(BaseModel):
+    law_id: str | None = Field(default=None, description="Law ID")
+    law_name: str | None = Field(default=None, description="Law name")
+    change_date: str | None = Field(default=None, description="Change date")
+    raw: dict = Field(default_factory=dict, description="Raw generated payload")
+
+
+class LawArticleChangeHistoryEntry(BaseModel):
+    law_id: str | None = Field(default=None, description="Law ID")
+    article_code: str | None = Field(default=None, description="JO article code")
+    change_date: str | None = Field(default=None, description="Change date")
+    raw: dict = Field(default_factory=dict, description="Raw generated payload")

@@ -98,13 +98,16 @@ laws = client.search_laws("민법")
 - `get_law_history()` - Get law amendment history list
 - `get_law_history_detail()` - Get detailed amendment history text
 - `get_law_articles()` - Get articles by item/hang/mok (to be implemented)
-- `get_law_english()` - Get English version (to be implemented)
-- `get_law_change_history()` - Get law change history (to be implemented)
+- `search_english_laws()` - Search English law list (phase-1)
+- `get_english_law_detail()` - Get English law detail (phase-1)
 - `get_law_delegated()` - Get delegated ordinances (to be implemented)
 - `get_law_structure()` - Get law structure (to be implemented)
-- `get_law_old_new()` - Get old/new law comparison (to be implemented)
+- `search_law_old_and_new()` - Get old/new law comparison metadata (stable model contract)
+- `get_law_old_and_new_detail()` - Get old/new law comparison detail (stable model contract)
+- `search_law_abbreviations()` - Get law abbreviations (stable model contract)
+- `search_law_change_history()` - Get law-level change history feed (stable model contract)
+- `search_law_article_change_history()` - Get article-level change history feed (JO mapping in wrapper)
 - `get_law_3way_compare()` - Get 3-way comparison (to be implemented)
-- `get_law_abbr()` - Get law abbreviations (to be implemented)
 - `get_law_deleted_data()` - Get deleted data (to be implemented)
 - `get_law_overview()` - Get overview (to be implemented)
 
@@ -164,7 +167,7 @@ laws = client.search_laws("민법")
 
 | Category | Module | Status |
 |----------|--------|--------|
-| 법령 | `law.py` | ✅ Partial (search, detail, list, history) |
+| 법령 | `law.py` | ✅ Expanded (search/detail/list/history + English/old-new/abbrev/change-history phase-1) |
 | 행정규칙 | `admin_rule.py` | ⏳ Not started |
 | 자치법규 | `ordinance.py` | ⏳ Not started |
 | 판례 | `precedent.py` | ⏳ Not started |
