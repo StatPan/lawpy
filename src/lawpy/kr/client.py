@@ -15,11 +15,13 @@ class KoreanLawClient(LawClient, PrecedentClient):
       - :meth:`get_law_list`                   현행법령 목록 조회
       - :meth:`get_law_history`                연혁법령 목록 조회
       - :meth:`get_law_history_detail`         연혁법령 상세 조회
-      - :meth:`get_law_old_new`                신구법 비교 목록 조회
-      - :meth:`get_law_old_new_detail`         신구법 비교 본문 조회
-      - :meth:`get_law_abbreviations`          법령명 약칭 조회
-      - :meth:`get_law_change_history`         법령 변경이력 목록 조회
-      - :meth:`get_law_article_change_history` 조문별 변경이력 목록 조회
+      - :meth:`search_english_laws`            영문 법령 목록 조회
+      - :meth:`get_english_law_detail`         영문 법령 상세 조회
+      - :meth:`search_law_old_and_new`         신구법 비교 목록 조회
+      - :meth:`get_law_old_and_new_detail`     신구법 비교 본문 조회
+      - :meth:`search_law_abbreviations`       법령명 약칭 조회
+      - :meth:`search_law_change_history`      법령 변경이력 목록 조회
+      - :meth:`search_law_article_change_history` 조문별 변경이력 목록 조회
 
     **판례 (Precedent) — implemented**:
       - :meth:`search_precedents`      판례 목록 조회

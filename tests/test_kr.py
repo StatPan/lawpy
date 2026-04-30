@@ -558,3 +558,111 @@ class TestKoreanLawClient:
 
             assert len(result) == 1
             assert result[0]["법령ID"] == "009682"
+
+    def test_search_english_laws_success(self, client):
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "LawSearch": {
+                "law": [
+                    {
+                        "법령ID": "009682",
+                        "법령명영문": "Civil Act",
+                        "공포번호": "4172",
+                        "공포일자": "19600101",
+                        "시행일자": "19600101",
+                    }
+                ]
+            }
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            laws = client.search_english_laws("civil")
+
+            assert len(laws) == 1
+            assert laws[0].law_id == "009682"
+            assert laws[0].law_name == "Civil Act"
+
+    def test_get_english_law_detail_success(self, client):
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "LawSearch": {
+                "법령ID": "009682",
+                "법령명영문": "Civil Act",
+                "공포번호": "4172",
+                "공포일자": "19600101",
+                "시행일자": "19600101",
+            }
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            detail = client.get_english_law_detail(law_id="009682")
+
+            assert detail.law_id == "009682"
+            assert detail.language == "EN"
+
+    def test_search_law_old_and_new_success(self, client):
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "OldAndNewLawSearch": {
+                "oldAndNew": [{"법령ID": "009682", "법령명한글": "민법", "공포번호": "4172"}]
+            }
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            rows = client.search_law_old_and_new(query="민법")
+
+            assert len(rows) == 1
+            assert rows[0].law_id == "009682"
+
+    def test_get_law_old_and_new_detail_success(self, client):
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "OldAndNewLawSearch": {"법령ID": "009682", "신구법비교": "변경내용"}
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            row = client.get_law_old_and_new_detail(law_id="009682")
+
+            assert row.law_id == "009682"
+            assert row.comparison_text == "변경내용"
+
+    def test_search_law_abbreviations_success(self, client):
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "LawSearch": {"law": [{"법령ID": "007777", "법령명한글": "근로기준법", "약칭명": "근기법"}]}
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            rows = client.search_law_abbreviations()
+
+            assert len(rows) == 1
+            assert rows[0].abbreviation == "근기법"
+
+    def test_search_law_change_history_success(self, client):
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "LawSearch": [{"법령ID": "009682", "법령명한글": "민법", "변경일자": "20240101"}]
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            rows = client.search_law_change_history(registered_date=20240101)
+
+            assert len(rows) == 1
+            assert rows[0].law_id == "009682"
+
+    def test_search_law_article_change_history_jo_mapping(self, client):
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "LawSearch": [{"법령ID": "009682", "조문번호": "001000"}]
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response) as mock_get:
+            rows = client.search_law_article_change_history(law_id="009682", article_number=10)
+
+            assert len(rows) == 1
+            assert rows[0].article_code == "001000"
+            assert mock_get.call_args.kwargs["params"]["JO"] == 1000
+
+    def test_search_law_article_change_history_requires_law_id(self, client):
+        with pytest.raises(ValueError):
+            client.search_law_article_change_history(law_id="", article_number=10)
