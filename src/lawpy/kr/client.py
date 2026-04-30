@@ -10,11 +10,16 @@ class KoreanLawClient(LawClient, PrecedentClient):
     Provides a single entry-point for all implemented Korean law open-data APIs.
 
     **법령 (Law) — implemented**:
-      - :meth:`search_laws`            법령명/전문 검색
-      - :meth:`get_law_detail`         법령 본문 조회 (by ID or MST)
-      - :meth:`get_law_list`           현행법령 목록 조회
-      - :meth:`get_law_history`        연혁법령 목록 조회
-      - :meth:`get_law_history_detail` 연혁법령 상세 조회
+      - :meth:`search_laws`                    법령명/전문 검색
+      - :meth:`get_law_detail`                 법령 본문 조회 (by ID or MST)
+      - :meth:`get_law_list`                   현행법령 목록 조회
+      - :meth:`get_law_history`                연혁법령 목록 조회
+      - :meth:`get_law_history_detail`         연혁법령 상세 조회
+      - :meth:`get_law_old_new`                신구법 비교 목록 조회
+      - :meth:`get_law_old_new_detail`         신구법 비교 본문 조회
+      - :meth:`get_law_abbreviations`          법령명 약칭 조회
+      - :meth:`get_law_change_history`         법령 변경이력 목록 조회
+      - :meth:`get_law_article_change_history` 조문별 변경이력 목록 조회
 
     **판례 (Precedent) — implemented**:
       - :meth:`search_precedents`      판례 목록 조회

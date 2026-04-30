@@ -485,3 +485,76 @@ class TestKoreanLawClient:
                 client.get_law_history_detail(mst=999999)
 
             assert "HTTP error: 404" in str(exc_info.value)
+
+    def test_get_law_old_new_success(self, client):
+        """Test old/new comparison list retrieval."""
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "OldAndNewLawSearch": {
+                "oldAndNew": [{"법령ID": "009682", "법령명한글": "민법"}],
+            }
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            result = client.get_law_old_new(query="민법", per_page=5)
+
+            assert len(result) == 1
+            assert result[0]["법령ID"] == "009682"
+
+    def test_get_law_old_new_detail_success(self, client):
+        """Test old/new comparison detail retrieval."""
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "OldAndNewLawSearch": {"법령ID": "009682", "신구법비교": "..."}
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            result = client.get_law_old_new_detail(law_id="009682")
+
+            assert result["법령ID"] == "009682"
+
+    def test_get_law_old_new_detail_requires_id_or_mst(self, client):
+        """Test error when neither law_id nor mst is provided for old/new detail."""
+        with pytest.raises(ValueError) as exc_info:
+            client.get_law_old_new_detail()
+
+        assert "Either law_id or mst must be provided" in str(exc_info.value)
+
+    def test_get_law_abbreviations_success(self, client):
+        """Test law abbreviation retrieval."""
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "LawSearch": {"law": [{"법령명한글": "근로기준법", "약칭명": "근기법"}]}
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            result = client.get_law_abbreviations(start_date=20240101, end_date=20240131)
+
+            assert len(result) == 1
+            assert result[0]["약칭명"] == "근기법"
+
+    def test_get_law_change_history_success(self, client):
+        """Test law change history retrieval."""
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "LawSearch": {"법령ID": "009682", "법령명한글": "민법"}
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            result = client.get_law_change_history(registered_date=20240101)
+
+            assert len(result) == 1
+            assert result[0]["법령ID"] == "009682"
+
+    def test_get_law_article_change_history_success(self, client):
+        """Test article-level change history retrieval."""
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "LawSearch": {"법령ID": "009682", "조문번호": "000200"}
+        }
+
+        with patch.object(client._client, "get", return_value=mock_response):
+            result = client.get_law_article_change_history(law_id="009682", article_code=200)
+
+            assert len(result) == 1
+            assert result[0]["법령ID"] == "009682"

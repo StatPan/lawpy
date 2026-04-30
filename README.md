@@ -102,6 +102,34 @@ history_detail = client.get_law_history_detail(mst=9094)
 print(history_detail)  # Returns HTML text
 ```
 
+#### Get old/new law comparison metadata
+
+```python
+old_new = client.get_law_old_new(query="민법", per_page=10)
+print(old_new[0])
+```
+
+#### Get old/new law comparison detail
+
+```python
+old_new_detail = client.get_law_old_new_detail(law_id="009682")
+print(old_new_detail)
+```
+
+#### Get law abbreviations
+
+```python
+abbrs = client.get_law_abbreviations(start_date=20240101, end_date=20240131)
+print(abbrs)
+```
+
+#### Get law/article change history
+
+```python
+changes = client.get_law_change_history(registered_date=20240101)
+article_changes = client.get_law_article_change_history(law_id="009682", article_code=200)
+```
+
 ## API Key
 
 To use the Korean Law API, you need an API key:

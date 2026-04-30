@@ -102,9 +102,12 @@ laws = client.search_laws("민법")
 - `get_law_change_history()` - Get law change history (to be implemented)
 - `get_law_delegated()` - Get delegated ordinances (to be implemented)
 - `get_law_structure()` - Get law structure (to be implemented)
-- `get_law_old_new()` - Get old/new law comparison (to be implemented)
+- `get_law_old_new()` - Get old/new law comparison metadata
+- `get_law_old_new_detail()` - Get old/new law comparison detail
+- `get_law_abbreviations()` - Get law abbreviations
+- `get_law_change_history()` - Get law-level change history feed
+- `get_law_article_change_history()` - Get article-level change history feed
 - `get_law_3way_compare()` - Get 3-way comparison (to be implemented)
-- `get_law_abbr()` - Get law abbreviations (to be implemented)
 - `get_law_deleted_data()` - Get deleted data (to be implemented)
 - `get_law_overview()` - Get overview (to be implemented)
 

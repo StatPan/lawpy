@@ -290,6 +290,188 @@ class LawClient(KoreanBaseClient):
         response = self._make_request(self.SERVICE_URL, params)
         return response.text
 
+    def get_law_old_new(
+        self,
+        query: str | None = None,
+        page: int = 1,
+        per_page: int = 20,
+        sort: str | None = None,
+        promulgation_date: int | None = None,
+        promulgation_number: int | None = None,
+        output_type: str = "JSON",
+    ) -> list[dict]:
+        """Get old/new law comparison list (신구법 목록).
+
+        Args:
+            query: Law name search query
+            page: Page number (default: 1)
+            per_page: Number of results per page (default: 20, max: 100)
+            sort: Sort option (default: lasc)
+            promulgation_date: Promulgation date (YYYYMMDD)
+            promulgation_number: Promulgation number
+            output_type: Output type ('JSON' recommended)
+
+        Returns:
+            List of old/new comparison metadata dictionaries
+        """
+        params: dict[str, str | int] = {
+            "OC": str(self.api_key),
+            "target": "oldAndNew",
+            "type": output_type,
+            "display": per_page,
+            "page": page,
+            "sort": sort or "lasc",
+        }
+
+        if query is not None:
+            params["query"] = query
+        if promulgation_date is not None:
+            params["date"] = promulgation_date
+        if promulgation_number is not None:
+            params["nb"] = promulgation_number
+
+        response = self._make_request(self.BASE_URL, params)
+        data = response.json()
+        root = data.get("OldAndNewLawSearch", {})
+        items = root.get("oldAndNew", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
+    def get_law_old_new_detail(
+        self,
+        law_id: str | None = None,
+        mst: int | None = None,
+        law_name: str | None = None,
+        promulgation_date: int | None = None,
+        promulgation_number: int | None = None,
+        output_type: str = "JSON",
+    ) -> dict:
+        """Get old/new law comparison detail (신구법 본문).
+
+        Args:
+            law_id: Law ID (ID)
+            mst: Law master sequence (MST)
+            law_name: Law name (LM)
+            promulgation_date: Promulgation date (LD)
+            promulgation_number: Promulgation number (LN)
+            output_type: Output type ('JSON' recommended)
+
+        Returns:
+            Detail dictionary from ``OldAndNewLawSearch`` root
+        """
+        if law_id is None and mst is None:
+            msg = "Either law_id or mst must be provided"
+            raise ValueError(msg)
+
+        params: dict[str, str | int] = {
+            "OC": str(self.api_key),
+            "target": "oldAndNew",
+            "type": output_type,
+        }
+
+        if law_id is not None:
+            params["ID"] = law_id
+        if mst is not None:
+            params["MST"] = mst
+        if law_name is not None:
+            params["LM"] = law_name
+        if promulgation_date is not None:
+            params["LD"] = promulgation_date
+        if promulgation_number is not None:
+            params["LN"] = promulgation_number
+
+        response = self._make_request(self.SERVICE_URL, params)
+        data = response.json()
+        return data.get("OldAndNewLawSearch", data)
+
+    def get_law_abbreviations(
+        self,
+        start_date: int | None = None,
+        end_date: int | None = None,
+        output_type: str = "JSON",
+    ) -> list[dict]:
+        """Get law abbreviations (법령명 약칭)."""
+        params: dict[str, str | int] = {
+            "OC": str(self.api_key),
+            "target": "lsAbrv",
+            "type": output_type,
+        }
+
+        if start_date is not None:
+            params["stdDt"] = start_date
+        if end_date is not None:
+            params["endDt"] = end_date
+
+        response = self._make_request(self.BASE_URL, params)
+        data = response.json()
+        root = data.get("LawSearch", {})
+        items = root.get("law", [])
+        if isinstance(items, dict):
+            items = [items]
+        return items or []
+
+    def get_law_change_history(
+        self,
+        registered_date: int | None = None,
+        org_code: str | None = None,
+        page: int = 1,
+        per_page: int = 20,
+        output_type: str = "JSON",
+    ) -> list[dict]:
+        """Get law-level change history feed (법령 변경이력 목록)."""
+        params: dict[str, str | int] = {
+            "OC": str(self.api_key),
+            "target": "lsHstInf",
+            "type": output_type,
+            "display": per_page,
+            "page": page,
+        }
+
+        if registered_date is not None:
+            params["regDt"] = registered_date
+        if org_code is not None:
+            params["org"] = org_code
+
+        response = self._make_request(self.BASE_URL, params)
+        data = response.json()
+        root = data.get("LawSearch", {})
+        if isinstance(root, list):
+            return root
+        if isinstance(root, dict) and root:
+            return [root]
+        return []
+
+    def get_law_article_change_history(
+        self,
+        law_id: str,
+        article_code: int | None = None,
+        page: int = 1,
+        per_page: int = 20,
+        output_type: str = "JSON",
+    ) -> list[dict]:
+        """Get article-level change history (조문별 변경 이력 목록)."""
+        params: dict[str, str | int] = {
+            "OC": str(self.api_key),
+            "target": "lsJoHstInf",
+            "type": output_type,
+            "ID": law_id,
+            "display": per_page,
+            "page": page,
+        }
+
+        if article_code is not None:
+            params["JO"] = article_code
+
+        response = self._make_request(self.SERVICE_URL, params)
+        data = response.json()
+        root = data.get("LawSearch", {})
+        if isinstance(root, list):
+            return root
+        if isinstance(root, dict) and root:
+            return [root]
+        return []
+
     def _parse_law_list(self, content: bytes) -> list[Law]:
         """Parse law list from XML response.
 
