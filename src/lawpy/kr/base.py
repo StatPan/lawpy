@@ -128,16 +128,19 @@ class KoreanBaseClient(LawClient):
                 )
                 raise ApiSubscriptionError(msg, status_code=response.status_code, response=body)
 
-        request = getattr(response, "request", None)
-        request_params = getattr(request, "params", {}) or {}
-        response_type = str(request_params.get("type", "")).lower()
-        if "json" in response_type:
-            if _HTML_DOCTYPE in body:
-                msg = (
-                    f"Target '{target}' returned HTML instead of JSON. "
-                    f"This target may not support JSON responses."
-                )
-                raise ApiResponseTypeError(msg, status_code=response.status_code, response=body)
+        response_type = self._response_request_type(response)
+        if response_type in {"json", "xml"} and (
+            self._is_html_content_type(response) or self._looks_like_html(body)
+        ):
+            content_type = self._response_content_type(response)
+            url = self._response_url(response)
+            preview = self._content_preview(body)
+            msg = (
+                f"Target '{target}' returned HTML instead of {response_type.upper()}"
+                f" (content-type: {content_type}, url: {url}); "
+                f"response preview: {preview}"
+            )
+            raise ApiResponseTypeError(msg, status_code=response.status_code, response=body)
 
     def _parse_json_response(self, response: httpx.Response, target: str) -> Any:
         """Parse a JSON API response with actionable diagnostics on failure."""
@@ -170,6 +173,47 @@ class KoreanBaseClient(LawClient):
         if url is None:
             url = getattr(response, "url", None)
         return cls._redact_url(str(url)) if url is not None else "unknown"
+
+    @classmethod
+    def _response_request_type(cls, response: httpx.Response) -> str:
+        request = getattr(response, "request", None)
+        request_params = getattr(request, "params", {}) or {}
+        if hasattr(request_params, "get"):
+            value = request_params.get("type")
+            if isinstance(value, str | int):
+                return str(value).lower()
+
+        url = getattr(request, "url", None)
+        if url is None:
+            url = getattr(response, "url", None)
+        if url is None:
+            return ""
+
+        try:
+            query = parse_qsl(urlsplit(str(url)).query, keep_blank_values=True)
+        except ValueError:
+            return ""
+        for key, value in query:
+            if key.lower() == "type":
+                return value.lower()
+        return ""
+
+    @classmethod
+    def _is_html_content_type(cls, response: httpx.Response) -> bool:
+        content_type = cls._response_content_type(response).lower()
+        return "html" in content_type or "xhtml" in content_type
+
+    @classmethod
+    def _looks_like_html(cls, content: str | bytes) -> bool:
+        if isinstance(content, bytes):
+            content = content.decode("utf-8", errors="replace")
+        sample = content.lstrip()[:200].lower()
+        return (
+            sample.startswith("<!doctype html")
+            or sample.startswith("<html")
+            or "<html" in sample
+            or "xhtml" in sample
+        )
 
     @classmethod
     def _redact_url(cls, url: str) -> str:

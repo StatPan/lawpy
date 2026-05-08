@@ -23,6 +23,7 @@ def _xml_response(body: str) -> Mock:
     response.content = body.encode()
     response.text = body
     response.headers = {"content-type": "application/xml"}
+    response.status_code = 200
     response.request = Mock(url="https://www.law.go.kr/DRF/lawSearch.do?target=lsHistory")
     return response
 
@@ -76,7 +77,7 @@ def test_law_history_wraps_malformed_xml_with_preview() -> None:
 
 def test_law_history_rejects_html_response_before_xml_parse() -> None:
     client = KRClient(api_key="test_key")
-    html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"><html></html>'
+    html = '<?xml version="1.0"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"><html></html>'
     client._make_request = Mock(return_value=_xml_response(html))
 
     with pytest.raises(ApiResponseTypeError) as exc_info:
@@ -84,4 +85,24 @@ def test_law_history_rejects_html_response_before_xml_parse() -> None:
 
     message = str(exc_info.value)
     assert "Expected XML law list response but received HTML" in message
+    assert "response preview: <?xml version=\"1.0\"?><!DOCTYPE html PUBLIC" in message
+
+
+def test_xml_request_rejects_html_response_from_url_type_before_parse() -> None:
+    client = KRClient(api_key="test_key")
+    html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"><html></html>'
+    response = _xml_response(html)
+    response.headers = {"content-type": "text/html;charset=UTF-8"}
+    response.request = Mock(
+        url="https://www.law.go.kr/DRF/lawSearch.do?OC=secret-user&target=lsHistory&type=XML"
+    )
+
+    with pytest.raises(ApiResponseTypeError) as exc_info:
+        client._check_response(response, "lsHistory")
+
+    message = str(exc_info.value)
+    assert "Target 'lsHistory' returned HTML instead of XML" in message
+    assert "content-type: text/html;charset=UTF-8" in message
+    assert "OC=%2A%2A%2A" in message
+    assert "secret-user" not in message
     assert "response preview: <!DOCTYPE html PUBLIC" in message
