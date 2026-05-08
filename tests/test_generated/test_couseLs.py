@@ -20,7 +20,7 @@ class TestGeneratedCouselsClient:
     def test_search_returns_list_of_models(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({"result": [{"target": "val", "vcode": "val", "section": "val"}]}))
-        result = client.search_couseLss()
+        result = client.search_couseLss(vcode="test", lj_jo="test")
         assert isinstance(result, list)
         assert len(result) == 1
         assert isinstance(result[0], CouselsList)
@@ -28,13 +28,13 @@ class TestGeneratedCouselsClient:
     def test_search_empty_response(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({}))
-        result = client.search_couseLss()
+        result = client.search_couseLss(vcode="test", lj_jo="test")
         assert isinstance(result, list)
         assert len(result) == 0
 
     def test_search_passes_params(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({"result": [{"target": "val", "vcode": "val", "section": "val"}]}))
-        client.search_couseLss(vcode="test")
+        client.search_couseLss(lj_jo="test", vcode="test")
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "vcode" in call_params

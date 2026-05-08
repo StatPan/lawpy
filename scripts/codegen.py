@@ -314,8 +314,8 @@ def snake_from_str(s: str) -> str:
     return result
 
 
-def is_required(val: str) -> bool:
-    return "필수" in val
+def is_required(val: str, description: str = "") -> bool:
+    return "필수" in val or "필수" in description
 
 
 def val_to_pytype(val: str) -> str:
@@ -330,12 +330,13 @@ def extract_params(spec: dict) -> list[dict]:
         if not key or key in ("OC", "target", "type"):
             continue
         val = row.get(VAL_KEY, "")
+        description = row.get(DESC_KEY, "")
         result.append({
             "key": key,
             "pyname": snake_from_str(key),
             "pytype": val_to_pytype(val),
-            "required": is_required(val),
-            "description": row.get(DESC_KEY, "").replace('"', "'"),
+            "required": is_required(val, description),
+            "description": description.replace('"', "'"),
         })
     return result
 
@@ -346,6 +347,20 @@ def append_compat_params(params: list[dict], target: str) -> list[dict]:
         param for param in MOBILE_COMPAT_PARAMS.get(target, [])
         if param["pyname"] not in existing
     ]
+
+
+def render_required_checks(params: list[dict]) -> str:
+    required = [p for p in params if p.get("required")]
+    if not required:
+        return ""
+    lines: list[str] = []
+    for p in required:
+        lines.append(
+            f'        if {p["pyname"]} is None:\n'
+            f'            msg = "{p["pyname"]} is required for target {p["key"]}"\n'
+            f"            raise ValueError(msg)"
+        )
+    return "\n".join(lines) + "\n"
 
 
 def extract_response_fields(spec: dict) -> list[dict]:
@@ -397,6 +412,7 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
     sigs = (",\n").join(param_sigs) or "        page: int | None = None,\n        display: int | None = None"
     docs = "\n".join(param_docs) or "        (no additional params)"
     pd = "\n".join(param_dict_lines)
+    required_checks = render_required_checks(params)
 
     if root_key and item_key:
         parse_block = (
@@ -473,7 +489,7 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
             List of {model_cls} instances.
             {note}
         """
-        params: dict = {{"target": "{target}", "type": "JSON"}}
+{required_checks}        params: dict = {{"target": "{target}", "type": "JSON"}}
 {pd}
         response = self._make_request(self.{endpoint_const}, params=params)
 {parse_block}
@@ -498,6 +514,7 @@ def render_detail_method(spec: dict, target: str, root_key: str | None) -> str:
     sigs = (",\n").join(param_sigs) or "        record_id: str | None = None"
     docs = "\n".join(param_docs) or "        (no additional params)"
     pd = "\n".join(param_dict_lines)
+    required_checks = render_required_checks(params)
 
     if root_key:
         parse_block = (
@@ -526,7 +543,7 @@ def render_detail_method(spec: dict, target: str, root_key: str | None) -> str:
             {model_cls} instance.
             {note}
         """
-        params: dict = {{"target": "{target}", "type": "JSON"}}
+{required_checks}        params: dict = {{"target": "{target}", "type": "JSON"}}
 {pd}
         response = self._make_request(self.{endpoint_const}, params=params)
 {parse_block}
@@ -588,9 +605,24 @@ def render_test_file(
     list_params = extract_params(specs["list"]) if has_list else []
     first_list_param = list_params[0] if list_params else None
 
+    def sample_value(param: dict) -> str:
+        return "1" if param["pytype"].startswith("int") else '"test"'
+
+    def call_args(params: list[dict], extra: str | None = None, exclude: str | None = None) -> str:
+        args = [
+            f'{param["pyname"]}={sample_value(param)}'
+            for param in params
+            if param.get("required") and param["pyname"] != exclude
+        ]
+        if extra:
+            args.append(extra)
+        return ", ".join(args)
+
     test_methods = []
 
     if has_list:
+        list_required_args = call_args(list_params)
+        list_call = f"client.search_{target}s({list_required_args})"
         extra_list_asserts = ""
         if target == "decc":
             extra_list_asserts = "\n        assert result[0].의결일자 == \"20240131\""
@@ -598,7 +630,7 @@ def render_test_file(
     def test_search_returns_list_of_models(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({list_mock_json}))
-        result = client.search_{target}s()
+        result = {list_call}
         assert isinstance(result, list)
         assert len(result) == 1
         assert isinstance(result[0], {list_model}){extra_list_asserts}''')
@@ -607,19 +639,19 @@ def render_test_file(
     def test_search_empty_response(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({{}}))
-        result = client.search_{target}s()
+        result = {list_call}
         assert isinstance(result, list)
         assert len(result) == 0''')
 
         if first_list_param:
             pkey = first_list_param["key"]
             pname = first_list_param["pyname"]
-            pval = "1" if first_list_param["pytype"].startswith("int") else '"test"'
+            pval = sample_value(first_list_param)
             test_methods.append(f'''\
     def test_search_passes_params(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({list_mock_json}))
-        client.search_{target}s({pname}={pval})
+        client.search_{target}s({call_args(list_params, f'{pname}={pval}', exclude=pname)})
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
         assert "{pkey}" in call_params''')
 
@@ -628,7 +660,7 @@ def render_test_file(
     def test_search_passes_popyn_param(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({list_mock_json}))
-        client.search_{target}s(popyn="Y")
+        client.search_{target}s({call_args(list_params, 'popyn="Y"')})
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
         assert call_params["popYn"] == "Y"
         assert "mobileYn" not in call_params''')
@@ -638,7 +670,7 @@ def render_test_file(
     def test_search_passes_mobileyn_param(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({list_mock_json}))
-        client.search_{target}s(mobileyn="Y")
+        client.search_{target}s({call_args(list_params, 'mobileyn="Y"')})
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
         assert call_params["mobileYn"] == "Y"''')
 
@@ -647,7 +679,7 @@ def render_test_file(
     def test_search_accepts_root_list_fallback(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({{"{root_key_search}": [{sample_list_data}]}}))
-        result = client.search_{target}s()
+        result = {list_call}
         assert isinstance(result, list)
         assert len(result) == 1
         assert isinstance(result[0], {list_model})''')
@@ -657,13 +689,15 @@ def render_test_file(
     def test_search_nested_empty_list_response(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({{"{root_key_search}": {{"items": []}}}}))
-        result = client.search_{target}s()
+        result = {list_call}
         assert isinstance(result, list)
         assert len(result) == 0''')
 
     if has_detail:
         detail_params = extract_params(specs["info"])
         first_detail_param = detail_params[0] if detail_params else None
+        detail_required_args = call_args(detail_params)
+        detail_call = f"client.get_{target}_detail({detail_required_args})"
         extra_detail_asserts = ""
         if target == "decc":
             extra_detail_asserts = "\n        assert result.사건명 == \"val\"\n        assert result.주문 == \"val\""
@@ -674,18 +708,18 @@ def render_test_file(
     def test_detail_returns_model(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({detail_mock_json}))
-        result = client.get_{target}_detail()
+        result = {detail_call}
         assert isinstance(result, {detail_model}){extra_detail_asserts}''')
 
         if first_detail_param:
             pkey = first_detail_param["key"]
             pname = first_detail_param["pyname"]
-            pval = '"1"' if first_detail_param["pytype"].startswith("str") else "1"
+            pval = sample_value(first_detail_param)
             test_methods.append(f'''\
     def test_detail_passes_params(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({detail_mock_json}))
-        client.get_{target}_detail({pname}={pval})
+        client.get_{target}_detail({call_args(detail_params, f'{pname}={pval}', exclude=pname)})
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
         assert "{pkey}" in call_params''')
 
@@ -694,7 +728,7 @@ def render_test_file(
     def test_detail_passes_mobileyn_param(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({detail_mock_json}))
-        client.get_{target}_detail(mobileyn="Y")
+        client.get_{target}_detail({call_args(detail_params, 'mobileyn="Y"')})
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
         assert call_params["mobileYn"] == "Y"''')
 

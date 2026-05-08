@@ -2,6 +2,8 @@
 
 from unittest.mock import Mock
 
+import pytest
+
 from lawpy.kr import KRClient, LawReferenceClient
 from lawpy.kr.generated._models_generated import (
     CouselsList,
@@ -51,6 +53,27 @@ def test_search_customized_articles_maps_law_target() -> None:
     assert params["display"] == 5
     assert params["page"] == 2
     assert params["popYn"] == "Y"
+
+
+def test_search_customized_articles_defaults_to_article_mode() -> None:
+    client = KRClient(api_key="test_key")
+    client._make_request = Mock(return_value=_mock_response({"items": [{"target": "couseLs"}]}))
+
+    client.search_customized_articles("law", "L0000000000001")
+
+    params = client._make_request.call_args.kwargs["params"]
+    assert params["vcode"] == "L0000000000001"
+    assert params["lj=jo"] == "Y"
+
+
+def test_search_customized_articles_requires_classification_code_before_request() -> None:
+    client = KRClient(api_key="test_key")
+    client._make_request = Mock()
+
+    with pytest.raises(ValueError, match="vcode is required"):
+        client.search_customized_articles("law", None)  # type: ignore[arg-type]
+
+    client._make_request.assert_not_called()
 
 
 def test_search_law_article_units_maps_service_params() -> None:
@@ -147,6 +170,16 @@ def test_get_delegated_law_detail_maps_params() -> None:
     assert params["ID"] == "009682"
 
 
+def test_get_delegated_law_detail_requires_seed_before_request() -> None:
+    client = KRClient(api_key="test_key")
+    client._make_request = Mock()
+
+    with pytest.raises(ValueError, match="Either law_id or mst must be provided"):
+        client.get_delegated_law_detail()
+
+    client._make_request.assert_not_called()
+
+
 def test_oneview_methods_map_params() -> None:
     client = KRClient(api_key="test_key")
     client._make_request = Mock(return_value=_mock_response({"items": [{}]}))
@@ -201,3 +234,23 @@ def test_three_way_comparison_methods_map_params() -> None:
     assert params["target"] == "thdCmp"
     assert params["knd"] == 1
     assert params["ID"] == "009682"
+
+
+def test_get_three_way_comparison_detail_requires_kind_before_request() -> None:
+    client = KRClient(api_key="test_key")
+    client._make_request = Mock()
+
+    with pytest.raises(ValueError, match="comparison_kind must be provided"):
+        client.get_three_way_comparison_detail(law_id="009682")
+
+    client._make_request.assert_not_called()
+
+
+def test_get_three_way_comparison_detail_requires_seed_before_request() -> None:
+    client = KRClient(api_key="test_key")
+    client._make_request = Mock()
+
+    with pytest.raises(ValueError, match="Either law_id or mst must be provided"):
+        client.get_three_way_comparison_detail(1)
+
+    client._make_request.assert_not_called()

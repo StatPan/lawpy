@@ -59,7 +59,7 @@ class LawReferenceClient(
         popup: bool | None = None,
     ) -> list[CustomizedArticleList]:
         """Search customized article lists by law, administrative rule, or ordinance code."""
-        lj_jo = self._yn_flag(article_only)
+        lj_jo = self._yn_flag(True if article_only is None else article_only)
         popyn = self._yn_flag(popup)
         if source == "law":
             return cast(
@@ -192,6 +192,9 @@ class LawReferenceClient(
         mst: str | None = None,
     ) -> LsdelegatedDetail:
         """Get delegated-law detail for a law ID or master sequence."""
+        if law_id is None and mst is None:
+            msg = "Either law_id or mst must be provided"
+            raise ValueError(msg)
         return self.get_lsDelegated_detail(id=law_id, mst=mst)
 
     def search_oneview_laws(
@@ -270,6 +273,12 @@ class LawReferenceClient(
         promulgation_number: int | None = None,
     ) -> ThdcmpDetail:
         """Get three-way law comparison detail."""
+        if comparison_kind is None:
+            msg = "comparison_kind must be provided"
+            raise ValueError(msg)
+        if law_id is None and mst is None:
+            msg = "Either law_id or mst must be provided"
+            raise ValueError(msg)
         return self.get_thdCmp_detail(
             knd=comparison_kind,
             id=law_id,

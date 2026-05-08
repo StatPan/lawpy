@@ -29,6 +29,9 @@ class GeneratedLsdelegatedClient(KoreanBaseClient):
         Returns:
             LsdelegatedDetail with nested 법령정보 and 위임조문정보.
         """
+        if id is None and mst is None:
+            msg = "Either id or mst must be provided for target lsDelegated"
+            raise ValueError(msg)
         params: dict = {"target": "lsDelegated", "type": "JSON"}
         if id is not None:
             params["ID"] = id

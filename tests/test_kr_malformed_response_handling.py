@@ -52,7 +52,7 @@ def test_generated_search_wraps_malformed_json_with_context() -> None:
     client._make_request = Mock(return_value=response)
 
     with pytest.raises(ParseError) as exc_info:
-        client.search_couseLss(vcode="L0000000000001")
+        client.search_couseLss(vcode="L0000000000001", lj_jo="Y")
 
     message = str(exc_info.value)
     assert "target 'couseLs'" in message

@@ -118,6 +118,9 @@ class GeneratedThdcmpClient(KoreanBaseClient):
             ThdcmpDetail instance.
             Response path: thdCmpLawSearch
         """
+        if knd is None:
+            msg = "knd is required for target knd"
+            raise ValueError(msg)
         params: dict = {"target": "thdCmp", "type": "JSON"}
         if knd is not None:
             params["knd"] = knd

@@ -37,6 +37,12 @@ class GeneratedCouselsClient(KoreanBaseClient):
             List of CouselsList instances.
             Root key not discovered — using best-effort extraction
         """
+        if vcode is None:
+            msg = "vcode is required for target vcode"
+            raise ValueError(msg)
+        if lj_jo is None:
+            msg = "lj_jo is required for target lj=jo"
+            raise ValueError(msg)
         params: dict = {"target": "couseLs", "type": "JSON"}
         if vcode is not None:
             params["vcode"] = vcode
