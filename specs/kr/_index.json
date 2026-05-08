@@ -11,7 +11,7 @@
     "label": "현행법령(시행일) 본문 조회 (국가법령정보센터 기준)",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=eflaw요청",
     "n_params": 8,
-    "n_response": 62
+    "n_response": 63
   },
   {
     "html_name": "lsNwListGuide",
@@ -25,21 +25,21 @@
     "label": "현행법령(공포일) 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=law요청",
     "n_params": 10,
-    "n_response": 60
+    "n_response": 61
   },
   {
     "html_name": "lsHstListGuide",
     "label": "법령 연혁 목록 조회",
     "request_url": "http://www.law.go.kr/DRF/lawSearch.do?target=lsHistory요청",
     "n_params": 17,
-    "n_response": 17
+    "n_response": 5
   },
   {
     "html_name": "lsHstInfoGuide",
     "label": "법령 연혁 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=lsHistory요청",
     "n_params": 9,
-    "n_response": 9
+    "n_response": 4
   },
   {
     "html_name": "lsEfYdJoListGuide",
@@ -67,7 +67,7 @@
     "label": "영문 법령 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=elaw요청",
     "n_params": 8,
-    "n_response": 8
+    "n_response": 7
   },
   {
     "html_name": "lsChgListGuide",
@@ -95,7 +95,7 @@
     "label": "법령 기준 자치법규 연계 관련 목록 조회",
     "request_url": "http://www.law.go.kr/DRF/lawSearch.do?target=lnkLs요청",
     "n_params": 8,
-    "n_response": 14
+    "n_response": 15
   },
   {
     "html_name": "lsOrdinConGuide",
@@ -151,7 +151,7 @@
     "label": "3단 비교 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=thdCmp요청",
     "n_params": 9,
-    "n_response": 32
+    "n_response": 27
   },
   {
     "html_name": "lsAbrvListGuide",
@@ -214,21 +214,21 @@
     "label": "자치법규 목록 조회",
     "request_url": "http://www.law.go.kr/DRF/lawSearch.do?target=ordin요청",
     "n_params": 22,
-    "n_response": 12
+    "n_response": 0
   },
   {
     "html_name": "ordinInfoGuide",
     "label": "자치법규 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=ordin요청",
     "n_params": 5,
-    "n_response": 29
+    "n_response": 0
   },
   {
     "html_name": "ordinLsConListGuide",
     "label": "자치법규 기준 법령 연계 관련 목록 조회",
     "request_url": "http://www.law.go.kr/DRF/lawSearch.do?target=lnkOrd요청",
     "n_params": 8,
-    "n_response": 14
+    "n_response": 15
   },
   {
     "html_name": "precListGuide",
@@ -242,7 +242,7 @@
     "label": "판례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=prec요청",
     "n_params": 5,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "detcListGuide",
@@ -256,7 +256,7 @@
     "label": "헌재결정례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=detc요청",
     "n_params": 5,
-    "n_response": 13
+    "n_response": 0
   },
   {
     "html_name": "expcListGuide",
@@ -270,7 +270,7 @@
     "label": "법령해석례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=expc요청",
     "n_params": 5,
-    "n_response": 13
+    "n_response": 0
   },
   {
     "html_name": "deccListGuide",
@@ -284,7 +284,7 @@
     "label": "행정심판례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=decc요청",
     "n_params": 5,
-    "n_response": 13
+    "n_response": 0
   },
   {
     "html_name": "ppcListGuide",
@@ -326,7 +326,7 @@
     "label": "공정거래위원회 결정문 본문 조회",
     "request_url": "https://www.law.go.kr/DRF/lawService.do?target=ftc요청",
     "n_params": 4,
-    "n_response": 24
+    "n_response": 20
   },
   {
     "html_name": "acrListGuide",
@@ -529,7 +529,7 @@
     "label": "법령 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=law&mobileYn=Y요청",
     "n_params": 16,
-    "n_response": 16
+    "n_response": 5
   },
   {
     "html_name": "mobAdmrulListguide",
@@ -543,7 +543,7 @@
     "label": "행정규칙 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=admrul&mobileYn=Y요청",
     "n_params": 6,
-    "n_response": 6
+    "n_response": 3
   },
   {
     "html_name": "mobOrdinListGuide",
@@ -557,7 +557,7 @@
     "label": "자치법규 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=ordin요청",
     "n_params": 6,
-    "n_response": 6
+    "n_response": 5
   },
   {
     "html_name": "mobPrecListGuide",
@@ -571,7 +571,7 @@
     "label": "판례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=prec&mobileYn=Y요청",
     "n_params": 6,
-    "n_response": 6
+    "n_response": 3
   },
   {
     "html_name": "mobDetcListGuide",
@@ -585,7 +585,7 @@
     "label": "헌재결정례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=detc&mobileYn=Y요청",
     "n_params": 6,
-    "n_response": 6
+    "n_response": 5
   },
   {
     "html_name": "mobExpcListGuide",
@@ -599,7 +599,7 @@
     "label": "법령해석례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=expc&mobileYn=Y요청",
     "n_params": 6,
-    "n_response": 6
+    "n_response": 5
   },
   {
     "html_name": "mobDeccListGuide",
@@ -613,7 +613,7 @@
     "label": "행정심판례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=decc&mobileYn=Y요청",
     "n_params": 6,
-    "n_response": 6
+    "n_response": 5
   },
   {
     "html_name": "mobTrtyListGuide",
@@ -627,28 +627,28 @@
     "label": "조약 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=trty&mobileYn=Y요청",
     "n_params": 5,
-    "n_response": 5
+    "n_response": 3
   },
   {
     "html_name": "mobLsBylListGuide",
     "label": "법령 별표ㆍ서식 목록 조회",
     "request_url": "http://www.law.go.kr/DRF/lawSearch.do?target=licbyl&mobileYn=Y요청",
     "n_params": 12,
-    "n_response": 12
+    "n_response": 9
   },
   {
     "html_name": "mobAdmrulBylListGuide",
     "label": "행정규칙 별표ㆍ서식 목록 조회",
     "request_url": "http://www.law.go.kr/DRF/lawSearch.do?target=admbyl&mobileYn=Y요청",
     "n_params": 12,
-    "n_response": 12
+    "n_response": 9
   },
   {
     "html_name": "mobOrdinBylListGuide",
     "label": "자치법규 별표ㆍ서식 목록 조회",
     "request_url": "http://www.law.go.kr/DRF/lawSearch.do?target=ordinbyl&mobileYn=Y요청",
     "n_params": 12,
-    "n_response": 12
+    "n_response": 7
   },
   {
     "html_name": "mobLsTrmListGuide",
@@ -774,7 +774,7 @@
     "label": "고용노동부 법령해석 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=moelCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMolitListGuide",
@@ -788,7 +788,7 @@
     "label": "국토교통부 법령해석 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=molitCgmExpc요청",
     "n_params": 6,
-    "n_response": 18
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMoefListGuide",
@@ -809,7 +809,7 @@
     "label": "해양수산부 법령해석 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mofCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMoisListGuide",
@@ -823,7 +823,7 @@
     "label": "행정안전부 법령해석 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=moisCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMeListGuide",
@@ -837,7 +837,7 @@
     "label": "기후에너지환경부 법령해석 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=meCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcKcsListGuide",
@@ -872,7 +872,7 @@
     "label": "교육부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=moeCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMsitListGuide",
@@ -886,7 +886,7 @@
     "label": "과학기술정보통신부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=msitCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMpvaListGuide",
@@ -900,7 +900,7 @@
     "label": "국가보훈부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mpvaCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMndListGuide",
@@ -914,7 +914,7 @@
     "label": "국방부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mndCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMafraListGuide",
@@ -928,7 +928,7 @@
     "label": "농림축산식품부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mafraCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMcstListGuide",
@@ -942,7 +942,7 @@
     "label": "문화체육관광부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mcstCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMojListGuide",
@@ -956,7 +956,7 @@
     "label": "법무부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mojCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMohwListGuide",
@@ -970,7 +970,7 @@
     "label": "보건복지부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mohwCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMotieListGuide",
@@ -984,7 +984,7 @@
     "label": "산업통상부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=motieCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMogefListGuide",
@@ -998,7 +998,7 @@
     "label": "성평등가족부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mogefCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMofaListGuide",
@@ -1012,7 +1012,7 @@
     "label": "외교부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mofaCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMssListGuide",
@@ -1026,7 +1026,7 @@
     "label": "중소벤처기업부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mssCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMouListGuide",
@@ -1040,7 +1040,7 @@
     "label": "통일부 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mouCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMolegListGuide",
@@ -1054,7 +1054,7 @@
     "label": "법제처 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=molegCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMfdsListGuide",
@@ -1068,7 +1068,7 @@
     "label": "식품의약품안전처 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mfdsCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMpmListGuide",
@@ -1082,7 +1082,7 @@
     "label": "인사혁신처 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mpmCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcKmaListGuide",
@@ -1096,7 +1096,7 @@
     "label": "기상청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=kmaCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcKhsListGuide",
@@ -1110,7 +1110,7 @@
     "label": "국가유산청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=khsCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcRdaListGuide",
@@ -1124,7 +1124,7 @@
     "label": "농촌진흥청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=rdaCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcNpaListGuide",
@@ -1138,7 +1138,7 @@
     "label": "경찰청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=npaCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcDapaListGuide",
@@ -1152,7 +1152,7 @@
     "label": "방위사업청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=dapaCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcMmaListGuide",
@@ -1166,7 +1166,7 @@
     "label": "병무청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=mmaCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcKfsListGuide",
@@ -1180,7 +1180,7 @@
     "label": "산림청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=kfsCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcNfaListGuide",
@@ -1194,7 +1194,7 @@
     "label": "소방청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=nfaCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcOkaListGuide",
@@ -1208,7 +1208,7 @@
     "label": "재외동포청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=okaCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcPpsListGuide",
@@ -1222,7 +1222,7 @@
     "label": "조달청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=ppsCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcKdcaListGuide",
@@ -1236,7 +1236,7 @@
     "label": "질병관리청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=kdcaCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcKostatListGuide",
@@ -1250,7 +1250,7 @@
     "label": "국가데이터처 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=kostatCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcKipoListGuide",
@@ -1264,7 +1264,7 @@
     "label": "지식재산처 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=kipoCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcKcgListGuide",
@@ -1278,7 +1278,7 @@
     "label": "해양경찰청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=kcgCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "cgmExpcNaaccListGuide",
@@ -1292,7 +1292,7 @@
     "label": "행정중심복합도시건설청 법령해석 본문",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=naaccCgmExpc요청",
     "n_params": 6,
-    "n_response": 15
+    "n_response": 0
   },
   {
     "html_name": "specialDeccTtListGuide",
@@ -1306,7 +1306,7 @@
     "label": "조세심판원 특별행정심판례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=ttSpecialDecc요청",
     "n_params": 6,
-    "n_response": 19
+    "n_response": 0
   },
   {
     "html_name": "specialDeccKmstListGuide",
@@ -1320,7 +1320,7 @@
     "label": "해양안전심판원 특별행정심판례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=kmstSpecialDecc요청",
     "n_params": 6,
-    "n_response": 23
+    "n_response": 0
   },
   {
     "html_name": "specialDeccAcrListGuide",
@@ -1334,7 +1334,7 @@
     "label": "국민권익위원회 특별행정심판례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=acrSpecialDecc요청",
     "n_params": 6,
-    "n_response": 18
+    "n_response": 0
   },
   {
     "html_name": "specialDeccAdapListGuide",
@@ -1348,7 +1348,7 @@
     "label": "인사혁신처 소청심사위원회 특별행정심판례 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=adapSpecialDecc요청",
     "n_params": 6,
-    "n_response": 26
+    "n_response": 0
   },
   {
     "html_name": "baiPvcsListGuide",
@@ -1362,6 +1362,6 @@
     "label": "감사원 사전컨설팅 의견서 본문 조회",
     "request_url": "http://www.law.go.kr/DRF/lawService.do?target=baiPvcs요청",
     "n_params": 6,
-    "n_response": 11
+    "n_response": 0
   }
 ]

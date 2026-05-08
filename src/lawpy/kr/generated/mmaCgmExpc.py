@@ -49,7 +49,7 @@ class GeneratedMmacgmexpcClient(KoreanBaseClient):
 
         Returns:
             List of MmacgmexpcList instances.
-            Response path: CgmExpc.cgmExpc
+            Response path: CgmExpc (item key not discovered)
         """
         params: dict = {"target": "mmaCgmExpc", "type": "JSON"}
         if search is not None:
@@ -79,10 +79,20 @@ class GeneratedMmacgmexpcClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("CgmExpc", {})
-        if isinstance(root, dict):
-            items = root.get("cgmExpc", [])
+        if isinstance(root, list):
+            items = root
+        elif isinstance(root, dict):
+            items = []
+            found_items = False
+            for value in root.values():
+                if isinstance(value, list):
+                    items = value
+                    found_items = True
+                    break
+            if not found_items and root:
+                items = [root]
         else:
-            items = root if isinstance(root, list) else []
+            items = []
         if isinstance(items, dict):
             items = [items]
         return [MmacgmexpcList.model_validate(item) for item in items]
