@@ -38,6 +38,11 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `detc` | `ConstitutionalDecisionClient`, `KRClient` | implemented |
 | `decc` | `AdministrativeReviewDecisionClient`, `KRClient` | implemented |
 | `trty` | `TreatyClient`, `KRClient` | implemented |
+| `elaw` | `LawClient`, `KRClient` | implemented as law-family wrapper |
+| `oldAndNew` | `LawClient`, `KRClient` | implemented as law-family wrapper |
+| `lsAbrv` | `LawClient`, `KRClient` | implemented as law-family wrapper |
+| `lsHstInf` | `LawClient`, `KRClient` | implemented as law-family wrapper |
+| `lsJoHstInf` | `LawClient`, `KRClient` | implemented as law-family wrapper |
 
 ## Generated Matrix
 
@@ -61,7 +66,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `eflaw` | `GeneratedEflawClient` | `search_eflaws`, `get_eflaw_detail` | yes | yes | generated only |
 | `eflawjosub` | `GeneratedEflawjosubClient` | `search_eflawjosubs` | yes | yes | generated only |
 | `eiac` | `GeneratedEiacClient` | `search_eiacs`, `get_eiac_detail` | yes | yes | generated only |
-| `elaw` | `GeneratedElawClient` | `search_elaws`, `get_elaw_detail` | yes | yes | generated only |
+| `elaw` | `GeneratedElawClient` | `search_elaws`, `get_elaw_detail` | yes | yes | `LawClient`, `KRClient` |
 | `expc` | `GeneratedExpcClient` | `search_expcs`, `get_expc_detail` | yes | yes | `LegalInterpretationClient`, `KRClient` |
 | `fsc` | `GeneratedFscClient` | `search_fscs`, `get_fsc_detail` | yes | yes | generated only |
 | `ftc` | `GeneratedFtcClient` | `search_ftcs`, `get_ftc_detail` | yes | yes | generated only |
@@ -81,11 +86,11 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `licbyl` | `GeneratedLicbylClient` | `search_licbyls` | yes | yes | generated only |
 | `lnkLs` | `GeneratedLnklsClient` | `search_lnkLss` | yes | yes | generated only |
 | `lnkOrd` | `GeneratedLnkordClient` | `search_lnkOrds` | yes | yes | generated only |
-| `lsAbrv` | `GeneratedLsabrvClient` | `search_lsAbrvs` | yes | yes | generated only |
+| `lsAbrv` | `GeneratedLsabrvClient` | `search_lsAbrvs` | yes | yes | `LawClient`, `KRClient` |
 | `lsDelegated` | `GeneratedLsdelegatedClient` | `get_lsDelegated_detail` | yes | yes | generated only |
 | `lsHistory` | `GeneratedLshistoryClient` | `search_lsHistorys`, `get_lsHistory_detail` | yes | yes | generated only |
-| `lsHstInf` | `GeneratedLshstinfClient` | `search_lsHstInfs` | yes | yes | generated only |
-| `lsJoHstInf` | `GeneratedLsjohstinfClient` | `search_lsJoHstInfs` | yes | yes | generated only |
+| `lsHstInf` | `GeneratedLshstinfClient` | `search_lsHstInfs` | yes | yes | `LawClient`, `KRClient` |
+| `lsJoHstInf` | `GeneratedLsjohstinfClient` | `search_lsJoHstInfs` | yes | yes | `LawClient`, `KRClient` |
 | `lsStmd` | `GeneratedLsstmdClient` | `search_lsStmds`, `get_lsStmd_detail` | yes | yes | generated only |
 | `lstrm` | `GeneratedLstrmClient` | `search_lstrms`, `get_lstrm_detail` | yes | yes | `LegalTerminologyClient`, `KRClient` |
 | `mafraCgmExpc` | `GeneratedMafracgmexpcClient` | `search_mafraCgmExpcs`, `get_mafraCgmExpc_detail` | yes | yes | generated only |
@@ -119,7 +124,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `ntsCgmExpc` | `GeneratedNtscgmexpcClient` | `search_ntsCgmExpcs` | yes | yes | generated only |
 | `oclt` | `GeneratedOcltClient` | `search_oclts`, `get_oclt_detail` | yes | yes | generated only |
 | `okaCgmExpc` | `GeneratedOkacgmexpcClient` | `search_okaCgmExpcs`, `get_okaCgmExpc_detail` | yes | yes | generated only |
-| `oldAndNew` | `GeneratedOldandnewClient` | `search_oldAndNews`, `get_oldAndNew_detail` | yes | yes | generated only |
+| `oldAndNew` | `GeneratedOldandnewClient` | `search_oldAndNews`, `get_oldAndNew_detail` | yes | yes | `LawClient`, `KRClient` |
 | `oneview` | `GeneratedOneviewClient` | `search_oneviews`, `get_oneview_detail` | yes | yes | generated only |
 | `ordin` | `GeneratedOrdinClient` | `search_ordins`, `get_ordin_detail` | yes | yes | `OrdinanceClient`, `KRClient` |
 | `ordinbyl` | `GeneratedOrdinbylClient` | `search_ordinbyls` | yes | yes | generated only |

@@ -127,11 +127,40 @@ history_detail = client.get_law_history_detail(mst=9094)
 print(history_detail)  # Returns HTML text
 ```
 
+#### Get old/new law comparison metadata
+
+```python
+old_new = client.search_law_old_and_new(query="민법", per_page=10)
+print(old_new[0])
+```
+
+#### Get old/new law comparison detail
+
+```python
+old_new_detail = client.get_law_old_and_new_detail(law_id="009682")
+print(old_new_detail)
+```
+
+#### Get law abbreviations
+
+```python
+abbrs = client.search_law_abbreviations(start_date=20240101, end_date=20240131)
+print(abbrs)
+```
+
+#### Get law/article change history
+
+```python
+changes = client.search_law_change_history(registered_date=20240101)
+article_changes = client.search_law_article_change_history(law_id="009682", article_number=2)
+```
+
 ### Generated-only KR targets
 
 KR v1 includes generated clients for 89 public law.go.kr targets. `KRClient`
-wraps nine of them today: `law`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`,
-`detc`, `decc`, and `trty`. The remaining 80 targets are generated-only; import those clients directly from
+wraps 14 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
+`lsJoHstInf`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`, `detc`, `decc`,
+and `trty`. The remaining 75 targets are generated-only; import those clients directly from
 `lawpy.kr.generated`.
 
 ```python

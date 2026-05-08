@@ -1,13 +1,37 @@
 """Law (법령) module for Korean law API."""
 
+from typing import Any
+
 import xmltodict
 
 from lawpy.exceptions import ParseError
-from lawpy.kr.base import KoreanBaseClient
-from lawpy.models import Article, Item, Law, LawDetail, Paragraph, SubItem
+from lawpy.kr.generated.elaw import GeneratedElawClient
+from lawpy.kr.generated.lsAbrv import GeneratedLsabrvClient
+from lawpy.kr.generated.lsHstInf import GeneratedLshstinfClient
+from lawpy.kr.generated.lsJoHstInf import GeneratedLsjohstinfClient
+from lawpy.kr.generated.oldAndNew import GeneratedOldandnewClient
+from lawpy.models import (
+    Article,
+    Item,
+    Law,
+    LawAbbreviation,
+    LawArticleChangeHistoryEntry,
+    LawChangeHistoryEntry,
+    LawDetail,
+    LawOldAndNewDetail,
+    LawOldAndNewSummary,
+    Paragraph,
+    SubItem,
+)
 
 
-class LawClient(KoreanBaseClient):
+class LawClient(
+    GeneratedElawClient,
+    GeneratedOldandnewClient,
+    GeneratedLsabrvClient,
+    GeneratedLshstinfClient,
+    GeneratedLsjohstinfClient,
+):
     """Client for Law (법령) APIs."""
 
     def search_laws(
@@ -289,6 +313,190 @@ class LawClient(KoreanBaseClient):
 
         response = self._make_request(self.SERVICE_URL, params)
         return response.text
+
+    def search_english_laws(
+        self,
+        query: str,
+        page: int = 1,
+        per_page: int = 20,
+        sort: str = "lasc",
+    ) -> list[Law]:
+        """Search English laws via generated ``elaw.search_elaws`` wrapper."""
+        rows = self.search_elaws(query=query, page=page, display=per_page, sort=sort)
+        return [self._law_from_generated_dict(row) for row in rows]
+
+    def get_english_law_detail(
+        self,
+        law_id: str | None = None,
+        mst: str | None = None,
+    ) -> LawDetail:
+        """Get English law detail via generated ``elaw.get_elaw_detail`` wrapper."""
+        if law_id is None and mst is None:
+            msg = "Either law_id or mst must be provided"
+            raise ValueError(msg)
+        detail = self.get_elaw_detail(id=law_id, mst=mst)
+        return self._law_detail_from_generated_dict(detail, law_id=law_id, mst=mst, language="EN")
+
+    def search_law_old_and_new(
+        self,
+        query: str | None = None,
+        page: int = 1,
+        per_page: int = 20,
+        sort: str = "lasc",
+    ) -> list[LawOldAndNewSummary]:
+        """Search old/new law list via generated ``oldAndNew.search_oldAndNews`` wrapper."""
+        rows = self.search_oldAndNews(query=query, page=page, display=per_page, sort=sort)
+        return [
+            LawOldAndNewSummary(
+                law_id=row_data.get("신구법ID") or row_data.get("법령ID") or row_data.get("ID"),
+                law_name=row_data.get("신구법명") or row_data.get("법령명한글") or row_data.get("법령명"),
+                promulgation_date=row_data.get("공포일자") or row_data.get("LD"),
+                promulgation_number=str(row_data.get("공포번호") or row_data.get("LN") or "") or None,
+                raw=row_data,
+            )
+            for row in rows
+            for row_data in [self._generated_row(row)]
+        ]
+
+    def get_law_old_and_new_detail(
+        self,
+        law_id: str | None = None,
+        mst: str | None = None,
+    ) -> LawOldAndNewDetail:
+        """Get old/new law detail via generated ``oldAndNew.get_oldAndNew_detail`` wrapper."""
+        if law_id is None and mst is None:
+            msg = "Either law_id or mst must be provided"
+            raise ValueError(msg)
+        row = self._generated_row(self.get_oldAndNew_detail(id=law_id, mst=mst))
+        return LawOldAndNewDetail(
+            law_id=row.get("법령ID") or row.get("ID"),
+            law_name=row.get("법령명한글") or row.get("법령명"),
+            comparison_text=row.get("조문") or row.get("신구법비교") or row.get("비교내용") or row.get("contents"),
+            raw=row,
+        )
+
+    def search_law_abbreviations(
+        self,
+        start_date: int | None = None,
+        end_date: int | None = None,
+    ) -> list[LawAbbreviation]:
+        """Search law abbreviations via generated ``lsAbrv.search_lsAbrvs`` wrapper."""
+        rows = self.search_lsAbrvs(stddt=start_date, enddt=end_date)
+        return [
+            LawAbbreviation(
+                law_id=row_data.get("법령ID") or row_data.get("ID"),
+                law_name=row_data.get("법령명한글") or row_data.get("법령명"),
+                abbreviation=row_data.get("법령약칭명") or row_data.get("약칭명") or row_data.get("abbreviation"),
+                raw=row_data,
+            )
+            for row in rows
+            for row_data in [self._generated_row(row)]
+        ]
+
+    def search_law_change_history(
+        self,
+        registered_date: int | None = None,
+        org_code: str | None = None,
+        page: int = 1,
+        per_page: int = 20,
+    ) -> list[LawChangeHistoryEntry]:
+        """Search law-level change history via generated ``lsHstInf.search_lsHstInfs`` wrapper."""
+        rows = self.search_lsHstInfs(
+            regdt=registered_date,
+            org=org_code,
+            page=page,
+            display=per_page,
+        )
+        return [
+            LawChangeHistoryEntry(
+                law_id=row_data.get("법령ID") or row_data.get("ID"),
+                law_name=row_data.get("법령명한글") or row_data.get("법령명"),
+                change_date=row_data.get("변경일자") or row_data.get("regDt"),
+                raw=row_data,
+            )
+            for row in rows
+            for row_data in [self._generated_row(row)]
+        ]
+
+    def search_law_article_change_history(
+        self,
+        law_id: str,
+        article_number: int,
+        page: int = 1,
+        per_page: int = 20,
+    ) -> list[LawArticleChangeHistoryEntry]:
+        """Search article-level change history via generated ``lsJoHstInf.search_lsJoHstInfs`` wrapper."""
+        if not law_id:
+            msg = "law_id is required"
+            raise ValueError(msg)
+        jo = int(f"{article_number:04d}00")
+        rows = self.search_lsJoHstInfs(id=law_id, jo=jo, page=page, display=per_page)
+        return [
+            LawArticleChangeHistoryEntry(
+                law_id=row_data.get("법령ID") or row_data.get("ID"),
+                article_code=str(row_data.get("조문번호") or row_data.get("JO") or jo),
+                change_date=row_data.get("변경일자") or row_data.get("regDt"),
+                raw=row_data,
+            )
+            for row in rows
+            for row_data in [self._generated_row(row)]
+        ]
+
+    @staticmethod
+    def _generated_row(row: Any) -> dict[str, Any]:
+        if isinstance(row, dict):
+            return row
+        model_dump = getattr(row, "model_dump", None)
+        if callable(model_dump):
+            dumped = model_dump(by_alias=True)
+            if isinstance(dumped, dict):
+                return dumped
+        return {}
+
+    def _law_from_generated_dict(self, row: Any) -> Law:
+        row_data = self._generated_row(row)
+        return Law(
+            law_id=row_data.get("법령ID") or row_data.get("lawId") or row_data.get("ID") or "",
+            law_name=row_data.get("법령명한글")
+            or row_data.get("법령명영문")
+            or row_data.get("법령명")
+            or row_data.get("lawName")
+            or "",
+            law_no=str(row_data.get("공포번호") or row_data.get("lawNo") or ""),
+            promulgation_date=row_data.get("공포일자") or row_data.get("promulgationDate"),
+            enforcement_date=row_data.get("시행일자") or row_data.get("enforcementDate"),
+        )
+
+    def _law_detail_from_generated_dict(
+        self,
+        detail: Any,
+        law_id: str | None,
+        mst: str | None,
+        language: str,
+    ) -> LawDetail:
+        detail_data = self._generated_row(detail)
+        base = detail_data.get("기본정보")
+        if not isinstance(base, dict):
+            base = detail_data
+        promulgation_number = base.get("공포번호") or base.get("promulgationNumber")
+        try:
+            pn = int(promulgation_number) if promulgation_number else None
+        except (TypeError, ValueError):
+            pn = None
+
+        return LawDetail(
+            law_id=base.get("법령ID") or base.get("lawId") or law_id or str(mst or ""),
+            law_name_korean=base.get("법령명_한글") or base.get("법령명한글") or base.get("법령명영문") or base.get("lawName") or "",
+            law_name_chinese=base.get("법령명_한자") or base.get("lawNameChinese"),
+            law_name_abbr=base.get("법령명약칭") or base.get("lawNameAbbr"),
+            promulgation_date=base.get("공포일자") or base.get("promulgationDate"),
+            promulgation_number=pn,
+            enforcement_date=base.get("시행일자") or base.get("enforcementDate"),
+            law_type=base.get("법종구분") or base.get("lawType"),
+            ministry=base.get("소관부처") or base.get("ministry"),
+            articles=[],
+            language=language,
+        )
 
     def _parse_law_list(self, content: bytes) -> list[Law]:
         """Parse law list from XML response.

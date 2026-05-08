@@ -77,7 +77,7 @@ prefer `KRClient`.
 
 | Public surface | Backing target | Status |
 |----------------|----------------|--------|
-| `KRClient`, `law.py` | `law` | Partial public wrapper: search, detail, current list, history list, history detail |
+| `KRClient`, `law.py` | `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf` | Expanded public wrapper: law search/detail/list/history plus English laws, old-new comparison, abbreviations, and change-history feeds |
 | `KRClient`, `administrative_rule.py` | `admrul` | Partial public wrapper over generated `admrul`: administrative rule search, notice search (`knd=3`), detail |
 | `KRClient`, `ordinance.py` | `ordin` | Partial public wrapper over generated `ordin`: local ordinance search, local notice search (`knd=30010`), detail |
 | `KRClient`, `legal_terminology.py` | `lstrm` | Public wrapper over generated `lstrm`: legal term search and detail |
@@ -89,8 +89,8 @@ prefer `KRClient`.
 
 ## Generated-Only Targets
 
-The generated package contains 89 law.go.kr target clients. Nine targets are
-wrapped by `KRClient` today (`law`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`, `detc`, `decc`, `trty`), leaving 80
+The generated package contains 89 law.go.kr target clients. Fourteen targets are
+wrapped by `KRClient` today (`law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`, `detc`, `decc`, `trty`), leaving 75
 generated-only target modules.
 
 Use generated-only clients directly:
@@ -115,6 +115,21 @@ print(lawpy.help("generated"))
 ```
 
 or read `docs/kr/generated-coverage.md` in the repository.
+
+## Law Wrapper Methods
+
+- `search_laws()` - Search laws (target=law)
+- `get_law_detail()` - Get full text of a specific law
+- `get_law_list()` - Get current law list by effective date
+- `get_law_history()` - Get law amendment history list
+- `get_law_history_detail()` - Get detailed amendment history text
+- `search_english_laws()` - Search English law list (phase-1)
+- `get_english_law_detail()` - Get English law detail (phase-1)
+- `search_law_old_and_new()` - Get old/new law comparison metadata (stable model contract)
+- `get_law_old_and_new_detail()` - Get old/new law comparison detail (stable model contract)
+- `search_law_abbreviations()` - Get law abbreviations (stable model contract)
+- `search_law_change_history()` - Get law-level change history feed (stable model contract)
+- `search_law_article_change_history()` - Get article-level change history feed (JO mapping in wrapper)
 
 ## API Key
 
