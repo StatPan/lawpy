@@ -91,7 +91,10 @@ class GeneratedElawClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("LawSearch", {})
-        items = root.get("law", [])
+        if isinstance(root, dict):
+            items = root.get("law", [])
+        else:
+            items = root if isinstance(root, list) else []
         if isinstance(items, dict):
             items = [items]
         return [ElawList.model_validate(item) for item in items]

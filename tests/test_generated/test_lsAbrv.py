@@ -22,8 +22,8 @@ class TestGeneratedLsabrvClient:
         client._make_request = Mock(return_value=_mock_response({"LawSearch": {"law": [{"target": "val", "totalCnt": "val", "law id": "val"}]}}))
         result = client.search_lsAbrvs()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], LsabrvList)
+        assert len(result) == 1
+        assert isinstance(result[0], LsabrvList)
 
     def test_search_empty_response(self):
         client = _make_client()
@@ -38,3 +38,11 @@ class TestGeneratedLsabrvClient:
         client.search_lsAbrvs(stddt=1)
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "stdDt" in call_params
+
+    def test_search_accepts_root_list_fallback(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"LawSearch": [{"target": "val", "totalCnt": "val", "law id": "val"}]}))
+        result = client.search_lsAbrvs()
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert isinstance(result[0], LsabrvList)

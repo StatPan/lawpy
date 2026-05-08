@@ -22,8 +22,8 @@ class TestGeneratedLsstmdClient:
         client._make_request = Mock(return_value=_mock_response({"LsStmdSearch": {"law": [{"target": "val", "키워드": "val", "section": "val"}]}}))
         result = client.search_lsStmds()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], LsstmdList)
+        assert len(result) == 1
+        assert isinstance(result[0], LsstmdList)
 
     def test_search_empty_response(self):
         client = _make_client()
@@ -38,6 +38,14 @@ class TestGeneratedLsstmdClient:
         client.search_lsStmds(query="test")
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "query" in call_params
+
+    def test_search_accepts_root_list_fallback(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"LsStmdSearch": [{"target": "val", "키워드": "val", "section": "val"}]}))
+        result = client.search_lsStmds()
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert isinstance(result[0], LsstmdList)
 
     def test_detail_returns_model(self):
         client = _make_client()

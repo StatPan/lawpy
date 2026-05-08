@@ -87,7 +87,10 @@ class GeneratedOldandnewClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("OldAndNewLawSearch", {})
-        items = root.get("oldAndNew", [])
+        if isinstance(root, dict):
+            items = root.get("oldAndNew", [])
+        else:
+            items = root if isinstance(root, list) else []
         if isinstance(items, dict):
             items = [items]
         return [OldandnewList.model_validate(item) for item in items]

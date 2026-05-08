@@ -87,7 +87,10 @@ class GeneratedThdcmpClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("thdCmpLawSearch", {})
-        items = root.get("thdCmp", [])
+        if isinstance(root, dict):
+            items = root.get("thdCmp", [])
+        else:
+            items = root if isinstance(root, list) else []
         if isinstance(items, dict):
             items = [items]
         return [ThdcmpList.model_validate(item) for item in items]

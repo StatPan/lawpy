@@ -71,7 +71,10 @@ class GeneratedTrtyClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("TrtySearch", {})
-        items = root.get("Trty", [])
+        if isinstance(root, dict):
+            items = root.get("Trty", [])
+        else:
+            items = root if isinstance(root, list) else []
         if isinstance(items, dict):
             items = [items]
         return [TrtyList.model_validate(item) for item in items]

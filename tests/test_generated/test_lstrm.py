@@ -22,8 +22,8 @@ class TestGeneratedLstrmClient:
         client._make_request = Mock(return_value=_mock_response({"LsTrmSearch": {"lstrm": [{"target": "val", "키워드": "val", "section": "val"}]}}))
         result = client.search_lstrms()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], LstrmList)
+        assert len(result) == 1
+        assert isinstance(result[0], LstrmList)
 
     def test_search_empty_response(self):
         client = _make_client()
@@ -38,6 +38,14 @@ class TestGeneratedLstrmClient:
         client.search_lstrms(query="test")
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "query" in call_params
+
+    def test_search_accepts_root_list_fallback(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"LsTrmSearch": [{"target": "val", "키워드": "val", "section": "val"}]}))
+        result = client.search_lstrms()
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert isinstance(result[0], LstrmList)
 
     def test_detail_returns_model(self):
         client = _make_client()

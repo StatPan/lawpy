@@ -79,7 +79,10 @@ class GeneratedTtspecialdeccClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("Decc", {})
-        items = root.get("decc", [])
+        if isinstance(root, dict):
+            items = root.get("decc", [])
+        else:
+            items = root if isinstance(root, list) else []
         if isinstance(items, dict):
             items = [items]
         return [TtspecialdeccList.model_validate(item) for item in items]

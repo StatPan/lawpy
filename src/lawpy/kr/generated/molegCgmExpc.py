@@ -49,7 +49,7 @@ class GeneratedMolegcgmexpcClient(KoreanBaseClient):
 
         Returns:
             List of MolegcgmexpcList instances.
-            Response path: CgmExpc (item key not discovered)
+            Response path: CgmExpc.cgmExpc
         """
         params: dict = {"target": "molegCgmExpc", "type": "JSON"}
         if search is not None:
@@ -79,7 +79,12 @@ class GeneratedMolegcgmexpcClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("CgmExpc", {})
-        items = root if isinstance(root, list) else [root] if root else []
+        if isinstance(root, dict):
+            items = root.get("cgmExpc", [])
+        else:
+            items = root if isinstance(root, list) else []
+        if isinstance(items, dict):
+            items = [items]
         return [MolegcgmexpcList.model_validate(item) for item in items]
 
     def get_molegCgmExpc_detail(

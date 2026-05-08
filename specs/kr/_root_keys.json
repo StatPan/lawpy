@@ -2,15 +2,15 @@
   "acrSpecialDecc": {
     "target": "acrSpecialDecc",
     "root_key": "Decc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "decc",
+    "item_type": "dict",
     "status": "ok"
   },
   "adapSpecialDecc": {
     "target": "adapSpecialDecc",
     "root_key": "Decc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "decc",
+    "item_type": "dict",
     "status": "ok"
   },
   "admbyl": {
@@ -59,15 +59,15 @@
   "dapaCgmExpc": {
     "target": "dapaCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "decc": {
     "target": "decc",
     "root_key": "Decc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "decc",
+    "item_type": "dict",
     "status": "ok"
   },
   "detc": {
@@ -113,22 +113,22 @@
   "kcgCgmExpc": {
     "target": "kcgCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "kcsCgmExpc": {
     "target": "kcsCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "kdcaCgmExpc": {
     "target": "kdcaCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "kfsCgmExpc": {
@@ -141,8 +141,8 @@
   "khsCgmExpc": {
     "target": "khsCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "kipoCgmExpc": {
@@ -155,22 +155,22 @@
   "kmaCgmExpc": {
     "target": "kmaCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "kmstSpecialDecc": {
     "target": "kmstSpecialDecc",
     "root_key": "Decc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "decc",
+    "item_type": "dict",
     "status": "ok"
   },
   "kostatCgmExpc": {
     "target": "kostatCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "law": {
@@ -258,57 +258,57 @@
   "mafraCgmExpc": {
     "target": "mafraCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mcstCgmExpc": {
     "target": "mcstCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "meCgmExpc": {
     "target": "meCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mfdsCgmExpc": {
     "target": "mfdsCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mmaCgmExpc": {
     "target": "mmaCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mndCgmExpc": {
     "target": "mndCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "moeCgmExpc": {
     "target": "moeCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "moefCgmExpc": {
     "target": "moefCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "moelCgmExpc": {
@@ -321,22 +321,22 @@
   "mofCgmExpc": {
     "target": "mofCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mofaCgmExpc": {
     "target": "mofaCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mogefCgmExpc": {
     "target": "mogefCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mohwCgmExpc": {
@@ -349,8 +349,8 @@
   "moisCgmExpc": {
     "target": "moisCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mojCgmExpc": {
@@ -363,8 +363,8 @@
   "molegCgmExpc": {
     "target": "molegCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "molitCgmExpc": {
@@ -377,64 +377,64 @@
   "motieCgmExpc": {
     "target": "motieCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mouCgmExpc": {
     "target": "mouCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mpmCgmExpc": {
     "target": "mpmCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mpvaCgmExpc": {
     "target": "mpvaCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "msitCgmExpc": {
     "target": "msitCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "mssCgmExpc": {
     "target": "mssCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "naaccCgmExpc": {
     "target": "naaccCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "nfaCgmExpc": {
     "target": "nfaCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "npaCgmExpc": {
     "target": "npaCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "ntsCgmExpc": {
@@ -447,8 +447,8 @@
   "okaCgmExpc": {
     "target": "okaCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "oldAndNew": {
@@ -482,8 +482,8 @@
   "ppsCgmExpc": {
     "target": "ppsCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "prec": {
@@ -496,8 +496,8 @@
   "rdaCgmExpc": {
     "target": "rdaCgmExpc",
     "root_key": "CgmExpc",
-    "item_key": null,
-    "item_type": null,
+    "item_key": "cgmExpc",
+    "item_type": "dict",
     "status": "ok"
   },
   "thdCmp": {

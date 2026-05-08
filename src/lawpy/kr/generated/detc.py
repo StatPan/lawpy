@@ -67,7 +67,10 @@ class GeneratedDetcClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("DetcSearch", {})
-        items = root.get("Detc", [])
+        if isinstance(root, dict):
+            items = root.get("Detc", [])
+        else:
+            items = root if isinstance(root, list) else []
         if isinstance(items, dict):
             items = [items]
         return [DetcList.model_validate(item) for item in items]

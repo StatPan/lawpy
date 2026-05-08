@@ -22,8 +22,8 @@ class TestGeneratedEflawjosubClient:
         client._make_request = Mock(return_value=_mock_response({"법령": {"법령키": [{"법령키": "val", "법령ID": "val", "공포일자": "val"}]}}))
         result = client.search_eflawjosubs()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], EflawjosubList)
+        assert len(result) == 1
+        assert isinstance(result[0], EflawjosubList)
 
     def test_search_empty_response(self):
         client = _make_client()
@@ -38,3 +38,11 @@ class TestGeneratedEflawjosubClient:
         client.search_eflawjosubs(id="test")
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "ID" in call_params
+
+    def test_search_accepts_root_list_fallback(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"법령": [{"법령키": "val", "법령ID": "val", "공포일자": "val"}]}))
+        result = client.search_eflawjosubs()
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert isinstance(result[0], EflawjosubList)

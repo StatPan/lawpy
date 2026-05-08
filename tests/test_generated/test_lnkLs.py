@@ -22,8 +22,8 @@ class TestGeneratedLnklsClient:
         client._make_request = Mock(return_value=_mock_response({"LawSearch": [{"target": "val", "키워드": "val", "section": "val"}]}))
         result = client.search_lnkLss()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], LnklsList)
+        assert len(result) == 1
+        assert isinstance(result[0], LnklsList)
 
     def test_search_empty_response(self):
         client = _make_client()

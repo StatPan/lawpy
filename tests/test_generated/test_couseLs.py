@@ -22,8 +22,8 @@ class TestGeneratedCouselsClient:
         client._make_request = Mock(return_value=_mock_response({"result": [{"target": "val", "vcode": "val", "section": "val"}]}))
         result = client.search_couseLss()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], CouselsList)
+        assert len(result) == 1
+        assert isinstance(result[0], CouselsList)
 
     def test_search_empty_response(self):
         client = _make_client()

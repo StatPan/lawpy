@@ -49,7 +49,7 @@ class GeneratedKmstspecialdeccClient(KoreanBaseClient):
 
         Returns:
             List of KmstspecialdeccList instances.
-            Response path: Decc (item key not discovered)
+            Response path: Decc.decc
         """
         params: dict = {"target": "kmstSpecialDecc", "type": "JSON"}
         if search is not None:
@@ -79,7 +79,12 @@ class GeneratedKmstspecialdeccClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("Decc", {})
-        items = root if isinstance(root, list) else [root] if root else []
+        if isinstance(root, dict):
+            items = root.get("decc", [])
+        else:
+            items = root if isinstance(root, list) else []
+        if isinstance(items, dict):
+            items = [items]
         return [KmstspecialdeccList.model_validate(item) for item in items]
 
     def get_kmstSpecialDecc_detail(
