@@ -36,6 +36,7 @@ class GeneratedOrdinClient(KoreanBaseClient):
         ordinfd: int | None = None,
         lschapno: str | None = None,
         gana: str | None = None,
+        popyn: str | None = None,
         mobileyn: str | None = None,
     ) -> list[OrdinList]:
         """[GENERATED] 자치법규 목록 조회
@@ -43,7 +44,7 @@ class GeneratedOrdinClient(KoreanBaseClient):
         Args:
         nw: (1: 현행, 2: 연혁, 기본값: 현행)
         search: 검색범위 (기본 : 1 자치법규명) 2 : 본문검색
-        query: 검색범위에서 검색을 원하는 질의(default=*)
+        query: 검색범위에서 검색을 원하는 질의(defalut=*) (정확한 검색을 위한 문자열 검색 query='자동차')
         display: 검색된 결과 개수 (default=20 max=100)
         page: 검색 결과 페이지 (default=1)
         sort: 정렬옵션 (기본 : lasc 자치법규오름차순) ldes 자치법규 내림차순 dasc : 공포일자 오름차순 ddes : 공포일자 내림차순 nasc : 공포번호 오름차순 ndes : 공포번호 내림차순 efasc : 시행일자 오름차순 efdes : 시행일자 내림차순
@@ -59,6 +60,7 @@ class GeneratedOrdinClient(KoreanBaseClient):
         ordinfd: 분류코드별 검색. 분류코드는 지자체 분야코드 openAPI 참조
         lschapno: 법령분야별 검색(법령분야코드제공) (ex. 제1편 검색 lsChapNo=01000000 / 제1편2장,제1편2장1절 lsChapNo=01020000,01020100)
         gana: 사전식 검색 (ga,na,da…,etc)
+        popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
         mobileyn: 모바일여부
 
         Returns:
@@ -102,6 +104,8 @@ class GeneratedOrdinClient(KoreanBaseClient):
             params["lsChapNo"] = lschapno
         if gana is not None:
             params["gana"] = gana
+        if popyn is not None:
+            params["popYn"] = popyn
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
@@ -124,8 +128,8 @@ class GeneratedOrdinClient(KoreanBaseClient):
         """[GENERATED] 자치법규 본문 조회
 
         Args:
-        id: 자치법규 ID
-        mst: 자치법규 마스터 번호
+        id: 자치법규ID
+        mst: 자치법규 일련번호
         mobileyn: 모바일여부
 
         Returns:

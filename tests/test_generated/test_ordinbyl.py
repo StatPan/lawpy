@@ -19,7 +19,7 @@ def _mock_response(json_data):
 class TestGeneratedOrdinbylClient:
     def test_search_returns_list_of_models(self):
         client = _make_client()
-        client._make_request = Mock(return_value=_mock_response({"licBylSearch": [{"OC": "val", "target": "val", "search": "val"}]}))
+        client._make_request = Mock(return_value=_mock_response({"licBylSearch": [{"target": "val", "키워드": "val", "section": "val"}]}))
         result = client.search_ordinbyls()
         assert isinstance(result, list)
         assert len(result) == 1
@@ -34,7 +34,14 @@ class TestGeneratedOrdinbylClient:
 
     def test_search_passes_params(self):
         client = _make_client()
-        client._make_request = Mock(return_value=_mock_response({"licBylSearch": [{"OC": "val", "target": "val", "search": "val"}]}))
+        client._make_request = Mock(return_value=_mock_response({"licBylSearch": [{"target": "val", "키워드": "val", "section": "val"}]}))
         client.search_ordinbyls(search=1)
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "search" in call_params
+
+    def test_search_passes_mobileyn_param(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"licBylSearch": [{"target": "val", "키워드": "val", "section": "val"}]}))
+        client.search_ordinbyls(mobileyn="Y")
+        call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
+        assert call_params["mobileYn"] == "Y"

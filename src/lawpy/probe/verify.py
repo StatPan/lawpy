@@ -12,9 +12,16 @@ from lawpy.probe.snapshot import Snapshot, SnapshotStore
 SNAPSHOT_MODEL_MAP: dict[str, str] = {
     "kr.law.search": "LawList",
     "kr.law.eflaw.search": "LawList",
-    "kr.law.detail": "LawDetail",
+    # kr.law.detail is intentionally verified by live drift snapshots only:
+    # its generated spec model is request-shaped, while the live body response is nested.
     "kr.prec.search": "PrecList",
     "kr.prec.detail": "PrecDetail",
+}
+
+SNAPSHOT_IGNORED_FIELDS: dict[str, set[str]] = {
+    "kr.law.search": {"id", "공동부령정보"},
+    "kr.law.eflaw.search": {"id", "공동부령정보"},
+    "kr.prec.search": {"id"},
 }
 
 
@@ -60,8 +67,14 @@ class VerifyResult:
         }
 
 
-def _snapshot_top_level_fields(snapshot: Snapshot) -> list[str]:
-    fields = {path.split(".", 1)[0] for path in snapshot.schema}
+def _snapshot_model_fields(snapshot: Snapshot) -> list[str]:
+    """Return snapshot fields that should map to flat generated model aliases."""
+    paths = set(snapshot.schema)
+    fields: set[str] = set()
+    for path in paths:
+        if any(other.startswith(f"{path}.") for other in paths):
+            continue
+        fields.add(path.rsplit(".", 1)[-1].replace("[]", ""))
     return sorted(fields)
 
 
@@ -87,7 +100,11 @@ def verify_snapshot(name: str) -> VerifyResult:
     if model is None or not issubclass(model, BaseModel):
         return VerifyResult(name=name, model=model_name, error="generated model not found")
 
-    snapshot_fields = _snapshot_top_level_fields(snapshot)
+    ignored = SNAPSHOT_IGNORED_FIELDS.get(name, set())
+    snapshot_fields = [
+        field for field in _snapshot_model_fields(snapshot)
+        if field not in ignored
+    ]
     aliases = _model_aliases(model)
     snapshot_set = set(snapshot_fields)
     alias_set = set(aliases)

@@ -29,15 +29,16 @@ class GeneratedPrecClient(KoreanBaseClient):
         sort: str | None = None,
         date: int | None = None,
         prncyd: str | None = None,
-        nb: int | None = None,
+        nb: str | None = None,
         datsrcnm: str | None = None,
+        popyn: str | None = None,
         mobileyn: str | None = None,
     ) -> list[PrecList]:
         """[GENERATED] 판례 목록 조회
 
         Args:
         search: 검색범위 (기본 : 1 판례명) 2 : 본문검색
-        query: 검색범위에서 검색을 원하는 질의(검색 결과 리스트)
+        query: 검색범위에서 검색을 원하는 질의(검색 결과 리스트) (정확한 검색을 위한 문자열 검색 query='자동차')
         display: 검색된 결과 개수 (default=20 max=100)
         page: 검색 결과 페이지 (default=1)
         org: 법원종류 (대법원:400201, 하위법원:400202)
@@ -49,6 +50,7 @@ class GeneratedPrecClient(KoreanBaseClient):
         prncyd: 선고일자 검색(20090101~20090130)
         nb: 판례 사건번호
         datsrcnm: 데이터출처명 (국세법령정보시스템, 근로복지공단산재판례, 대법원)
+        popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
         mobileyn: 모바일여부
 
         Returns:
@@ -82,6 +84,8 @@ class GeneratedPrecClient(KoreanBaseClient):
             params["nb"] = nb
         if datsrcnm is not None:
             params["datSrcNm"] = datsrcnm
+        if popyn is not None:
+            params["popYn"] = popyn
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)

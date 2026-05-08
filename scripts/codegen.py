@@ -31,6 +31,35 @@ PARAM_KEY = "요청변수"
 RESP_KEY_CANDIDATES = ["출력변수", "출력결과", "필드", "요청변수", "col0"]
 DESC_KEY = "설명"
 VAL_KEY = "값"
+DETAIL_COMPAT_FIELDS: dict[str, list[tuple[str, str]]] = {
+    "detc": [("id", "ID"), ("lm", "LM")],
+    "expc": [("id", "ID"), ("lm", "LM")],
+    "trty": [("id", "ID")],
+}
+MOBILE_COMPAT_PARAMS: dict[str, list[dict[str, object]]] = {
+    target: [
+        {
+            "key": "mobileYn",
+            "pyname": "mobileyn",
+            "pytype": "str | None",
+            "required": False,
+            "description": "모바일여부",
+        }
+    ]
+    for target in (
+        "admbyl",
+        "admrul",
+        "detc",
+        "expc",
+        "law",
+        "licbyl",
+        "lstrm",
+        "ordin",
+        "ordinbyl",
+        "prec",
+        "trty",
+    )
+}
 
 SPECIAL_MODELS = dedent('''
 
@@ -172,15 +201,26 @@ def is_mobile_guide(spec: dict) -> bool:
     return html_name.startswith("mob") or "mobileYn=Y" in request_url
 
 
+def guide_family(html_name: str) -> str:
+    if not html_name.startswith("mob") or len(html_name) <= 3:
+        return html_name
+    return html_name[3].lower() + html_name[4:]
+
+
+def is_same_mobile_family(current: dict, candidate: dict) -> bool:
+    return guide_family(current.get("html_name", "")) == guide_family(candidate.get("html_name", ""))
+
+
 def should_replace_spec(target: str, current: dict | None, candidate: dict) -> bool:
     if current is None:
         return True
+    same_mobile_family = is_same_mobile_family(current, candidate)
+    if same_mobile_family and is_mobile_guide(current) and not is_mobile_guide(candidate):
+        return True
+    if same_mobile_family and not is_mobile_guide(current) and is_mobile_guide(candidate):
+        return False
     if target != "decc":
         return True
-    if is_mobile_guide(current) and not is_mobile_guide(candidate):
-        return True
-    if not is_mobile_guide(current) and is_mobile_guide(candidate):
-        return False
     return len(extract_response_fields(candidate)) > len(extract_response_fields(current))
 
 
@@ -264,6 +304,14 @@ def extract_params(spec: dict) -> list[dict]:
     return result
 
 
+def append_compat_params(params: list[dict], target: str) -> list[dict]:
+    existing = {param["pyname"] for param in params}
+    return params + [
+        param for param in MOBILE_COMPAT_PARAMS.get(target, [])
+        if param["pyname"] not in existing
+    ]
+
+
 def extract_response_fields(spec: dict) -> list[dict]:
     rows = spec.get("response", [])
     if not rows:
@@ -297,7 +345,7 @@ def extract_response_fields(spec: dict) -> list[dict]:
 
 def render_list_method(spec: dict, target: str, root_key: str | None, item_key: str | None) -> str:
     label = spec["label"]
-    params = extract_params(spec)
+    params = append_compat_params(extract_params(spec), target)
     endpoint_const = "SERVICE_URL" if extract_endpoint_type(spec) == "service" else "BASE_URL"
     model_cls = f"{target.capitalize()}List"
 
@@ -383,7 +431,7 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
 
 def render_detail_method(spec: dict, target: str, root_key: str | None) -> str:
     label = spec["label"]
-    params = extract_params(spec)
+    params = append_compat_params(extract_params(spec), target)
     endpoint_const = "SERVICE_URL" if extract_endpoint_type(spec) == "service" else "BASE_URL"
     model_cls = f"{target.capitalize()}Detail"
 
@@ -532,6 +580,15 @@ def render_test_file(
         assert call_params["popYn"] == "Y"
         assert "mobileYn" not in call_params''')
 
+        if target in MOBILE_COMPAT_PARAMS:
+            test_methods.append(f'''\
+    def test_search_passes_mobileyn_param(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({list_mock_json}))
+        client.search_{target}s(mobileyn="Y")
+        call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
+        assert call_params["mobileYn"] == "Y"''')
+
     if has_list and root_key_search and item_key:
         test_methods.append(f'''\
     def test_search_accepts_root_list_fallback(self):
@@ -568,6 +625,15 @@ def render_test_file(
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
         assert "{pkey}" in call_params''')
 
+        if target in MOBILE_COMPAT_PARAMS:
+            test_methods.append(f'''\
+    def test_detail_passes_mobileyn_param(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({detail_mock_json}))
+        client.get_{target}_detail(mobileyn="Y")
+        call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
+        assert call_params["mobileYn"] == "Y"''')
+
     methods_block = "\n\n".join(test_methods)
 
     import_block = f"from unittest.mock import Mock\n\n{model_import}\n{client_import}" if model_import else f"from unittest.mock import Mock\n\n{client_import}"
@@ -595,6 +661,7 @@ class TestGenerated{cap}Client:
 
 def render_model(target: str, kind: str, label: str, fields: list[dict], html_name: str) -> str:
     class_name = f"{target.capitalize()}{kind}"
+    field_lines: list[str]
     if fields:
         field_lines = [
             f'    {f["pyname"]}: str | None = Field(None, alias="{f["key"]}")'
@@ -602,6 +669,14 @@ def render_model(target: str, kind: str, label: str, fields: list[dict], html_na
         ]
     else:
         field_lines = ["    pass  # no response fields in spec"]
+
+    if kind == "Detail" and target in DETAIL_COMPAT_FIELDS:
+        existing_pynames = {f["pyname"] for f in fields}
+        if field_lines == ["    pass  # no response fields in spec"]:
+            field_lines = []
+        for pyname, alias in DETAIL_COMPAT_FIELDS[target]:
+            if pyname not in existing_pynames:
+                field_lines.append(f'    {pyname}: str | None = Field(None, alias="{alias}")')
 
     return f'''\
 class {class_name}(BaseModel):

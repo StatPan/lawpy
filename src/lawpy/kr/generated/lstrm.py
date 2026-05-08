@@ -22,7 +22,9 @@ class GeneratedLstrmClient(KoreanBaseClient):
         display: int | None = None,
         page: int | None = None,
         sort: str | None = None,
+        regdt: str | None = None,
         gana: str | None = None,
+        popyn: str | None = None,
         dickndcd: int | None = None,
         mobileyn: str | None = None,
     ) -> list[LstrmList]:
@@ -32,8 +34,10 @@ class GeneratedLstrmClient(KoreanBaseClient):
         query: 법령용어명에서 검색을 원하는 질의
         display: 검색된 결과 개수 (default=20 max=100)
         page: 검색 결과 페이지 (default=1)
-        sort: 정렬옵션(기본 : lasc 법령용어명 오름차순) ldes : 법령용어명 내림차순
+        sort: 정렬옵션(기본 : lasc 법령용어명 오름차순) ldes : 법령용어명 내림차순 rasc : 등록일자 오름차순 rdes : 등록일자 내림차순
+        regdt: 등록일자 범위 검색(20090101~20090130)
         gana: 사전식 검색 (ga,na,da…,etc)
+        popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
         dickndcd: 법령 종류 코드 (법령 : 010101, 행정규칙 : 010102)
         mobileyn: 모바일여부
 
@@ -50,8 +54,12 @@ class GeneratedLstrmClient(KoreanBaseClient):
             params["page"] = page
         if sort is not None:
             params["sort"] = sort
+        if regdt is not None:
+            params["regDt"] = regdt
         if gana is not None:
             params["gana"] = gana
+        if popyn is not None:
+            params["popYn"] = popyn
         if dickndcd is not None:
             params["dicKndCd"] = dickndcd
         if mobileyn is not None:
@@ -70,11 +78,13 @@ class GeneratedLstrmClient(KoreanBaseClient):
     def get_lstrm_detail(
         self,
         query: str | None = None,
+        mobileyn: str | None = None,
     ) -> LstrmDetail:
         """[GENERATED] 법령 용어 본문 조회
 
         Args:
         query: 상세조회하고자 하는 법령용어 명
+        mobileyn: 모바일여부
 
         Returns:
             LstrmDetail instance.
@@ -83,6 +93,8 @@ class GeneratedLstrmClient(KoreanBaseClient):
         params: dict = {"target": "lstrm", "type": "JSON"}
         if query is not None:
             params["query"] = query
+        if mobileyn is not None:
+            params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
         raw = data.get("LsTrmSearch", data)
