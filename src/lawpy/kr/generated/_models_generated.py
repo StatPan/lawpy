@@ -566,7 +566,7 @@ class DapacgmexpcDetail(BaseModel):
 class DeccList(BaseModel):
     """[GENERATED] Response model for 행정심판례 목록 조회.
 
-    Source: specs/kr/mobDeccListGuide.json
+    Source: specs/kr/deccListGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
@@ -582,6 +582,7 @@ class DeccList(BaseModel):
     사건명: str | None = Field(None, alias="사건명")
     사건번호: str | None = Field(None, alias="사건번호")
     처분일자: str | None = Field(None, alias="처분일자")
+    의결일자: str | None = Field(None, alias="의결일자")
     처분청: str | None = Field(None, alias="처분청")
     재결청: str | None = Field(None, alias="재결청")
     재결구분명: str | None = Field(None, alias="재결구분명")
@@ -591,18 +592,25 @@ class DeccList(BaseModel):
 class DeccDetail(BaseModel):
     """[GENERATED] Response model for 행정심판례 본문 조회.
 
-    Source: specs/kr/mobDeccInfoGuide.json
+    Source: specs/kr/deccInfoGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
-    id: str | None = Field(None, alias="ID")
-    lm: str | None = Field(None, alias="LM")
-    type: str | None = Field(None, alias="type")
-    mobileyn: str | None = Field(None, alias="mobileYn")
+    행정심판례일련번호: str | None = Field(None, alias="행정심판례일련번호")
+    사건명: str | None = Field(None, alias="사건명")
+    사건번호: str | None = Field(None, alias="사건번호")
+    처분일자: str | None = Field(None, alias="처분일자")
+    의결일자: str | None = Field(None, alias="의결일자")
+    처분청: str | None = Field(None, alias="처분청")
+    재결청: str | None = Field(None, alias="재결청")
+    재결례유형명: str | None = Field(None, alias="재결례유형명")
+    재결례유형코드: str | None = Field(None, alias="재결례유형코드")
+    주문: str | None = Field(None, alias="주문")
+    청구취지: str | None = Field(None, alias="청구취지")
+    이유: str | None = Field(None, alias="이유")
+    재결요지: str | None = Field(None, alias="재결요지")
 
 class DetcList(BaseModel):
     """[GENERATED] Response model for 헌재결정례 목록 조회.

@@ -84,12 +84,14 @@ class TestAdministrativeReviewDecisionClient:
 
     def test_detail_id_mapping(self) -> None:
         client = AdministrativeReviewDecisionClient(api_key="test_key")
-        client._make_request = Mock(return_value=_mock_response({"Decc": {"ID": "123"}}))
+        client._make_request = Mock(
+            return_value=_mock_response({"Decc": {"행정심판례일련번호": "123"}})
+        )
 
         detail = client.get_administrative_review_decision_detail(decision_id="123")
 
         assert isinstance(detail, DeccDetail)
-        assert detail.id == "123"
+        assert detail.행정심판례일련번호 == "123"
         params = client._make_request.call_args.kwargs["params"]
         assert params["target"] == "decc"
         assert params["ID"] == "123"
@@ -97,14 +99,16 @@ class TestAdministrativeReviewDecisionClient:
 
     def test_detail_name_mapping(self) -> None:
         client = AdministrativeReviewDecisionClient(api_key="test_key")
-        client._make_request = Mock(return_value=_mock_response({"Decc": {"LM": "테스트 행정심판례"}}))
+        client._make_request = Mock(
+            return_value=_mock_response({"Decc": {"사건명": "테스트 행정심판례"}})
+        )
 
         detail = client.get_administrative_review_decision_detail(
             decision_name="테스트 행정심판례"
         )
 
         assert isinstance(detail, DeccDetail)
-        assert detail.lm == "테스트 행정심판례"
+        assert detail.사건명 == "테스트 행정심판례"
         params = client._make_request.call_args.kwargs["params"]
         assert params["target"] == "decc"
         assert params["LM"] == "테스트 행정심판례"

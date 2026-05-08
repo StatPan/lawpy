@@ -166,6 +166,24 @@ def is_knowledge_base_guide(spec: dict) -> bool:
     return "법령정보지식베이스" in spec.get("request_url", "")
 
 
+def is_mobile_guide(spec: dict) -> bool:
+    html_name = spec.get("html_name", "")
+    request_url = spec.get("request_url", "") + spec.get("raw_url", "")
+    return html_name.startswith("mob") or "mobileYn=Y" in request_url
+
+
+def should_replace_spec(target: str, current: dict | None, candidate: dict) -> bool:
+    if current is None:
+        return True
+    if target != "decc":
+        return True
+    if is_mobile_guide(current) and not is_mobile_guide(candidate):
+        return True
+    if not is_mobile_guide(current) and is_mobile_guide(candidate):
+        return False
+    return len(extract_response_fields(candidate)) > len(extract_response_fields(current))
+
+
 def classify_spec_kind(html_name: str, spec: dict) -> str | None:
     if is_list_guide(html_name):
         return "list"
@@ -447,6 +465,9 @@ def render_test_file(
 
     sample_list_data = sample_data(list_fields)
     sample_detail_data = sample_data(detail_fields)
+    if target == "decc":
+        sample_list_data = '{"target": "val", "키워드": "val", "section": "val", "의결일자": "20240131"}'
+        sample_detail_data = '{"행정심판례일련번호": "val", "사건명": "val", "사건번호": "val", "주문": "val"}'
 
     if root_key_search and item_key:
         list_mock_json = f'{{"{root_key_search}": {{"{item_key}": [{sample_list_data}]}}}}'
@@ -466,6 +487,9 @@ def render_test_file(
     test_methods = []
 
     if has_list:
+        extra_list_asserts = ""
+        if target == "decc":
+            extra_list_asserts = "\n            assert result[0].의결일자 == \"20240131\""
         test_methods.append(f'''\
     def test_search_returns_list_of_models(self):
         client = _make_client()
@@ -473,7 +497,7 @@ def render_test_file(
         result = client.search_{target}s()
         assert isinstance(result, list)
         if result:
-            assert isinstance(result[0], {list_model})''')
+            assert isinstance(result[0], {list_model}){extra_list_asserts}''')
 
         test_methods.append(f'''\
     def test_search_empty_response(self):
@@ -495,16 +519,29 @@ def render_test_file(
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
         assert "{pkey}" in call_params''')
 
+        if target == "decc":
+            test_methods.append(f'''\
+    def test_search_passes_popyn_param(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({list_mock_json}))
+        client.search_{target}s(popyn="Y")
+        call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
+        assert call_params["popYn"] == "Y"
+        assert "mobileYn" not in call_params''')
+
     if has_detail:
         detail_params = extract_params(specs["info"])
         first_detail_param = detail_params[0] if detail_params else None
+        extra_detail_asserts = ""
+        if target == "decc":
+            extra_detail_asserts = "\n        assert result.사건명 == \"val\"\n        assert result.주문 == \"val\""
 
         test_methods.append(f'''\
     def test_detail_returns_model(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({detail_mock_json}))
         result = client.get_{target}_detail()
-        assert isinstance(result, {detail_model})''')
+        assert isinstance(result, {detail_model}){extra_detail_asserts}''')
 
         if first_detail_param:
             pkey = first_detail_param["key"]
@@ -594,14 +631,18 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
         target = extract_target(spec)
         if target == "unknown":
             continue
-        if target_filter and target != target_filter:
-            continue
         kind = classify_spec_kind(html_name, spec)
         if kind is None:
             continue
-        by_target.setdefault(target, {})[kind] = spec
+        target_specs = by_target.setdefault(target, {})
+        if should_replace_spec(target, target_specs.get(kind), spec):
+            target_specs[kind] = spec
 
-    print(f"Generating {len(by_target)} targets...")
+    selected_targets = [
+        target for target in sorted(by_target)
+        if target_filter is None or target == target_filter
+    ]
+    print(f"Generating {len(selected_targets)} targets...")
 
     if out_dir and not dry_run:
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -621,6 +662,7 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
 
     for target in sorted(by_target):
         specs = by_target[target]
+        selected = target_filter is None or target == target_filter
         rk = root_keys.get(target, {})
         root_key_search = rk.get("root_key") if rk.get("status") == "ok" else None
         item_key = rk.get("item_key") if rk.get("status") == "ok" else None
@@ -645,9 +687,9 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
             model_imports.append(detail_model)
         import_line = ", ".join(sorted(model_imports))
 
-        if dry_run:
+        if dry_run and selected:
             print(method_code)
-        elif out_dir:
+        elif out_dir and selected:
             file_path = out_dir / f"{target}.py"
             header = (
                 f'"""Auto-generated client for target={target}\n'
@@ -666,7 +708,7 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
             file_path.write_text(header + method_code, encoding="utf-8")
             print(f"  ✅ {target:<20} root={root_key_search or '?':<25} item={item_key or '?'}")
 
-        if test_dir and not dry_run:
+        if test_dir and not dry_run and selected:
             test_code = render_test_file(
                 target, specs, root_key_search, item_key, root_key_detail,
             )
@@ -680,18 +722,18 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
                 fields = extract_response_fields(spec)
                 kind_label = "List" if kind == "list" else "Detail"
                 model_str = render_model(target, kind_label, label, fields, html_name)
-                if dry_run:
+                if dry_run and selected:
                     print(model_str)
-                else:
+                elif not dry_run:
                     model_lines.append(model_str)
 
     if not dry_run and out_dir:
         model_lines.append(SPECIAL_MODELS)
         models_path = out_dir / "_models_generated.py"
         models_path.write_text("".join(model_lines), encoding="utf-8")
-        print(f"\n✅ {len(by_target)} targets → {out_dir}")
+        print(f"\n✅ {len(selected_targets)} client targets → {out_dir}")
         print("✅ Special targets → drlaw, lsDelegated")
-        print(f"✅ Models → {models_path}")
+        print(f"✅ Models for {len(by_target)} targets → {models_path}")
     if test_dir and not dry_run:
         print(f"✅ Tests → {test_dir}")
 
