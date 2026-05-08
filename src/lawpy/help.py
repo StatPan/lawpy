@@ -63,7 +63,7 @@ KR = dedent(
 
         Precedent:
             search_precedents(query=None, page=1, per_page=20)
-            get_precedent_detail(case_id=None, mst=None)
+            get_precedent_detail(prec_id)
 
         Administrative rules and notices:
             search_administrative_rules(query=None, page=1, per_page=20)

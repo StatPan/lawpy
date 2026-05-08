@@ -84,7 +84,7 @@ prefer `KRClient`.
 | `KRClient`, `legal_interpretation.py` | `expc` | Thin public wrapper over generated `expc`: legal interpretation search and detail |
 | `KRClient`, `constitutional_decision.py` | `detc` | Thin public wrapper over generated `detc`: constitutional decision search and detail |
 | `KRClient`, `administrative_review_decision.py` | `decc` | Thin public wrapper over generated `decc`: administrative review decision search and detail |
-| `KRClient`, `precedent.py` | `prec` | Partial public wrapper: precedent search and detail using handwritten XML parsing; generated `prec` also exists |
+| `KRClient`, `precedent.py` | `prec` | Public wrapper: stable precedent search/detail models plus inherited generated `prec` methods |
 | `KRClient`, `treaty.py` | `trty` | Public wrapper over generated `trty`: treaty search and detail |
 
 ## Generated-Only Targets
