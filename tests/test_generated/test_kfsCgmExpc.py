@@ -22,8 +22,8 @@ class TestGeneratedKfscgmexpcClient:
         client._make_request = Mock(return_value=_mock_response({"CgmExpc": {"cgmExpc": [{"target": "val", "키워드": "val", "section": "val"}]}}))
         result = client.search_kfsCgmExpcs()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], KfscgmexpcList)
+        assert len(result) == 1
+        assert isinstance(result[0], KfscgmexpcList)
 
     def test_search_empty_response(self):
         client = _make_client()
@@ -38,6 +38,14 @@ class TestGeneratedKfscgmexpcClient:
         client.search_kfsCgmExpcs(search=1)
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "search" in call_params
+
+    def test_search_accepts_root_list_fallback(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"CgmExpc": [{"target": "val", "키워드": "val", "section": "val"}]}))
+        result = client.search_kfsCgmExpcs()
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert isinstance(result[0], KfscgmexpcList)
 
     def test_detail_returns_model(self):
         client = _make_client()

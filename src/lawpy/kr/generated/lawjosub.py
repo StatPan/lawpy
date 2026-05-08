@@ -55,7 +55,10 @@ class GeneratedLawjosubClient(KoreanBaseClient):
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
         root = data.get("법령", {})
-        items = root.get("법령키", [])
+        if isinstance(root, dict):
+            items = root.get("법령키", [])
+        else:
+            items = root if isinstance(root, list) else []
         if isinstance(items, dict):
             items = [items]
         return [LawjosubList.model_validate(item) for item in items]

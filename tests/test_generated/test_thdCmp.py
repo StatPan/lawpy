@@ -22,8 +22,8 @@ class TestGeneratedThdcmpClient:
         client._make_request = Mock(return_value=_mock_response({"thdCmpLawSearch": {"thdCmp": [{"target": "val", "키워드": "val", "section": "val"}]}}))
         result = client.search_thdCmps()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], ThdcmpList)
+        assert len(result) == 1
+        assert isinstance(result[0], ThdcmpList)
 
     def test_search_empty_response(self):
         client = _make_client()
@@ -38,6 +38,14 @@ class TestGeneratedThdcmpClient:
         client.search_thdCmps(query="test")
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "query" in call_params
+
+    def test_search_accepts_root_list_fallback(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"thdCmpLawSearch": [{"target": "val", "키워드": "val", "section": "val"}]}))
+        result = client.search_thdCmps()
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert isinstance(result[0], ThdcmpList)
 
     def test_detail_returns_model(self):
         client = _make_client()

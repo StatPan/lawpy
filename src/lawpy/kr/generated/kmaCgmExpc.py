@@ -49,7 +49,7 @@ class GeneratedKmacgmexpcClient(KoreanBaseClient):
 
         Returns:
             List of KmacgmexpcList instances.
-            Response path: CgmExpc (item key not discovered)
+            Response path: CgmExpc.cgmExpc
         """
         params: dict = {"target": "kmaCgmExpc", "type": "JSON"}
         if search is not None:
@@ -79,7 +79,12 @@ class GeneratedKmacgmexpcClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("CgmExpc", {})
-        items = root if isinstance(root, list) else [root] if root else []
+        if isinstance(root, dict):
+            items = root.get("cgmExpc", [])
+        else:
+            items = root if isinstance(root, list) else []
+        if isinstance(items, dict):
+            items = [items]
         return [KmacgmexpcList.model_validate(item) for item in items]
 
     def get_kmaCgmExpc_detail(

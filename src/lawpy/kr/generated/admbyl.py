@@ -67,7 +67,10 @@ class GeneratedAdmbylClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("admRulBylSearch", {})
-        items = root.get("admrulbyl", [])
+        if isinstance(root, dict):
+            items = root.get("admrulbyl", [])
+        else:
+            items = root if isinstance(root, list) else []
         if isinstance(items, dict):
             items = [items]
         return [AdmbylList.model_validate(item) for item in items]

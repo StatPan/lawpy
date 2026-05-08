@@ -22,8 +22,8 @@ class TestGeneratedSfcClient:
         client._make_request = Mock(return_value=_mock_response({"result": [{"target": "val", "키워드": "val", "section": "val"}]}))
         result = client.search_sfcs()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], SfcList)
+        assert len(result) == 1
+        assert isinstance(result[0], SfcList)
 
     def test_search_empty_response(self):
         client = _make_client()

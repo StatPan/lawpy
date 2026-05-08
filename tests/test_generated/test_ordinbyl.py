@@ -22,8 +22,8 @@ class TestGeneratedOrdinbylClient:
         client._make_request = Mock(return_value=_mock_response({"licBylSearch": [{"OC": "val", "target": "val", "search": "val"}]}))
         result = client.search_ordinbyls()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], OrdinbylList)
+        assert len(result) == 1
+        assert isinstance(result[0], OrdinbylList)
 
     def test_search_empty_response(self):
         client = _make_client()

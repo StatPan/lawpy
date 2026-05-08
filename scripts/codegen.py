@@ -318,7 +318,10 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
         parse_block = (
             f'        data = response.json()\n'
             f'        root = data.get("{root_key}", {{}})\n'
-            f'        items = root.get("{item_key}", [])\n'
+            f'        if isinstance(root, dict):\n'
+            f'            items = root.get("{item_key}", [])\n'
+            f'        else:\n'
+            f'            items = root if isinstance(root, list) else []\n'
             f'        if isinstance(items, dict):\n'
             f'            items = [items]\n'
             f'        return [{model_cls}.model_validate(item) for item in items]\n'
@@ -489,15 +492,15 @@ def render_test_file(
     if has_list:
         extra_list_asserts = ""
         if target == "decc":
-            extra_list_asserts = "\n            assert result[0].의결일자 == \"20240131\""
+            extra_list_asserts = "\n        assert result[0].의결일자 == \"20240131\""
         test_methods.append(f'''\
     def test_search_returns_list_of_models(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({list_mock_json}))
         result = client.search_{target}s()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], {list_model}){extra_list_asserts}''')
+        assert len(result) == 1
+        assert isinstance(result[0], {list_model}){extra_list_asserts}''')
 
         test_methods.append(f'''\
     def test_search_empty_response(self):
@@ -528,6 +531,16 @@ def render_test_file(
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
         assert call_params["popYn"] == "Y"
         assert "mobileYn" not in call_params''')
+
+    if has_list and root_key_search and item_key:
+        test_methods.append(f'''\
+    def test_search_accepts_root_list_fallback(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({{"{root_key_search}": [{sample_list_data}]}}))
+        result = client.search_{target}s()
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert isinstance(result[0], {list_model})''')
 
     if has_detail:
         detail_params = extract_params(specs["info"])

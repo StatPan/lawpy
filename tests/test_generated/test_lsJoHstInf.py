@@ -22,8 +22,8 @@ class TestGeneratedLsjohstinfClient:
         client._make_request = Mock(return_value=_mock_response({"LawSearch": [{"법령ID": "val", "법령명한글": "val", "법령일련번호": "val"}]}))
         result = client.search_lsJoHstInfs()
         assert isinstance(result, list)
-        if result:
-            assert isinstance(result[0], LsjohstinfList)
+        assert len(result) == 1
+        assert isinstance(result[0], LsjohstinfList)
 
     def test_search_empty_response(self):
         client = _make_client()
