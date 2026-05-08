@@ -3,6 +3,7 @@
 from lawpy.kr.administrative_review_decision import AdministrativeReviewDecisionClient
 from lawpy.kr.administrative_rule import AdministrativeRuleClient
 from lawpy.kr.annex_form import AnnexFormClient
+from lawpy.kr.committee_decision import CommitteeDecisionClient
 from lawpy.kr.constitutional_decision import ConstitutionalDecisionClient
 from lawpy.kr.law import LawClient
 from lawpy.kr.legal_interpretation import LegalInterpretationClient
@@ -25,6 +26,7 @@ class KRClient(
     LegalInterpretationClient,
     ConstitutionalDecisionClient,
     AdministrativeReviewDecisionClient,
+    CommitteeDecisionClient,
     SchoolPublicRuleClient,
     TreatyClient,
 ):
@@ -107,6 +109,11 @@ class KRClient(
       - :meth:`search_administrative_review_decisions`      행정심판례 목록 조회
       - :meth:`get_administrative_review_decision_detail`   행정심판례 본문 조회
 
+    **위원회결정문 (Committee Decisions) — implemented**:
+      - :meth:`list_committee_decision_targets` 지원 기관/대상 코드 조회
+      - :meth:`search_committee_decisions`      위원회결정문 목록 조회
+      - :meth:`get_committee_decision_detail`   위원회결정문 본문 조회
+
     **학칙·공단·공공기관 (School/Public Rules) — implemented**:
       - :meth:`search_school_public_rules`      학칙·공단·공공기관 목록 조회
       - :meth:`get_school_public_rule_detail`   학칙·공단·공공기관 본문 조회
@@ -116,7 +123,7 @@ class KRClient(
       - :meth:`get_treaty_detail`       조약 본문 조회
 
     **향후 구현 예정**:
-      - 위원회결정문 (Committee Decisions)
+      - 중앙부처 1차 해석 (Ministry Interpretations)
     """
 
     pass

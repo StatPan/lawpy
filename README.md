@@ -8,7 +8,7 @@ Universal law information API client library.
 - **Simple interface**: Intuitive API design for easy integration
 - **Type-safe**: Full type hints for better IDE support
 - **KRClient first**: One ergonomic entry point for implemented Korean APIs
-- **Generated KR coverage**: 98 Korean law.go.kr target clients are generated from specs; 71 are generated-only until public wrappers are added
+- **Generated KR coverage**: 98 Korean law.go.kr target clients are generated from specs; 58 are generated-only until public wrappers are added
 
 ## Installation
 
@@ -59,7 +59,7 @@ client = KRClient(api_key="your-api-key")
 `KRClient` is the main ergonomic object for Korean law.go.kr data. It combines
 the current public wrappers for laws, precedents, administrative rules, notices,
 annexes, forms, local ordinances, local notices, legal terminology, legal interpretations,
-constitutional decisions, administrative review decisions, and treaties.
+constitutional decisions, administrative review decisions, committee decisions, and treaties.
 `KoreanLawClient` remains available as a compatibility alias.
 
 #### Search for laws
@@ -158,11 +158,12 @@ article_changes = client.search_law_article_change_history(law_id="009682", arti
 ### Generated-only KR targets
 
 KR v1 includes generated clients for 98 public law.go.kr targets. `KRClient`
-wraps 27 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
+wraps 40 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
 `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`,
 `lstrm`, `lstrmAI`, `dlytrm`, `lstrmRlt`, `dlytrmRlt`, `lstrmRltJo`,
 `joRltLstrm`, `lsRlt`, `aiSearch`, `aiRltLs`, `expc`, `detc`, `decc`,
-`school`, and `trty`. The remaining 71 targets are generated-only; import those clients directly from
+`acr`, `baiPvcs`, `ecc`, `eiac`, `fsc`, `ftc`, `iaciac`, `kcc`, `nhrck`,
+`nlrc`, `oclt`, `ppc`, `sfc`, `school`, and `trty`. The remaining 58 targets are generated-only; import those clients directly from
 `lawpy.kr.generated`.
 
 ```python

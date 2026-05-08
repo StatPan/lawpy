@@ -20,15 +20,16 @@ lawpy/kr/
 ├── legal_interpretation.py    # Public legal interpretation (법령해석례) wrapper
 ├── constitutional_decision.py # Public constitutional decision (헌재결정례) wrapper
 ├── administrative_review_decision.py # Public administrative review decision (행정심판례) wrapper
+├── committee_decision.py      # Public committee decision (위원회결정문) wrapper
 ├── precedent.py               # Public precedent (판례) wrapper
 ├── treaty.py                  # Public treaty (조약) wrapper
 ├── generated/                 # 98 spec-generated law.go.kr target clients
 └── README.md
 ```
 
-Targets such as `committee/` or `ministry_interpretation/` are not public
-wrapper modules today. Their targets are available only through generated
-clients until wrappers are added.
+Targets such as `ministry_interpretation/` are not public wrapper modules today.
+Their targets are available only through generated clients until wrappers are
+added.
 
 ## Primary Usage
 
@@ -72,6 +73,13 @@ administrative_review_decision_detail = client.get_administrative_review_decisio
     decision_id=administrative_review_decisions[0].행정심판재결례일련번호
 )
 
+committee_targets = client.list_committee_decision_targets()
+committee_decisions = client.search_committee_decisions("ftc", "영업정지")
+committee_decision_detail = client.get_committee_decision_detail(
+    "ftc",
+    decision_id=committee_decisions[0].결정문_일련번호,
+)
+
 treaties = client.search_treaties("FTA", treaty_class=1)
 treaty_detail = client.get_treaty_detail(treaties[0].조약일련번호)
 ```
@@ -92,14 +100,15 @@ prefer `KRClient`.
 | `KRClient`, `legal_interpretation.py` | `expc` | Thin public wrapper over generated `expc`: legal interpretation search and detail |
 | `KRClient`, `constitutional_decision.py` | `detc` | Thin public wrapper over generated `detc`: constitutional decision search and detail |
 | `KRClient`, `administrative_review_decision.py` | `decc` | Thin public wrapper over generated `decc`: administrative review decision search and detail |
+| `KRClient`, `committee_decision.py` | `acr`, `baiPvcs`, `ecc`, `eiac`, `fsc`, `ftc`, `iaciac`, `kcc`, `nhrck`, `nlrc`, `oclt`, `ppc`, `sfc` | Public wrapper over committee decision and audit consultation opinion targets |
 | `KRClient`, `precedent.py` | `prec` | Public wrapper: stable precedent search/detail models plus inherited generated `prec` methods |
 | `KRClient`, `school_public_rule.py` | `school` | Thin public wrapper over generated `school`: school/corporation/public institution rule search and detail |
 | `KRClient`, `treaty.py` | `trty` | Public wrapper over generated `trty`: treaty search and detail |
 
 ## Generated-Only Targets
 
-The generated package contains 98 law.go.kr target clients. Twenty-seven targets are
-wrapped by `KRClient` today (`law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`, `lstrm`, `lstrmAI`, `dlytrm`, `lstrmRlt`, `dlytrmRlt`, `lstrmRltJo`, `joRltLstrm`, `lsRlt`, `aiSearch`, `aiRltLs`, `expc`, `detc`, `decc`, `school`, `trty`), leaving 71
+The generated package contains 98 law.go.kr target clients. Forty targets are
+wrapped by `KRClient` today (`law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`, `lstrm`, `lstrmAI`, `dlytrm`, `lstrmRlt`, `dlytrmRlt`, `lstrmRltJo`, `joRltLstrm`, `lsRlt`, `aiSearch`, `aiRltLs`, `expc`, `detc`, `decc`, `acr`, `baiPvcs`, `ecc`, `eiac`, `fsc`, `ftc`, `iaciac`, `kcc`, `nhrck`, `nlrc`, `oclt`, `ppc`, `sfc`, `school`, `trty`), leaving 58
 generated-only target modules.
 
 Use generated-only clients directly:

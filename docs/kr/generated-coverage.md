@@ -56,12 +56,25 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `lsRlt` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
 | `aiSearch` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
 | `aiRltLs` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
+| `acr` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `baiPvcs` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `ecc` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `eiac` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `fsc` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `ftc` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `iaciac` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `kcc` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `nhrck` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `nlrc` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `oclt` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `ppc` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `sfc` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
 
 ## Generated Matrix
 
 | Target | Generated client | Methods | Models | Generated tests | Public wrapper |
 | --- | --- | --- | --- | --- | --- |
-| `acr` | `GeneratedAcrClient` | `search_acrs`, `get_acr_detail` | yes | yes | generated only |
+| `acr` | `GeneratedAcrClient` | `search_acrs`, `get_acr_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `acrSpecialDecc` | `GeneratedAcrspecialdeccClient` | `search_acrSpecialDeccs`, `get_acrSpecialDecc_detail` | yes | yes | generated only |
 | `adapSpecialDecc` | `GeneratedAdapspecialdeccClient` | `search_adapSpecialDeccs`, `get_adapSpecialDecc_detail` | yes | yes | generated only |
 | `admbyl` | `GeneratedAdmbylClient` | `search_admbyls` | yes | yes | `AnnexFormClient`, `KRClient` |
@@ -69,7 +82,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `admrulOldAndNew` | `GeneratedAdmruloldandnewClient` | `search_admrulOldAndNews`, `get_admrulOldAndNew_detail` | yes | yes | generated only |
 | `aiRltLs` | `GeneratedAirltlsClient` | `search_aiRltLss` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `aiSearch` | `GeneratedAisearchClient` | `search_aiSearchs` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
-| `baiPvcs` | `GeneratedBaipvcsClient` | `search_baiPvcss`, `get_baiPvcs_detail` | yes | yes | generated only |
+| `baiPvcs` | `GeneratedBaipvcsClient` | `search_baiPvcss`, `get_baiPvcs_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `couseAdmrul` | `GeneratedCouseadmrulClient` | `search_couseAdmruls` | yes | yes | generated only |
 | `couseLs` | `GeneratedCouselsClient` | `search_couseLss` | yes | yes | generated only |
 | `couseOrdin` | `GeneratedCouseordinClient` | `search_couseOrdins` | yes | yes | generated only |
@@ -79,17 +92,17 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `drlaw` | `GeneratedDrlawClient` | `search_drlaws` | yes | yes | generated only |
 | `dlytrm` | `GeneratedDlytrmClient` | `search_dlytrms` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `dlytrmRlt` | `GeneratedDlytrmrltClient` | `get_dlytrmRlt_detail` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
-| `ecc` | `GeneratedEccClient` | `search_eccs`, `get_ecc_detail` | yes | yes | generated only |
+| `ecc` | `GeneratedEccClient` | `search_eccs`, `get_ecc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `eflaw` | `GeneratedEflawClient` | `search_eflaws`, `get_eflaw_detail` | yes | yes | generated only |
 | `eflawjosub` | `GeneratedEflawjosubClient` | `search_eflawjosubs` | yes | yes | generated only |
-| `eiac` | `GeneratedEiacClient` | `search_eiacs`, `get_eiac_detail` | yes | yes | generated only |
+| `eiac` | `GeneratedEiacClient` | `search_eiacs`, `get_eiac_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `elaw` | `GeneratedElawClient` | `search_elaws`, `get_elaw_detail` | yes | yes | `LawClient`, `KRClient` |
 | `expc` | `GeneratedExpcClient` | `search_expcs`, `get_expc_detail` | yes | yes | `LegalInterpretationClient`, `KRClient` |
-| `fsc` | `GeneratedFscClient` | `search_fscs`, `get_fsc_detail` | yes | yes | generated only |
-| `ftc` | `GeneratedFtcClient` | `search_ftcs`, `get_ftc_detail` | yes | yes | generated only |
-| `iaciac` | `GeneratedIaciacClient` | `search_iaciacs`, `get_iaciac_detail` | yes | yes | generated only |
+| `fsc` | `GeneratedFscClient` | `search_fscs`, `get_fsc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
+| `ftc` | `GeneratedFtcClient` | `search_ftcs`, `get_ftc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
+| `iaciac` | `GeneratedIaciacClient` | `search_iaciacs`, `get_iaciac_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `joRltLstrm` | `GeneratedJorltlstrmClient` | `get_joRltLstrm_detail` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
-| `kcc` | `GeneratedKccClient` | `search_kccs`, `get_kcc_detail` | yes | yes | generated only |
+| `kcc` | `GeneratedKccClient` | `search_kccs`, `get_kcc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `kcgCgmExpc` | `GeneratedKcgcgmexpcClient` | `search_kcgCgmExpcs`, `get_kcgCgmExpc_detail` | yes | yes | generated only |
 | `kcsCgmExpc` | `GeneratedKcscgmexpcClient` | `search_kcsCgmExpcs`, `get_kcsCgmExpc_detail` | yes | yes | generated only |
 | `kdcaCgmExpc` | `GeneratedKdcacgmexpcClient` | `search_kdcaCgmExpcs`, `get_kdcaCgmExpc_detail` | yes | yes | generated only |
@@ -140,22 +153,22 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `mssCgmExpc` | `GeneratedMsscgmexpcClient` | `search_mssCgmExpcs`, `get_mssCgmExpc_detail` | yes | yes | generated only |
 | `naaccCgmExpc` | `GeneratedNaacccgmexpcClient` | `search_naaccCgmExpcs`, `get_naaccCgmExpc_detail` | yes | yes | generated only |
 | `nfaCgmExpc` | `GeneratedNfacgmexpcClient` | `search_nfaCgmExpcs`, `get_nfaCgmExpc_detail` | yes | yes | generated only |
-| `nhrck` | `GeneratedNhrckClient` | `search_nhrcks`, `get_nhrck_detail` | yes | yes | generated only |
-| `nlrc` | `GeneratedNlrcClient` | `search_nlrcs`, `get_nlrc_detail` | yes | yes | generated only |
+| `nhrck` | `GeneratedNhrckClient` | `search_nhrcks`, `get_nhrck_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
+| `nlrc` | `GeneratedNlrcClient` | `search_nlrcs`, `get_nlrc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `npaCgmExpc` | `GeneratedNpacgmexpcClient` | `search_npaCgmExpcs`, `get_npaCgmExpc_detail` | yes | yes | generated only |
 | `ntsCgmExpc` | `GeneratedNtscgmexpcClient` | `search_ntsCgmExpcs` | yes | yes | generated only |
-| `oclt` | `GeneratedOcltClient` | `search_oclts`, `get_oclt_detail` | yes | yes | generated only |
+| `oclt` | `GeneratedOcltClient` | `search_oclts`, `get_oclt_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `okaCgmExpc` | `GeneratedOkacgmexpcClient` | `search_okaCgmExpcs`, `get_okaCgmExpc_detail` | yes | yes | generated only |
 | `oldAndNew` | `GeneratedOldandnewClient` | `search_oldAndNews`, `get_oldAndNew_detail` | yes | yes | `LawClient`, `KRClient` |
 | `oneview` | `GeneratedOneviewClient` | `search_oneviews`, `get_oneview_detail` | yes | yes | generated only |
 | `ordin` | `GeneratedOrdinClient` | `search_ordins`, `get_ordin_detail` | yes | yes | `OrdinanceClient`, `KRClient` |
 | `ordinbyl` | `GeneratedOrdinbylClient` | `search_ordinbyls` | yes | yes | `AnnexFormClient`, `KRClient` |
-| `ppc` | `GeneratedPpcClient` | `search_ppcs`, `get_ppc_detail` | yes | yes | generated only |
+| `ppc` | `GeneratedPpcClient` | `search_ppcs`, `get_ppc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `ppsCgmExpc` | `GeneratedPpscgmexpcClient` | `search_ppsCgmExpcs`, `get_ppsCgmExpc_detail` | yes | yes | generated only |
 | `prec` | `GeneratedPrecClient` | `search_precs`, `get_prec_detail` | yes | yes | `PrecedentClient`, `KRClient` |
 | `rdaCgmExpc` | `GeneratedRdacgmexpcClient` | `search_rdaCgmExpcs`, `get_rdaCgmExpc_detail` | yes | yes | generated only |
 | `school` | `GeneratedSchoolClient` | `search_schools`, `get_school_detail` | yes | yes | `SchoolPublicRuleClient`, `KRClient` |
-| `sfc` | `GeneratedSfcClient` | `search_sfcs`, `get_sfc_detail` | yes | yes | generated only |
+| `sfc` | `GeneratedSfcClient` | `search_sfcs`, `get_sfc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `thdCmp` | `GeneratedThdcmpClient` | `search_thdCmps`, `get_thdCmp_detail` | yes | yes | generated only |
 | `trty` | `GeneratedTrtyClient` | `search_trtys`, `get_trty_detail` | yes | yes | `TreatyClient`, `KRClient` |
 | `ttSpecialDecc` | `GeneratedTtspecialdeccClient` | `search_ttSpecialDeccs`, `get_ttSpecialDecc_detail` | yes | yes | generated only |

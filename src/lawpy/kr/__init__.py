@@ -19,6 +19,7 @@ from lawpy.kr.administrative_review_decision import AdministrativeReviewDecision
 from lawpy.kr.administrative_rule import AdministrativeRuleClient
 from lawpy.kr.annex_form import AnnexFormClient
 from lawpy.kr.client import KoreanLawClient, KRClient
+from lawpy.kr.committee_decision import CommitteeDecisionClient
 from lawpy.kr.constitutional_decision import ConstitutionalDecisionClient
 from lawpy.kr.law import LawClient
 from lawpy.kr.legal_interpretation import LegalInterpretationClient
@@ -34,6 +35,7 @@ __all__ = [
     "AdministrativeReviewDecisionClient",
     "ConstitutionalDecisionClient",
     "AnnexFormClient",
+    "CommitteeDecisionClient",
     "KRClient",
     "KoreanLawClient",
     "LawClient",

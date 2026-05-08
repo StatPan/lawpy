@@ -26,7 +26,7 @@ QUICKSTART = dedent(
         It combines the public wrappers for law, precedent, administrative rule,
         annex/form, local ordinance, legal terminology, legal knowledge-base,
         legal interpretation, constitutional decision, administrative review
-        decision, school/public rule, and treaty workflows.
+        decision, committee decision, school/public rule, and treaty workflows.
         KoreanLawClient is kept as a compatibility alias.
 
     Basic pattern:
@@ -108,6 +108,11 @@ KR = dedent(
             search_administrative_review_decisions(query=None, page=1, per_page=20)
             get_administrative_review_decision_detail(decision_id=None, decision_name=None)
 
+        Committee decisions:
+            list_committee_decision_targets()
+            search_committee_decisions(committee, query=None, page=1, per_page=20)
+            get_committee_decision_detail(committee, decision_id=None)
+
         School, corporation, and public institution rules:
             search_school_public_rules(query=None, page=1, per_page=20)
             get_school_public_rule_detail(rule_id=None, rule_lid=None, rule_name=None)
@@ -153,7 +158,7 @@ GENERATED = dedent(
 
     Coverage:
         KR v1 generated coverage includes 195 spec files, 98 generated modules,
-        98 generated tests, and 27 public wrapper targets. See
+        98 generated tests, and 40 public wrapper targets. See
         docs/kr/generated-coverage.md in the source repository for the full
         target/method matrix.
     """
