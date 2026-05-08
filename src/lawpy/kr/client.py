@@ -1,6 +1,7 @@
 """Integrated client for Korean law APIs."""
 
 from lawpy.kr.administrative_rule import AdministrativeRuleClient
+from lawpy.kr.constitutional_decision import ConstitutionalDecisionClient
 from lawpy.kr.law import LawClient
 from lawpy.kr.legal_interpretation import LegalInterpretationClient
 from lawpy.kr.legal_terminology import LegalTerminologyClient
@@ -16,6 +17,7 @@ class KRClient(
     OrdinanceClient,
     LegalTerminologyClient,
     LegalInterpretationClient,
+    ConstitutionalDecisionClient,
     TreatyClient,
 ):
     """Integrated client for Korean National Law Information Center API.
@@ -66,12 +68,15 @@ class KRClient(
       - :meth:`search_legal_interpretations`      법령해석례 목록 조회
       - :meth:`get_legal_interpretation_detail`   법령해석례 본문 조회
 
+    **헌재결정례 (Constitutional Decision) — implemented**:
+      - :meth:`search_constitutional_decisions`      헌재결정례 목록 조회
+      - :meth:`get_constitutional_decision_detail`   헌재결정례 본문 조회
+
     **조약 (Treaty) — implemented**:
       - :meth:`search_treaties`         조약 목록 조회
       - :meth:`get_treaty_detail`       조약 본문 조회
 
     **향후 구현 예정**:
-      - 헌재결정례 (Constitutional Court Decisions)
       - 행정심판례 (Administrative Review Cases)
       - 위원회결정문 (Committee Decisions)
       - 별표·서식 (Annexes and Forms)
