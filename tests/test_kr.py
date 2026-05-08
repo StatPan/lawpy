@@ -5,42 +5,49 @@ from unittest.mock import Mock, patch
 
 import pytest
 
+import lawpy
 from lawpy.exceptions import APIError, NotFoundError
-from lawpy.kr import KoreanLawClient
+from lawpy.kr import KoreanLawClient, KRClient
 
 
 @pytest.fixture
 def client():
     """Create a test client."""
-    return KoreanLawClient(api_key="test_key")
+    return KRClient(api_key="test_key")
 
 
-class TestKoreanLawClient:
-    """Tests for KoreanLawClient."""
+class TestKRClient:
+    """Tests for KRClient."""
+
+    def test_top_level_export(self):
+        """Test top-level and module exports point to the same client."""
+        assert lawpy.KRClient is KRClient
+        assert lawpy.KoreanLawClient is KRClient
+        assert KoreanLawClient is KRClient
 
     def test_init(self, client):
         """Test client initialization."""
         assert client.api_key == "test_key"
-        assert client.base_url == KoreanLawClient.BASE_URL
+        assert client.base_url == KRClient.BASE_URL
         assert client.timeout == 30
 
     def test_init_from_env(self):
         """Test client initialization from environment variable."""
         with patch.dict(os.environ, {"LAWPY_API_KEY": "env_key"}):
-            client = KoreanLawClient()
+            client = KRClient()
             assert client.api_key == "env_key"
 
     def test_init_env_override(self):
         """Test that explicit api_key overrides environment variable."""
         with patch.dict(os.environ, {"LAWPY_API_KEY": "env_key"}):
-            client = KoreanLawClient(api_key="explicit_key")
+            client = KRClient(api_key="explicit_key")
             assert client.api_key == "explicit_key"
 
     def test_init_no_api_key(self):
         """Test error when no api_key is provided."""
         with patch.dict(os.environ, {}, clear=True):
             with pytest.raises(ValueError) as exc_info:
-                KoreanLawClient()
+                KRClient()
 
             assert "LAWPY_KR_API_KEY" in str(exc_info.value)
 

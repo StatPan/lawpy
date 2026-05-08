@@ -27,21 +27,23 @@ python -m lawpy.help codegen
 
 ## Main Object
 
-Use `KoreanLawClient` first.
+Use `KRClient` first.
 
 ```python
-from lawpy import KoreanLawClient
+from lawpy import KRClient
 
-client = KoreanLawClient(api_key="your-open-law-email-id")
+client = KRClient(api_key="your-open-law-email-id")
 ```
 
-`KoreanLawClient` is the ergonomic public surface for Korean law.go.kr data. It
+`KRClient` is the ergonomic public surface for Korean law.go.kr data. It
 combines the implemented public wrappers for:
 
 - laws
 - precedents
 - administrative rules and notices
 - local ordinances and local notices
+
+`KoreanLawClient` remains available as a compatibility alias for existing code.
 
 ## One Pattern
 
@@ -67,7 +69,7 @@ ordinance = client.get_ordinance_detail(ordinance_id=ordinances[0].자치법규I
 
 ## Generated-Only Targets
 
-If `KoreanLawClient` does not expose a public wrapper for the target, import the
+If `KRClient` does not expose a public wrapper for the target, import the
 generated client directly:
 
 ```python
@@ -95,7 +97,7 @@ generated tests are public.
 
 Support contract:
 
-- Prefer `KoreanLawClient` for stable public workflows.
+- Prefer `KRClient` for stable public workflows.
 - Use generated clients for covered targets without a wrapper.
 - Generated output is reviewed through deterministic diffs, coverage docs, and CI.
 - Raw scraped specs may reflect upstream documentation quirks.

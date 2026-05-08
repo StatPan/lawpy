@@ -12,6 +12,7 @@ from lawpy.help import guide
 def test_top_level_help_points_to_main_client() -> None:
     text = lawpy.help()
 
+    assert "KRClient" in text
     assert "KoreanLawClient" in text
     assert "LAWPY_KR_API_KEY" in text
 

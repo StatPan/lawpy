@@ -6,17 +6,21 @@ from lawpy.kr.ordinance import OrdinanceClient
 from lawpy.kr.precedent import PrecedentClient
 
 
-class KoreanLawClient(LawClient, PrecedentClient, AdministrativeRuleClient, OrdinanceClient):
+class KRClient(LawClient, PrecedentClient, AdministrativeRuleClient, OrdinanceClient):
     """Integrated client for Korean National Law Information Center API.
 
     Provides a single entry-point for all implemented Korean law open-data APIs.
-    This is the object most users and AI agents should try first.
+    This is the primary object most users and AI agents should try first.
 
     Basic pattern:
-      >>> from lawpy import KoreanLawClient
-      >>> client = KoreanLawClient(api_key="your-open-law-email-id")
+      >>> from lawpy import KRClient
+      >>> client = KRClient(api_key="your-open-law-email-id")
       >>> laws = client.search_laws("민법", per_page=5)
       >>> detail = client.get_law_detail(law_id=laws[0].law_id)
+
+    ``KoreanLawClient`` remains available as a compatibility alias. New code
+    should prefer ``KRClient`` so future country/region modules can follow the
+    same pattern, such as ``USClient`` or ``EUClient``.
 
     If a target is not exposed here yet, use the generated client under
     ``lawpy.kr.generated.<target>``. Run ``import lawpy; print(lawpy.help())``
@@ -54,3 +58,6 @@ class KoreanLawClient(LawClient, PrecedentClient, AdministrativeRuleClient, Ordi
     """
 
     pass
+
+
+KoreanLawClient = KRClient
