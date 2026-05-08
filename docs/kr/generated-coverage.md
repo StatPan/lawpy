@@ -108,6 +108,17 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `okaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
 | `ppsCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
 | `rdaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `couseAdmrul` | `LawReferenceClient`, `KRClient` | implemented as customized article wrapper |
+| `couseLs` | `LawReferenceClient`, `KRClient` | implemented as customized article wrapper |
+| `couseOrdin` | `LawReferenceClient`, `KRClient` | implemented as customized article wrapper |
+| `lawjosub` | `LawReferenceClient`, `KRClient` | implemented as law article-unit wrapper |
+| `eflawjosub` | `LawReferenceClient`, `KRClient` | implemented as effective-date law article-unit wrapper |
+| `lnkLs` | `LawReferenceClient`, `KRClient` | implemented as law/ordinance link wrapper |
+| `lnkOrd` | `LawReferenceClient`, `KRClient` | implemented as law/ordinance link wrapper |
+| `drlaw` | `LawReferenceClient`, `KRClient` | implemented as law/ordinance link-status wrapper |
+| `lsDelegated` | `LawReferenceClient`, `KRClient` | implemented as delegated-law wrapper |
+| `oneview` | `LawReferenceClient`, `KRClient` | implemented as one-view wrapper |
+| `thdCmp` | `LawReferenceClient`, `KRClient` | implemented as three-way comparison wrapper |
 
 ## Generated Matrix
 
@@ -122,18 +133,18 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `aiRltLs` | `GeneratedAirltlsClient` | `search_aiRltLss` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `aiSearch` | `GeneratedAisearchClient` | `search_aiSearchs` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `baiPvcs` | `GeneratedBaipvcsClient` | `search_baiPvcss`, `get_baiPvcs_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
-| `couseAdmrul` | `GeneratedCouseadmrulClient` | `search_couseAdmruls` | yes | yes | generated only |
-| `couseLs` | `GeneratedCouselsClient` | `search_couseLss` | yes | yes | generated only |
-| `couseOrdin` | `GeneratedCouseordinClient` | `search_couseOrdins` | yes | yes | generated only |
+| `couseAdmrul` | `GeneratedCouseadmrulClient` | `search_couseAdmruls` | yes | yes | `LawReferenceClient`, `KRClient` |
+| `couseLs` | `GeneratedCouselsClient` | `search_couseLss` | yes | yes | `LawReferenceClient`, `KRClient` |
+| `couseOrdin` | `GeneratedCouseordinClient` | `search_couseOrdins` | yes | yes | `LawReferenceClient`, `KRClient` |
 | `dapaCgmExpc` | `GeneratedDapacgmexpcClient` | `search_dapaCgmExpcs`, `get_dapaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `decc` | `GeneratedDeccClient` | `search_deccs`, `get_decc_detail` | yes | yes | `AdministrativeReviewDecisionClient`, `KRClient` |
 | `detc` | `GeneratedDetcClient` | `search_detcs`, `get_detc_detail` | yes | yes | `ConstitutionalDecisionClient`, `KRClient` |
-| `drlaw` | `GeneratedDrlawClient` | `search_drlaws` | yes | yes | generated only |
+| `drlaw` | `GeneratedDrlawClient` | `search_drlaws` | yes | yes | `LawReferenceClient`, `KRClient` |
 | `dlytrm` | `GeneratedDlytrmClient` | `search_dlytrms` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `dlytrmRlt` | `GeneratedDlytrmrltClient` | `get_dlytrmRlt_detail` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `ecc` | `GeneratedEccClient` | `search_eccs`, `get_ecc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `eflaw` | `GeneratedEflawClient` | `search_eflaws`, `get_eflaw_detail` | yes | yes | generated only |
-| `eflawjosub` | `GeneratedEflawjosubClient` | `search_eflawjosubs` | yes | yes | generated only |
+| `eflawjosub` | `GeneratedEflawjosubClient` | `search_eflawjosubs` | yes | yes | `LawReferenceClient`, `KRClient` |
 | `eiac` | `GeneratedEiacClient` | `search_eiacs`, `get_eiac_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `elaw` | `GeneratedElawClient` | `search_elaws`, `get_elaw_detail` | yes | yes | `LawClient`, `KRClient` |
 | `expc` | `GeneratedExpcClient` | `search_expcs`, `get_expc_detail` | yes | yes | `LegalInterpretationClient`, `KRClient` |
@@ -152,12 +163,12 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `kmstSpecialDecc` | `GeneratedKmstspecialdeccClient` | `search_kmstSpecialDeccs`, `get_kmstSpecialDecc_detail` | yes | yes | generated only |
 | `kostatCgmExpc` | `GeneratedKostatcgmexpcClient` | `search_kostatCgmExpcs`, `get_kostatCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `law` | `GeneratedLawClient` | `search_laws`, `get_law_detail` | yes | yes | `LawClient`, `KRClient` |
-| `lawjosub` | `GeneratedLawjosubClient` | `search_lawjosubs` | yes | yes | generated only |
+| `lawjosub` | `GeneratedLawjosubClient` | `search_lawjosubs` | yes | yes | `LawReferenceClient`, `KRClient` |
 | `licbyl` | `GeneratedLicbylClient` | `search_licbyls` | yes | yes | `AnnexFormClient`, `KRClient` |
-| `lnkLs` | `GeneratedLnklsClient` | `search_lnkLss` | yes | yes | generated only |
-| `lnkOrd` | `GeneratedLnkordClient` | `search_lnkOrds` | yes | yes | generated only |
+| `lnkLs` | `GeneratedLnklsClient` | `search_lnkLss` | yes | yes | `LawReferenceClient`, `KRClient` |
+| `lnkOrd` | `GeneratedLnkordClient` | `search_lnkOrds` | yes | yes | `LawReferenceClient`, `KRClient` |
 | `lsAbrv` | `GeneratedLsabrvClient` | `search_lsAbrvs` | yes | yes | `LawClient`, `KRClient` |
-| `lsDelegated` | `GeneratedLsdelegatedClient` | `get_lsDelegated_detail` | yes | yes | generated only |
+| `lsDelegated` | `GeneratedLsdelegatedClient` | `get_lsDelegated_detail` | yes | yes | `LawReferenceClient`, `KRClient` |
 | `lsHistory` | `GeneratedLshistoryClient` | `search_lsHistorys`, `get_lsHistory_detail` | yes | yes | generated only |
 | `lsHstInf` | `GeneratedLshstinfClient` | `search_lsHstInfs` | yes | yes | `LawClient`, `KRClient` |
 | `lsJoHstInf` | `GeneratedLsjohstinfClient` | `search_lsJoHstInfs` | yes | yes | `LawClient`, `KRClient` |
@@ -199,7 +210,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `oclt` | `GeneratedOcltClient` | `search_oclts`, `get_oclt_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `okaCgmExpc` | `GeneratedOkacgmexpcClient` | `search_okaCgmExpcs`, `get_okaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `oldAndNew` | `GeneratedOldandnewClient` | `search_oldAndNews`, `get_oldAndNew_detail` | yes | yes | `LawClient`, `KRClient` |
-| `oneview` | `GeneratedOneviewClient` | `search_oneviews`, `get_oneview_detail` | yes | yes | generated only |
+| `oneview` | `GeneratedOneviewClient` | `search_oneviews`, `get_oneview_detail` | yes | yes | `LawReferenceClient`, `KRClient` |
 | `ordin` | `GeneratedOrdinClient` | `search_ordins`, `get_ordin_detail` | yes | yes | `OrdinanceClient`, `KRClient` |
 | `ordinbyl` | `GeneratedOrdinbylClient` | `search_ordinbyls` | yes | yes | `AnnexFormClient`, `KRClient` |
 | `ppc` | `GeneratedPpcClient` | `search_ppcs`, `get_ppc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
@@ -208,7 +219,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `rdaCgmExpc` | `GeneratedRdacgmexpcClient` | `search_rdaCgmExpcs`, `get_rdaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `school` | `GeneratedSchoolClient` | `search_schools`, `get_school_detail` | yes | yes | `SchoolPublicRuleClient`, `KRClient` |
 | `sfc` | `GeneratedSfcClient` | `search_sfcs`, `get_sfc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
-| `thdCmp` | `GeneratedThdcmpClient` | `search_thdCmps`, `get_thdCmp_detail` | yes | yes | generated only |
+| `thdCmp` | `GeneratedThdcmpClient` | `search_thdCmps`, `get_thdCmp_detail` | yes | yes | `LawReferenceClient`, `KRClient` |
 | `trty` | `GeneratedTrtyClient` | `search_trtys`, `get_trty_detail` | yes | yes | `TreatyClient`, `KRClient` |
 | `ttSpecialDecc` | `GeneratedTtspecialdeccClient` | `search_ttSpecialDeccs`, `get_ttSpecialDecc_detail` | yes | yes | generated only |
 

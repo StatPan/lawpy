@@ -6,6 +6,7 @@ from lawpy.kr.annex_form import AnnexFormClient
 from lawpy.kr.committee_decision import CommitteeDecisionClient
 from lawpy.kr.constitutional_decision import ConstitutionalDecisionClient
 from lawpy.kr.law import LawClient
+from lawpy.kr.law_reference import LawReferenceClient
 from lawpy.kr.legal_interpretation import LegalInterpretationClient
 from lawpy.kr.legal_knowledge_base import LegalKnowledgeBaseClient
 from lawpy.kr.legal_terminology import LegalTerminologyClient
@@ -29,6 +30,7 @@ class KRClient(
     AdministrativeReviewDecisionClient,
     CommitteeDecisionClient,
     MinistryInterpretationClient,
+    LawReferenceClient,
     SchoolPublicRuleClient,
     TreatyClient,
 ):
@@ -129,8 +131,18 @@ class KRClient(
       - :meth:`search_treaties`         조약 목록 조회
       - :meth:`get_treaty_detail`       조약 본문 조회
 
-    **향후 구현 예정**:
-      - 모바일 / 맞춤형 API 카테고리
+    **맞춤형 / 연계 / 비교 법령정보 — implemented**:
+      - :meth:`search_customized_articles`          맞춤형 조문 목록 조회
+      - :meth:`search_law_article_units`            현행법령 조항호목 조회
+      - :meth:`search_effective_law_article_units`  시행일 기준 조항호목 조회
+      - :meth:`search_ordinance_links_by_law`       법령 기준 자치법규 연계 조회
+      - :meth:`search_law_links_by_ordinance`       자치법규 기준 법령 연계 조회
+      - :meth:`search_law_ordinance_link_status`    법령-자치법규 연계현황 조회
+      - :meth:`get_delegated_law_detail`            위임법령 조회
+      - :meth:`search_oneview_laws`                 한눈보기 목록 조회
+      - :meth:`get_oneview_law_detail`              한눈보기 본문 조회
+      - :meth:`search_three_way_comparisons`        3단 비교 목록 조회
+      - :meth:`get_three_way_comparison_detail`     3단 비교 본문 조회
     """
 
     pass

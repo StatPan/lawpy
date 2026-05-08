@@ -27,7 +27,8 @@ QUICKSTART = dedent(
         annex/form, local ordinance, legal terminology, legal knowledge-base,
         legal interpretation, constitutional decision, administrative review
         decision, committee decision, ministry interpretation, school/public
-        rule, and treaty workflows.
+        rule, treaty, customized article, law/ordinance link, one-view, and
+        three-way comparison workflows.
         KoreanLawClient is kept as a compatibility alias.
 
     Basic pattern:
@@ -127,6 +128,19 @@ KR = dedent(
             search_treaties(query=None, page=1, per_page=20)
             get_treaty_detail(treaty_id)
 
+        Customized and reference APIs:
+            search_customized_articles(source, classification_code, page=1, per_page=20)
+            search_law_article_units(law_id=None, mst=None, article=None)
+            search_effective_law_article_units(law_id=None, mst=None, effective_date=None)
+            search_ordinance_links_by_law(query=None, page=1, per_page=20)
+            search_law_links_by_ordinance(query=None, page=1, per_page=20)
+            search_law_ordinance_link_status(query=None, page=1, per_page=20)
+            get_delegated_law_detail(law_id=None, mst=None)
+            search_oneview_laws(query=None, page=1, per_page=20)
+            get_oneview_law_detail(mst=None, law_name=None, article_number=None)
+            search_three_way_comparisons(query=None, page=1, per_page=20)
+            get_three_way_comparison_detail(comparison_kind=None, law_id=None, mst=None)
+
     One pattern teaches the rest:
         items = client.search_ordinances("서울", per_page=10)
         first = items[0]
@@ -164,7 +178,7 @@ GENERATED = dedent(
 
     Coverage:
         KR v1 generated coverage includes 195 spec files, 98 generated modules,
-        98 generated tests, and 79 public wrapper targets. See
+        98 generated tests, and 90 public wrapper targets. See
         docs/kr/generated-coverage.md in the source repository for the full
         target/method matrix.
     """

@@ -22,6 +22,7 @@ from lawpy.kr.client import KoreanLawClient, KRClient
 from lawpy.kr.committee_decision import CommitteeDecisionClient
 from lawpy.kr.constitutional_decision import ConstitutionalDecisionClient
 from lawpy.kr.law import LawClient
+from lawpy.kr.law_reference import LawReferenceClient
 from lawpy.kr.legal_interpretation import LegalInterpretationClient
 from lawpy.kr.legal_knowledge_base import LegalKnowledgeBaseClient
 from lawpy.kr.legal_terminology import LegalTerminologyClient
@@ -40,6 +41,7 @@ __all__ = [
     "KRClient",
     "KoreanLawClient",
     "LawClient",
+    "LawReferenceClient",
     "LegalKnowledgeBaseClient",
     "LegalInterpretationClient",
     "LegalTerminologyClient",

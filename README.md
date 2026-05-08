@@ -8,7 +8,7 @@ Universal law information API client library.
 - **Simple interface**: Intuitive API design for easy integration
 - **Type-safe**: Full type hints for better IDE support
 - **KRClient first**: One ergonomic entry point for implemented Korean APIs
-- **Generated KR coverage**: 98 Korean law.go.kr target clients are generated from specs; 19 are generated-only until public wrappers are added
+- **Generated KR coverage**: 98 Korean law.go.kr target clients are generated from specs; 8 are generated-only until public wrappers are added
 
 ## Installation
 
@@ -159,20 +159,22 @@ article_changes = client.search_law_article_change_history(law_id="009682", arti
 ### Generated-only KR targets
 
 KR v1 includes generated clients for 98 public law.go.kr targets. `KRClient`
-wraps 79 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
+wraps 90 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
 `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`,
 `lstrm`, `lstrmAI`, `dlytrm`, `lstrmRlt`, `dlytrmRlt`, `lstrmRltJo`,
 `joRltLstrm`, `lsRlt`, `aiSearch`, `aiRltLs`, `expc`, `detc`, `decc`,
 `acr`, `baiPvcs`, `ecc`, `eiac`, `fsc`, `ftc`, `iaciac`, `kcc`, `nhrck`,
 `nlrc`, `oclt`, `ppc`, `sfc`, the `*CgmExpc` ministry interpretation targets,
-`school`, and `trty`. The remaining 19 targets are generated-only; import those clients directly from
+`school`, `trty`, `couseAdmrul`, `couseLs`, `couseOrdin`, `lawjosub`,
+`eflawjosub`, `lnkLs`, `lnkOrd`, `drlaw`, `lsDelegated`, `oneview`, and
+`thdCmp`. The remaining 8 targets are generated-only; import those clients directly from
 `lawpy.kr.generated`.
 
 ```python
-from lawpy.kr.generated.decc import GeneratedDeccClient
+from lawpy.kr.generated.acrSpecialDecc import GeneratedAcrspecialdeccClient
 
-client = GeneratedDeccClient(api_key="your-api-key")
-decisions = client.search_deccs(query="영업정지", display=10, page=1)
+client = GeneratedAcrspecialdeccClient(api_key="your-api-key")
+decisions = client.search_acrSpecialDeccs(query="영업정지", display=10, page=1)
 row = decisions[0].model_dump(by_alias=True)
 ```
 
