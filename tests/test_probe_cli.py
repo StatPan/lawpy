@@ -105,6 +105,29 @@ def test_cmd_capture_json_stdout_is_valid_json(monkeypatch, capsys):
     assert "Capturing sample" in captured.err
 
 
+def test_cmd_capture_json_reports_error_and_returns_one(monkeypatch, capsys):
+    class FakeRunner:
+        def capture(self, name: str) -> object:
+            assert name == "sample"
+            raise RuntimeError("schema_path 'LawSearch.law' not found")
+
+        def close(self) -> None:
+            pass
+
+    monkeypatch.setattr(cli, "_get_runner", lambda api_key: FakeRunner())
+    monkeypatch.setattr(cli, "CONFIGS_BY_NAME", {"sample": object()})
+
+    exit_code = cli.cmd_capture(["sample"], api_key="secret", output_json=True)
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert captured.out.startswith("[\n")
+    assert "\"status\": \"error\"" in captured.out
+    assert "schema_path 'LawSearch.law' not found" in captured.out
+    assert "Capturing sample" not in captured.out
+    assert "Capturing sample" in captured.err
+
+
 def test_cmd_verify_json_stdout_is_valid_json(monkeypatch, capsys):
     from lawpy.probe.verify import VerifyResult
 
