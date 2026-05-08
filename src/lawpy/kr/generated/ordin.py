@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import OrdinDetail, OrdinList
 
 
-class OrdinClient(KoreanBaseClient):
+class GeneratedOrdinClient(KoreanBaseClient):
     """Auto-generated client for target=ordin.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── ordin ──────────────────────────────────────
@@ -37,7 +37,7 @@ class OrdinClient(KoreanBaseClient):
         lschapno: str | None = None,
         gana: str | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[OrdinList]:
         """[GENERATED] 자치법규 목록 조회
 
         Args:
@@ -62,7 +62,7 @@ class OrdinClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of OrdinList instances.
             Response path: OrdinSearch.law
         """
         params: dict = {"target": "ordin", "type": "JSON"}
@@ -110,14 +110,14 @@ class OrdinClient(KoreanBaseClient):
         items = root.get("law", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [OrdinList.model_validate(item) for item in items]
 
     def get_ordin_detail(
         self,
         id: str | None = None,
         mst: str | None = None,
         mobileyn: str | None = None,
-    ) -> dict:
+    ) -> OrdinDetail:
         """[GENERATED] 자치법규 본문 조회
 
         Args:
@@ -126,7 +126,7 @@ class OrdinClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            OrdinDetail instance.
             Response path: OrdinSearch
         """
         params: dict = {"target": "ordin", "type": "JSON"}
@@ -138,5 +138,6 @@ class OrdinClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("OrdinSearch", data)
+        raw = data.get("OrdinSearch", data)
+        return OrdinDetail.model_validate(raw)
 

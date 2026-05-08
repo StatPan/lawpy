@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import AdmrulDetail, AdmrulList
 
 
-class AdmrulClient(KoreanBaseClient):
+class GeneratedAdmrulClient(KoreanBaseClient):
     """Auto-generated client for target=admrul.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── admrul ──────────────────────────────────────
@@ -32,7 +32,7 @@ class AdmrulClient(KoreanBaseClient):
         modyd: str | None = None,
         nb: int | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[AdmrulList]:
         """[GENERATED] 행정규칙 목록 조회
 
         Args:
@@ -52,7 +52,7 @@ class AdmrulClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of AdmrulList instances.
             Response path: AdmRulSearch.admrul
         """
         params: dict = {"target": "admrul", "type": "JSON"}
@@ -90,14 +90,14 @@ class AdmrulClient(KoreanBaseClient):
         items = root.get("admrul", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [AdmrulList.model_validate(item) for item in items]
 
     def get_admrul_detail(
         self,
         id: str | None = None,
         lm: str | None = None,
         mobileyn: str | None = None,
-    ) -> dict:
+    ) -> AdmrulDetail:
         """[GENERATED] 행정규칙 본문 조회
 
         Args:
@@ -106,7 +106,7 @@ class AdmrulClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            AdmrulDetail instance.
             Response path: AdmRulSearch
         """
         params: dict = {"target": "admrul", "type": "JSON"}
@@ -118,5 +118,6 @@ class AdmrulClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("AdmRulSearch", data)
+        raw = data.get("AdmRulSearch", data)
+        return AdmrulDetail.model_validate(raw)
 

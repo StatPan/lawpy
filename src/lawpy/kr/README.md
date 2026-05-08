@@ -19,7 +19,7 @@ The module structure follows the official [Korean Law Open API Guide](https://op
 lawpy/kr/
 ├── base.py                    # Common base class (HTTP client, exception handling)
 ├── law.py                     # Law (법령) - main text, articles, history, etc.
-├── admin_rule.py              # Administrative Rules (행정규칙)
+├── administrative_rule.py     # Administrative Rules (행정규칙)
 ├── ordinance.py               # Autonomous Ordinances (자치법규)
 ├── precedent.py               # Precedents (판례)
 ├── constitutional_decision.py # Constitutional Court Decisions (헌재결정례)
@@ -42,7 +42,7 @@ lawpy/kr/
 | 구분 (Category) | Module | Description |
 |----------------|--------|-------------|
 | 법령 | `law.py` | Laws, decrees, ordinances with full text, articles, history |
-| 행정규칙 | `admin_rule.py` | Administrative rules and regulations |
+| 행정규칙 | `administrative_rule.py` | Administrative rules and regulations |
 | 자치법규 | `ordinance.py` | Local government ordinances |
 | 판례 | `precedent.py` | Court precedents |
 | 헌재결정례 | `constitutional_decision.py` | Constitutional Court decisions |
@@ -73,8 +73,16 @@ law_detail = client.get_law_detail(law_id="009682")
 law_history = client.get_law_history(query="민법")
 history_detail = client.get_law_history_detail(mst=9094)
 
-# Precedent APIs (to be implemented)
+# Precedent APIs
 precedents = client.search_precedents("민법")
+
+# Administrative rule APIs
+rules = client.search_administrative_rules("개인정보", rule_type="3")
+notices = client.search_notices("고시")
+
+# Local ordinance APIs
+ordinances = client.search_ordinances("서울특별시", ordinance_type="30001")
+local_notices = client.search_local_notices("고시")
 ```
 
 ### Individual Modules (Lightweight)
@@ -165,9 +173,9 @@ laws = client.search_laws("민법")
 | Category | Module | Status |
 |----------|--------|--------|
 | 법령 | `law.py` | ✅ Partial (search, detail, list, history) |
-| 행정규칙 | `admin_rule.py` | ⏳ Not started |
-| 자치법규 | `ordinance.py` | ⏳ Not started |
-| 판례 | `precedent.py` | ⏳ Not started |
+| 행정규칙 | `administrative_rule.py` | ✅ Partial (search, notices, detail) |
+| 자치법규 | `ordinance.py` | ✅ Partial (search, local notices, detail) |
+| 판례 | `precedent.py` | ✅ Partial (search, detail) |
 | 헌재결정례 | `constitutional_decision.py` | ⏳ Not started |
 | 법령해석례 | `interpretation.py` | ⏳ Not started |
 | 행정심판례 | `admin_review.py` | ⏳ Not started |

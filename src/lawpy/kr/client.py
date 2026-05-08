@@ -1,10 +1,12 @@
 """Integrated client for Korean law APIs."""
 
+from lawpy.kr.administrative_rule import AdministrativeRuleClient
 from lawpy.kr.law import LawClient
+from lawpy.kr.ordinance import OrdinanceClient
 from lawpy.kr.precedent import PrecedentClient
 
 
-class KoreanLawClient(LawClient, PrecedentClient):
+class KoreanLawClient(LawClient, PrecedentClient, AdministrativeRuleClient, OrdinanceClient):
     """Integrated client for Korean National Law Information Center API.
 
     Provides a single entry-point for all implemented Korean law open-data APIs.
@@ -20,9 +22,17 @@ class KoreanLawClient(LawClient, PrecedentClient):
       - :meth:`search_precedents`      판례 목록 조회
       - :meth:`get_precedent_detail`   판례 본문 조회
 
+    **행정규칙 (Administrative Rule) — implemented**:
+      - :meth:`search_administrative_rules` 행정규칙 목록 조회
+      - :meth:`search_notices`              고시 목록 조회 (행정규칙 knd=3)
+      - :meth:`get_administrative_rule_detail` 행정규칙 본문 조회
+
+    **자치법규 (Local Ordinance) — implemented**:
+      - :meth:`search_ordinances`      자치법규 목록 조회
+      - :meth:`search_local_notices`   자치법규 고시 목록 조회 (자치법규 knd=30010)
+      - :meth:`get_ordinance_detail`   자치법규 본문 조회
+
     **향후 구현 예정**:
-      - 행정규칙 (Administrative Rules)
-      - 자치법규 (Autonomous Ordinances)
       - 헌재결정례 (Constitutional Court Decisions)
       - 법령해석례 (Legal Interpretation Cases)
       - 행정심판례 (Administrative Review Cases)
