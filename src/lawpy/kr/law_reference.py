@@ -1,5 +1,6 @@
 """Law reference and customized article modules for Korean law API."""
 
+import re
 from typing import Literal, cast
 
 from lawpy.kr.generated._models_generated import (
@@ -32,6 +33,13 @@ from lawpy.kr.generated.thdCmp import GeneratedThdcmpClient
 CustomizedArticleSource = Literal["law", "administrative_rule", "ordinance"]
 CustomizedArticleList = CouselsList | CouseadmrulList | CouseordinList
 
+_CUSTOMIZED_CODE_PREFIX = {
+    "law": "L",
+    "administrative_rule": "A",
+    "ordinance": "O",
+}
+_CUSTOMIZED_CODE_PATTERN = re.compile(r"^[LAO]\d{13}$")
+
 
 class LawReferenceClient(
     GeneratedCouselsClient,
@@ -59,6 +67,7 @@ class LawReferenceClient(
         popup: bool | None = None,
     ) -> list[CustomizedArticleList]:
         """Search customized article lists by law, administrative rule, or ordinance code."""
+        self._validate_customized_article_code(source, classification_code)
         lj_jo = self._yn_flag(True if article_only is None else article_only)
         popyn = self._yn_flag(popup)
         if source == "law":
@@ -293,3 +302,22 @@ class LawReferenceClient(
         if value is None:
             return None
         return "Y" if value else "N"
+
+    @staticmethod
+    def _validate_customized_article_code(source: CustomizedArticleSource, classification_code: str) -> None:
+        expected_prefix = _CUSTOMIZED_CODE_PREFIX.get(source)
+        if expected_prefix is None:
+            msg = f"Unsupported customized article source: {source}"
+            raise ValueError(msg)
+        if not classification_code or not _CUSTOMIZED_CODE_PATTERN.match(classification_code):
+            msg = (
+                "classification_code must be a 14-character customized article code "
+                f"starting with {expected_prefix!r} for source {source!r}"
+            )
+            raise ValueError(msg)
+        if not classification_code.startswith(expected_prefix):
+            msg = (
+                "classification_code prefix does not match source "
+                f"{source!r}; expected prefix {expected_prefix!r}"
+            )
+            raise ValueError(msg)

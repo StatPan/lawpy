@@ -4,7 +4,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from lawpy.exceptions import ParseError
+from lawpy.exceptions import ApiResponseTypeError, ParseError
 from lawpy.kr import KRClient
 
 
@@ -72,3 +72,16 @@ def test_law_history_wraps_malformed_xml_with_preview() -> None:
     assert "Failed to parse XML law list response" in message
     assert "mismatched tag" in message
     assert "response preview: <LawSearch><law></LawSearch>" in message
+
+
+def test_law_history_rejects_html_response_before_xml_parse() -> None:
+    client = KRClient(api_key="test_key")
+    html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"><html></html>'
+    client._make_request = Mock(return_value=_xml_response(html))
+
+    with pytest.raises(ApiResponseTypeError) as exc_info:
+        client.get_law_history(query="임대사업자")
+
+    message = str(exc_info.value)
+    assert "Expected XML law list response but received HTML" in message
+    assert "response preview: <!DOCTYPE html PUBLIC" in message
