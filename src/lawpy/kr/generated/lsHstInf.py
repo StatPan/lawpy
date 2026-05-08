@@ -51,6 +51,21 @@ class GeneratedLshstinfClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("LawSearch", {})
-        items = root if isinstance(root, list) else [root] if root else []
+        if isinstance(root, list):
+            items = root
+        elif isinstance(root, dict):
+            items = []
+            found_items = False
+            for value in root.values():
+                if isinstance(value, list):
+                    items = value
+                    found_items = True
+                    break
+            if not found_items and root:
+                items = [root]
+        else:
+            items = []
+        if isinstance(items, dict):
+            items = [items]
         return [LshstinfList.model_validate(item) for item in items]
 

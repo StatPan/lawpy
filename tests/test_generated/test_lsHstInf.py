@@ -38,3 +38,10 @@ class TestGeneratedLshstinfClient:
         client.search_lsHstInfs(regdt=1)
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "regDt" in call_params
+
+    def test_search_nested_empty_list_response(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"LawSearch": {"items": []}}))
+        result = client.search_lsHstInfs()
+        assert isinstance(result, list)
+        assert len(result) == 0

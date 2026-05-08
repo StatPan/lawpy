@@ -39,6 +39,13 @@ class TestGeneratedBaipvcsClient:
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "search" in call_params
 
+    def test_search_nested_empty_list_response(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"BaiPvcs": {"items": []}}))
+        result = client.search_baiPvcss()
+        assert isinstance(result, list)
+        assert len(result) == 0
+
     def test_detail_returns_model(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({"BaiPvcs": {"감사원사전컨설팅의견서일련번호": "val", "의견서명": "val", "회신일자": "val"}}))

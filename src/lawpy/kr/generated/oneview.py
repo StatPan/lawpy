@@ -43,7 +43,22 @@ class GeneratedOneviewClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("items", {})
-        items = root if isinstance(root, list) else [root] if root else []
+        if isinstance(root, list):
+            items = root
+        elif isinstance(root, dict):
+            items = []
+            found_items = False
+            for value in root.values():
+                if isinstance(value, list):
+                    items = value
+                    found_items = True
+                    break
+            if not found_items and root:
+                items = [root]
+        else:
+            items = []
+        if isinstance(items, dict):
+            items = [items]
         return [OneviewList.model_validate(item) for item in items]
 
     def get_oneview_detail(

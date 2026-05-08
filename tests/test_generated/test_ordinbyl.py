@@ -45,3 +45,10 @@ class TestGeneratedOrdinbylClient:
         client.search_ordinbyls(mobileyn="Y")
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert call_params["mobileYn"] == "Y"
+
+    def test_search_nested_empty_list_response(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"licBylSearch": {"items": []}}))
+        result = client.search_ordinbyls()
+        assert isinstance(result, list)
+        assert len(result) == 0
