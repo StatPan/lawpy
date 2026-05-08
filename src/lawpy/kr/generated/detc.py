@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import DetcDetail, DetcList
 
 
-class DetcClient(KoreanBaseClient):
+class GeneratedDetcClient(KoreanBaseClient):
     """Auto-generated client for target=detc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── detc ──────────────────────────────────────
@@ -27,7 +27,7 @@ class DetcClient(KoreanBaseClient):
         date: int | None = None,
         nb: int | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[DetcList]:
         """[GENERATED] 헌재결정례 목록 조회
 
         Args:
@@ -42,7 +42,7 @@ class DetcClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of DetcList instances.
             Response path: DetcSearch.Detc
         """
         params: dict = {"target": "detc", "type": "JSON"}
@@ -70,14 +70,14 @@ class DetcClient(KoreanBaseClient):
         items = root.get("Detc", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [DetcList.model_validate(item) for item in items]
 
     def get_detc_detail(
         self,
         id: str | None = None,
         lm: str | None = None,
         mobileyn: str | None = None,
-    ) -> dict:
+    ) -> DetcDetail:
         """[GENERATED] 헌재결정례 본문 조회
 
         Args:
@@ -86,7 +86,7 @@ class DetcClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            DetcDetail instance.
             Response path: DetcSearch
         """
         params: dict = {"target": "detc", "type": "JSON"}
@@ -98,5 +98,6 @@ class DetcClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("DetcSearch", data)
+        raw = data.get("DetcSearch", data)
+        return DetcDetail.model_validate(raw)
 

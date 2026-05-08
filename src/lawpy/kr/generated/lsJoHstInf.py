@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import LsjohstinfList
 
 
-class LsjohstinfClient(KoreanBaseClient):
+class GeneratedLsjohstinfClient(KoreanBaseClient):
     """Auto-generated client for target=lsJoHstInf.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── lsJoHstInf ──────────────────────────────────────
@@ -22,7 +22,7 @@ class LsjohstinfClient(KoreanBaseClient):
         jo: int | None = None,
         display: int | None = None,
         page: int | None = None,
-    ) -> list[dict]:
+    ) -> list[LsjohstinfList]:
         """[GENERATED] 조문별 변경 이력 목록 조회
 
         Args:
@@ -32,7 +32,7 @@ class LsjohstinfClient(KoreanBaseClient):
         page: 검색 결과 페이지 (default=1)
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of LsjohstinfList instances.
             Response path: LawSearch (item key not discovered)
         """
         params: dict = {"target": "lsJoHstInf", "type": "JSON"}
@@ -47,6 +47,6 @@ class LsjohstinfClient(KoreanBaseClient):
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
         root = data.get("LawSearch", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [LsjohstinfList.model_validate(item) for item in items]
 

@@ -36,8 +36,10 @@
   },
   "baiPvcs": {
     "target": "baiPvcs",
-    "status": "error",
-    "error": "Client error '404 Not Found' for url 'https://www.law.go.kr/DRF/lawSearch.do?OC=dlfrnaos19&target=baiPvcs&type=JSON&display=1&query=%EB%AF%BC%EB%B2%95'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+    "root_key": "BaiPvcs",
+    "item_key": null,
+    "item_type": null,
+    "status": "ok"
   },
   "couseAdmrul": {
     "target": "couseAdmrul",
@@ -89,8 +91,10 @@
   },
   "eflawjosub": {
     "target": "eflawjosub",
-    "status": "error",
-    "error": "Expecting value: line 1 column 1 (char 0)"
+    "root_key": "법령",
+    "item_key": "법령키",
+    "item_type": "str",
+    "status": "ok"
   },
   "elaw": {
     "target": "elaw",
@@ -178,8 +182,10 @@
   },
   "lawjosub": {
     "target": "lawjosub",
-    "status": "error",
-    "error": "Expecting value: line 1 column 1 (char 0)"
+    "root_key": "법령",
+    "item_key": "법령키",
+    "item_type": "str",
+    "status": "ok"
   },
   "licbyl": {
     "target": "licbyl",
@@ -211,8 +217,10 @@
   },
   "lsDelegated": {
     "target": "lsDelegated",
-    "status": "error",
-    "error": "Expecting value: line 1 column 1 (char 0)"
+    "root_key": "lsDelegated",
+    "item_key": "법령",
+    "item_type": "dict",
+    "status": "ok"
   },
   "lsHistory": {
     "target": "lsHistory",

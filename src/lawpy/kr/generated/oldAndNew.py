@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import OldandnewDetail, OldandnewList
 
 
-class OldandnewClient(KoreanBaseClient):
+class GeneratedOldandnewClient(KoreanBaseClient):
     """Auto-generated client for target=oldAndNew.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── oldAndNew ──────────────────────────────────────
@@ -32,7 +32,7 @@ class OldandnewClient(KoreanBaseClient):
         knd: str | None = None,
         gana: str | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[OldandnewList]:
         """[GENERATED] 신구법 목록 조회
 
         Args:
@@ -52,7 +52,7 @@ class OldandnewClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of OldandnewList instances.
             Response path: OldAndNewLawSearch.oldAndNew
         """
         params: dict = {"target": "oldAndNew", "type": "JSON"}
@@ -90,7 +90,7 @@ class OldandnewClient(KoreanBaseClient):
         items = root.get("oldAndNew", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [OldandnewList.model_validate(item) for item in items]
 
     def get_oldAndNew_detail(
         self,
@@ -99,7 +99,7 @@ class OldandnewClient(KoreanBaseClient):
         lm: str | None = None,
         ld: int | None = None,
         ln: int | None = None,
-    ) -> dict:
+    ) -> OldandnewDetail:
         """[GENERATED] 신구법 본문 조회
 
         Args:
@@ -110,7 +110,7 @@ class OldandnewClient(KoreanBaseClient):
         ln: 법령의 공포번호
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            OldandnewDetail instance.
             Response path: OldAndNewLawSearch
         """
         params: dict = {"target": "oldAndNew", "type": "JSON"}
@@ -126,5 +126,6 @@ class OldandnewClient(KoreanBaseClient):
             params["LN"] = ln
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("OldAndNewLawSearch", data)
+        raw = data.get("OldAndNewLawSearch", data)
+        return OldandnewDetail.model_validate(raw)
 

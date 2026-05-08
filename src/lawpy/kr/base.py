@@ -1,11 +1,17 @@
 """Base class for Korean law API clients."""
 
 import os
+import xml.etree.ElementTree as ET
+from typing import Any
 
 import httpx
 
 from lawpy.client import LawClient
-from lawpy.exceptions import APIError
+from lawpy.exceptions import APIError, ApiResponseTypeError, ApiSubscriptionError
+
+_SUBSCRIPTION_MARKERS = ("미신청된 목록/본문",)
+
+_HTML_DOCTYPE = "<!DOCTYPE"
 
 
 class KoreanBaseClient(LawClient):
@@ -83,4 +89,92 @@ class KoreanBaseClient(LawClient):
         except httpx.RequestError as e:
             raise APIError(f"Request error: {e}") from e
 
+        self._check_response(response, str(params.get("target", "")))
         return response
+
+    def _check_response(self, response: httpx.Response, target: str) -> None:
+        """Check response for known API error patterns.
+
+        Args:
+            response: HTTP response to check
+            target: API target name for error messages
+
+        Raises:
+            ApiSubscriptionError: If the target is not subscribed
+            ApiResponseTypeError: If the API returns HTML instead of expected format
+        """
+        body = getattr(response, "text", "")
+        if not isinstance(body, str):
+            content = getattr(response, "content", b"")
+            if isinstance(content, bytes):
+                encoding = getattr(response, "encoding", None)
+                if not isinstance(encoding, str):
+                    encoding = "utf-8"
+                body = content.decode(encoding, errors="replace")
+            elif isinstance(content, str):
+                body = content
+            else:
+                body = ""
+
+        for marker in _SUBSCRIPTION_MARKERS:
+            if marker in body:
+                msg = (
+                    f"Target '{target}' is not activated in your API subscription. "
+                    f"Log in to https://open.law.go.kr and enable it under "
+                    f"[OPEN API] -> [OPEN API 신청]."
+                )
+                raise ApiSubscriptionError(msg, status_code=response.status_code, response=body)
+
+        request = getattr(response, "request", None)
+        request_params = getattr(request, "params", {}) or {}
+        response_type = str(request_params.get("type", "")).lower()
+        if "json" in response_type:
+            if _HTML_DOCTYPE in body:
+                msg = (
+                    f"Target '{target}' returned HTML instead of JSON. "
+                    f"This target may not support JSON responses."
+                )
+                raise ApiResponseTypeError(msg, status_code=response.status_code, response=body)
+
+    @staticmethod
+    def _xml_to_dict(element: ET.Element) -> dict[str, Any]:
+        """Convert an XML element to a dict.
+
+        Text content becomes a string value. Child elements with the same tag
+        are collected into a list. Attributes are ignored (the API uses id attrs
+        only as positional markers).
+        """
+        result: dict[str, Any] = {}
+        for child in element:
+            tag = child.tag
+            value: Any = child.text.strip() if child.text else None
+            if len(child) > 0:
+                value = KoreanBaseClient._xml_to_dict(child)
+            if tag in result:
+                existing = result[tag]
+                if isinstance(existing, list):
+                    existing.append(value)
+                else:
+                    result[tag] = [existing, value]
+            else:
+                result[tag] = value
+        return result
+
+    def _make_xml_request(
+        self,
+        url: str,
+        params: dict[str, str | int],
+    ) -> dict[str, Any]:
+        """Make HTTP request expecting XML response, return parsed dict.
+
+        Args:
+            url: Request URL
+            params: Request parameters (type=XML will be added automatically)
+
+        Returns:
+            Parsed dict from XML response
+        """
+        full_params = {**params, "type": "XML"}
+        response = self._make_request(url, params=full_params)
+        root = ET.fromstring(response.text)
+        return self._xml_to_dict(root)

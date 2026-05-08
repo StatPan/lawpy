@@ -21,13 +21,19 @@
   ],
   "response": [
     {
-      "col0": "샘플 URL"
+      "요청변수": "OC",
+      "값": "string(필수)",
+      "설명": "신청한 API인증값"
     },
     {
-      "col0": "1. 법령-자치법규 연계현황 조회"
+      "요청변수": "target",
+      "값": "string : drlaw(필수)",
+      "설명": "서비스 대상"
     },
     {
-      "col0": "http://www.law.go.kr/DRF/lawSearch.do?OC=test&target=drlaw&type=HTML"
+      "요청변수": "type",
+      "값": "char(필수)",
+      "설명": "출력 형태 HTML"
     }
   ],
   "raw_url": "https://open.law.go.kr/LSO/openApi/guideResult.do"

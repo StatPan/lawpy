@@ -1,0 +1,40 @@
+"""Auto-generated tests for target=couseLs."""
+
+from unittest.mock import Mock
+
+from lawpy.kr.generated._models_generated import CouselsList
+from lawpy.kr.generated.couseLs import GeneratedCouselsClient
+
+
+def _make_client() -> GeneratedCouselsClient:
+    return GeneratedCouselsClient(api_key="test_key")
+
+
+def _mock_response(json_data):
+    mock = Mock()
+    mock.json.return_value = json_data
+    return mock
+
+
+class TestGeneratedCouselsClient:
+    def test_search_returns_list_of_models(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"result": [{"target": "val", "vcode": "val", "section": "val"}]}))
+        result = client.search_couseLss()
+        assert isinstance(result, list)
+        if result:
+            assert isinstance(result[0], CouselsList)
+
+    def test_search_empty_response(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({}))
+        result = client.search_couseLss()
+        assert isinstance(result, list)
+        assert len(result) == 0
+
+    def test_search_passes_params(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"result": [{"target": "val", "vcode": "val", "section": "val"}]}))
+        client.search_couseLss(vcode="test")
+        call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
+        assert "vcode" in call_params

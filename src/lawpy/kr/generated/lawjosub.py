@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import LawjosubList
 
 
-class LawjosubClient(KoreanBaseClient):
+class GeneratedLawjosubClient(KoreanBaseClient):
     """Auto-generated client for target=lawjosub.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── lawjosub ──────────────────────────────────────
@@ -24,7 +24,7 @@ class LawjosubClient(KoreanBaseClient):
         hang: str | None = None,
         ho: str | None = None,
         mok: str | None = None,
-    ) -> list[dict]:
+    ) -> list[LawjosubList]:
         """[GENERATED] 현행법령(공포일) 본문 조항호목 조회
 
         Args:
@@ -36,8 +36,8 @@ class LawjosubClient(KoreanBaseClient):
         mok: 목 한자리 문자 예) 가,나,다,라, … 카,타,파,하 한글은 인코딩 하여 사용하여야 정상적으로 사용이가능 URLDecoder.decode('다', 'UTF-8')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
-            Root key not discovered — using best-effort extraction
+            List of LawjosubList instances.
+            Response path: 법령.법령키
         """
         params: dict = {"target": "lawjosub", "type": "JSON"}
         if id is not None:
@@ -54,12 +54,9 @@ class LawjosubClient(KoreanBaseClient):
             params["MOK"] = mok
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        if isinstance(data, list):
-            return data
-        for v in data.values():
-            if isinstance(v, list):
-                return v
-            if isinstance(v, dict):
-                return [v]
-        return []
+        root = data.get("법령", {})
+        items = root.get("법령키", [])
+        if isinstance(items, dict):
+            items = [items]
+        return [LawjosubList.model_validate(item) for item in items]
 

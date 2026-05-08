@@ -21,15 +21,133 @@ import argparse
 import json
 import re
 from pathlib import Path
+from textwrap import dedent
 
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
 
 PARAM_KEY = "요청변수"
-RESP_KEY_CANDIDATES = ["출력변수", "출력결과", "필드", "col0"]
+RESP_KEY_CANDIDATES = ["출력변수", "출력결과", "필드", "요청변수", "col0"]
 DESC_KEY = "설명"
 VAL_KEY = "값"
+
+SPECIAL_MODELS = dedent('''
+
+
+def _normalize_to_list(v: Any) -> list[Any]:
+    if v is None:
+        return []
+    if isinstance(v, dict):
+        return [v]
+    return v
+
+
+class LsdelegatedDepartmentInfo(BaseModel):
+    content: str | None = None
+    소관부처코드: str | None = None
+
+
+class LsdelegatedLawInfo(BaseModel):
+    법령ID: str | None = None
+    법령일련번호: str | None = None
+    소관부처: LsdelegatedDepartmentInfo | None = None
+    법령명: str | None = None
+    시행일자: str | None = None
+    공포번호: str | None = None
+    전화번호: str | None = None
+    공포일자: str | None = None
+
+
+class LsdelegatedArticleInfo(BaseModel):
+    조문번호: str | None = None
+    조문제목: str | None = None
+    조문가지번호: str | None = None
+
+
+class LsdelegatedAdminRuleArticle(BaseModel):
+    위임행정규칙제목: str | None = None
+    라인텍스트: str | None = None
+    위임행정규칙일련번호: str | None = None
+    조항호목: str | None = None
+    링크텍스트: str | None = None
+
+
+class LsdelegatedLawRuleArticle(BaseModel):
+    라인텍스트: str | None = None
+    위임법령조문번호: str | None = None
+    조항호목: str | None = None
+    링크텍스트: str | None = None
+    위임법령조문제목: str | None = None
+
+
+class LsdelegatedDelegateInfo(BaseModel):
+    위임구분: str | None = None
+    위임법령제목: str | None = None
+    위임법령일련번호: str | None = None
+    위임행정규칙조문정보: list[LsdelegatedAdminRuleArticle] = []
+    위임법령조문정보: list[LsdelegatedLawRuleArticle] = []
+
+    _normalize_admin = field_validator("위임행정규칙조문정보", mode="before")(_normalize_to_list)
+    _normalize_law = field_validator("위임법령조문정보", mode="before")(_normalize_to_list)
+
+
+class LsdelegatedDelegateArticle(BaseModel):
+    위임정보: list[LsdelegatedDelegateInfo] = []
+    조정보: LsdelegatedArticleInfo | None = None
+
+    _normalize_delegate = field_validator("위임정보", mode="before")(_normalize_to_list)
+
+
+class LsdelegatedDetail(BaseModel):
+    법령정보: LsdelegatedLawInfo | None = None
+    위임조문정보: list[LsdelegatedDelegateArticle] = []
+
+
+class DrlawList(BaseModel):
+    """Response model for 법령-자치법규 연계현황 조회 (drlaw, XML-only).
+
+    Source: specs/kr/lsOrdinConGuide.json + live API response analysis
+    """
+    model_config = {"populate_by_name": True}
+
+    법령일련번호: str | None = None
+    법령ID: str | None = None
+    법령공포일자: str | None = None
+    법령공포번호: str | None = None
+    법령명한글: str | None = None
+    조문일련번호: str | None = None
+    조문번호: str | None = None
+    조문가지번호: str | None = None
+    조문제목: str | None = None
+    조문개정표시포함여부: str | None = None
+    조문공포일자: str | None = None
+    조문시행일자: str | None = None
+    조문변경여부: str | None = None
+    전체건수: str | None = None
+    서울특별시: str | None = None
+    부산광역시: str | None = None
+    대구광역시: str | None = None
+    인천광역시: str | None = None
+    광주광역시: str | None = None
+    대전광역시: str | None = None
+    세종특별자치시: str | None = None
+    울산광역시: str | None = None
+    경기도: str | None = None
+    강원도: str | None = None
+    충청북도: str | None = None
+    충청남도: str | None = None
+    전라북도: str | None = None
+    전라남도: str | None = None
+    경상북도: str | None = None
+    경상남도: str | None = None
+    제주특별자치도: str | None = None
+    교육청: str | None = None
+    위임규제여부: str | None = None
+    소관부처명: str | None = None
+    소관부처코드: str | None = None
+    법령시행일자: str | None = None
+''')
 
 
 # ---------------------------------------------------------------------------
@@ -149,11 +267,11 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
     label = spec["label"]
     params = extract_params(spec)
     endpoint_const = "SERVICE_URL" if extract_endpoint_type(spec) == "service" else "BASE_URL"
+    model_cls = f"{target.capitalize()}List"
 
     param_sigs, param_docs, param_dict_lines = [], [], []
     for p in params:
         sig_type = "int | None" if p["pytype"].startswith("int") else "str | None"
-        # Always default to None — some specs incorrectly mark params as required
         param_sigs.append(f"        {p['pyname']}: {sig_type} = None")
         param_docs.append(f"        {p['pyname']}: {p['description']}")
         param_dict_lines.append(
@@ -164,7 +282,6 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
     docs = "\n".join(param_docs) or "        (no additional params)"
     pd = "\n".join(param_dict_lines)
 
-    # Generate the actual parsing logic from root_key + item_key
     if root_key and item_key:
         parse_block = (
             f'        data = response.json()\n'
@@ -172,46 +289,54 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
             f'        items = root.get("{item_key}", [])\n'
             f'        if isinstance(items, dict):\n'
             f'            items = [items]\n'
-            f'        return items or []\n'
+            f'        return [{model_cls}.model_validate(item) for item in items]\n'
         )
-        return_type = "list[dict]"
         note = f"Response path: {root_key}.{item_key}"
     elif root_key:
         parse_block = (
             f'        data = response.json()\n'
             f'        root = data.get("{root_key}", {{}})\n'
-            f'        result = root if isinstance(root, list) else [root] if root else []\n'
-            f'        return result\n'
+            f'        items = root if isinstance(root, list) else [root] if root else []\n'
+            f'        return [{model_cls}.model_validate(item) for item in items]\n'
         )
-        return_type = "list[dict]"
         note = f"Response path: {root_key} (item key not discovered)"
     else:
         parse_block = (
-            '        data = response.json()\n'
-            '        if isinstance(data, list):\n'
-            '            return data\n'
-            '        for v in data.values():\n'
-            '            if isinstance(v, list):\n'
-            '                return v\n'
-            '            if isinstance(v, dict):\n'
-            '                return [v]\n'
-            '        return []\n'
+            f'        data = response.json()\n'
+            f'        if isinstance(data, list):\n'
+            f'            raw = data\n'
+            f'        else:\n'
+            f'            raw = []\n'
+            f'            for v in data.values():\n'
+            f'                if isinstance(v, list):\n'
+            f'                    raw = v\n'
+            f'                    break\n'
+            f'                if isinstance(v, dict):\n'
+            f'                    for _ik, _iv in v.items():\n'
+            f'                        if _ik in ("resultMsg", "resultCode", "page", "totalCnt", "target", "키워드", "section", "numOfRows", "display", "query"):\n'
+            f'                            continue\n'
+            f'                        if isinstance(_iv, list) and _iv:\n'
+            f'                            raw = _iv\n'
+            f'                            break\n'
+            f'                    if not raw:\n'
+            f'                        raw = [v]\n'
+            f'                    break\n'
+            f'        return [{model_cls}.model_validate(item) for item in raw]\n'
         )
-        return_type = "list[dict]"
         note = "Root key not discovered — using best-effort extraction"
 
     return f'''\
     def search_{target}s(
         self,
 {sigs},
-    ) -> {return_type}:
+    ) -> list[{model_cls}]:
         """[GENERATED] {label}
 
         Args:
 {docs}
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of {model_cls} instances.
             {note}
         """
         params: dict = {{"target": "{target}", "type": "JSON"}}
@@ -225,6 +350,7 @@ def render_detail_method(spec: dict, target: str, root_key: str | None) -> str:
     label = spec["label"]
     params = extract_params(spec)
     endpoint_const = "SERVICE_URL" if extract_endpoint_type(spec) == "service" else "BASE_URL"
+    model_cls = f"{target.capitalize()}Detail"
 
     param_sigs, param_docs, param_dict_lines = [], [], []
     for p in params:
@@ -242,12 +368,13 @@ def render_detail_method(spec: dict, target: str, root_key: str | None) -> str:
     if root_key:
         parse_block = (
             f'        data = response.json()\n'
-            f'        return data.get("{root_key}", data)\n'
+            f'        raw = data.get("{root_key}", data)\n'
+            f'        return {model_cls}.model_validate(raw)\n'
         )
         note = f"Response path: {root_key}"
     else:
         parse_block = (
-            '        return response.json()\n'
+            f'        return {model_cls}.model_validate(response.json())\n'
         )
         note = "Root key not discovered — returning raw response"
 
@@ -255,14 +382,14 @@ def render_detail_method(spec: dict, target: str, root_key: str | None) -> str:
     def get_{target}_detail(
         self,
 {sigs},
-    ) -> dict:
+    ) -> {model_cls}:
         """[GENERATED] {label}
 
         Args:
 {docs}
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            {model_cls} instance.
             {note}
         """
         params: dict = {{"target": "{target}", "type": "JSON"}}
@@ -272,12 +399,145 @@ def render_detail_method(spec: dict, target: str, root_key: str | None) -> str:
 '''
 
 
+def render_test_file(
+    target: str,
+    specs: dict[str, dict],
+    root_key_search: str | None,
+    item_key: str | None,
+    root_key_detail: str | None,
+) -> str:
+    cap = target.capitalize()
+    has_list = "list" in specs
+    has_detail = "info" in specs
+
+    list_fields = extract_response_fields(specs["list"]) if has_list else []
+    detail_fields = extract_response_fields(specs["info"]) if has_detail else []
+
+    list_model = f"{cap}List"
+    detail_model = f"{cap}Detail"
+
+    client_import = f"from lawpy.kr.generated.{target} import Generated{cap}Client"
+    model_names = sorted(
+        [list_model] * has_list + [detail_model] * has_detail
+    )
+    model_import = (
+        f"from lawpy.kr.generated._models_generated import {', '.join(model_names)}"
+        if model_names else ""
+    )
+
+    def sample_data(fields: list[dict]) -> str:
+        if not fields:
+            return "{}"
+        body = ", ".join(f'"{field["key"]}": "val"' for field in fields[:3])
+        return f"{{{body}}}"
+
+    sample_list_data = sample_data(list_fields)
+    sample_detail_data = sample_data(detail_fields)
+
+    if root_key_search and item_key:
+        list_mock_json = f'{{"{root_key_search}": {{"{item_key}": [{sample_list_data}]}}}}'
+    elif root_key_search:
+        list_mock_json = f'{{"{root_key_search}": [{sample_list_data}]}}'
+    else:
+        list_mock_json = f'{{"result": [{sample_list_data}]}}'
+
+    if root_key_detail:
+        detail_mock_json = f'{{"{root_key_detail}": {sample_detail_data}}}'
+    else:
+        detail_mock_json = sample_detail_data
+
+    list_params = extract_params(specs["list"]) if has_list else []
+    first_list_param = list_params[0] if list_params else None
+
+    test_methods = []
+
+    if has_list:
+        test_methods.append(f'''\
+    def test_search_returns_list_of_models(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({list_mock_json}))
+        result = client.search_{target}s()
+        assert isinstance(result, list)
+        if result:
+            assert isinstance(result[0], {list_model})''')
+
+        test_methods.append(f'''\
+    def test_search_empty_response(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({{}}))
+        result = client.search_{target}s()
+        assert isinstance(result, list)
+        assert len(result) == 0''')
+
+        if first_list_param:
+            pkey = first_list_param["key"]
+            pname = first_list_param["pyname"]
+            pval = "1" if first_list_param["pytype"].startswith("int") else '"test"'
+            test_methods.append(f'''\
+    def test_search_passes_params(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({list_mock_json}))
+        client.search_{target}s({pname}={pval})
+        call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
+        assert "{pkey}" in call_params''')
+
+    if has_detail:
+        detail_params = extract_params(specs["info"])
+        first_detail_param = detail_params[0] if detail_params else None
+
+        test_methods.append(f'''\
+    def test_detail_returns_model(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({detail_mock_json}))
+        result = client.get_{target}_detail()
+        assert isinstance(result, {detail_model})''')
+
+        if first_detail_param:
+            pkey = first_detail_param["key"]
+            pname = first_detail_param["pyname"]
+            pval = '"1"' if first_detail_param["pytype"].startswith("str") else "1"
+            test_methods.append(f'''\
+    def test_detail_passes_params(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({detail_mock_json}))
+        client.get_{target}_detail({pname}={pval})
+        call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {{}}))
+        assert "{pkey}" in call_params''')
+
+    methods_block = "\n\n".join(test_methods)
+
+    import_block = f"from unittest.mock import Mock\n\n{model_import}\n{client_import}" if model_import else f"from unittest.mock import Mock\n\n{client_import}"
+
+    return f'''\
+"""Auto-generated tests for target={target}."""
+
+{import_block}
+
+
+def _make_client() -> Generated{cap}Client:
+    return Generated{cap}Client(api_key="test_key")
+
+
+def _mock_response(json_data):
+    mock = Mock()
+    mock.json.return_value = json_data
+    return mock
+
+
+class TestGenerated{cap}Client:
+{methods_block}
+'''
+
+
 def render_model(target: str, kind: str, label: str, fields: list[dict], html_name: str) -> str:
     class_name = f"{target.capitalize()}{kind}"
-    field_lines = [
-        f'    {f["pyname"]}: str | None = None  # {f["key"]}: {f["description"][:60]}'
-        for f in fields
-    ] or ["    pass  # no response fields in spec"]
+    if fields:
+        field_lines = [
+            f'    {f["pyname"]}: str | None = Field(None, alias="{f["key"]}")'
+            for f in fields
+        ]
+    else:
+        field_lines = ["    pass  # no response fields in spec"]
 
     return f'''\
 class {class_name}(BaseModel):
@@ -287,6 +547,8 @@ class {class_name}(BaseModel):
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
+    model_config = {{"populate_by_name": True}}
+
 {chr(10).join(field_lines)}
 
 '''
@@ -296,7 +558,7 @@ class {class_name}(BaseModel):
 # Main
 # ---------------------------------------------------------------------------
 
-def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_filter: str | None) -> None:
+def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_filter: str | None, test_dir: Path | None = None) -> None:
     index = json.loads((specs_dir / "_index.json").read_text())
 
     # Load root key mapping
@@ -330,12 +592,17 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
     if out_dir and not dry_run:
         out_dir.mkdir(parents=True, exist_ok=True)
 
+    if test_dir and not dry_run:
+        test_dir.mkdir(parents=True, exist_ok=True)
+
     model_lines = [
         '"""Auto-generated Pydantic models from specs/kr/*.json + _root_keys.json\n'
         "Run scripts/codegen.py to regenerate. Do not edit by hand.\n"
         '"""\n\n'
         "# ruff: noqa: E501\n\n"
-        "from pydantic import BaseModel\n\n\n",
+        "from __future__ import annotations\n\n"
+        "from typing import Any\n\n"
+        "from pydantic import BaseModel, Field, field_validator\n\n\n",
     ]
 
     for target in sorted(by_target):
@@ -355,6 +622,15 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
         if "info" in specs:
             method_code += render_detail_method(specs["info"], target, root_key_detail)
 
+        list_model = f"{target.capitalize()}List"
+        detail_model = f"{target.capitalize()}Detail"
+        model_imports = []
+        if "list" in specs:
+            model_imports.append(list_model)
+        if "info" in specs:
+            model_imports.append(detail_model)
+        import_line = ", ".join(sorted(model_imports))
+
         if dry_run:
             print(method_code)
         elif out_dir:
@@ -366,15 +642,21 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
                 f'"""\n'
                 f"# ruff: noqa: N802, E501\n"
                 f"from __future__ import annotations\n\n"
-                f"from lawpy.kr.base import KoreanBaseClient\n\n\n"
-                f"class {target.capitalize()}Client(KoreanBaseClient):\n"
+                f"from lawpy.kr.base import KoreanBaseClient\n"
+                f"from lawpy.kr.generated._models_generated import {import_line}\n\n\n"
+                f"class Generated{target.capitalize()}Client(KoreanBaseClient):\n"
                 f'    """Auto-generated client for target={target}.\n\n'
-                f'    All methods return plain dicts matching the API response schema.\n'
-                f'    See _models_generated.py for Pydantic models.\n'
+                f"    All methods return Pydantic models parsed from the API response.\n"
                 f'    """\n'
             )
             file_path.write_text(header + method_code, encoding="utf-8")
             print(f"  ✅ {target:<20} root={root_key_search or '?':<25} item={item_key or '?'}")
+
+        if test_dir and not dry_run:
+            test_code = render_test_file(
+                target, specs, root_key_search, item_key, root_key_detail,
+            )
+            (test_dir / f"test_{target}.py").write_text(test_code, encoding="utf-8")
 
         # Models
         if out_dir or dry_run:
@@ -390,10 +672,14 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
                     model_lines.append(model_str)
 
     if not dry_run and out_dir:
+        model_lines.append(SPECIAL_MODELS)
         models_path = out_dir / "_models_generated.py"
         models_path.write_text("".join(model_lines), encoding="utf-8")
         print(f"\n✅ {len(by_target)} targets → {out_dir}")
+        print("✅ Special targets → drlaw, lsDelegated")
         print(f"✅ Models → {models_path}")
+    if test_dir and not dry_run:
+        print(f"✅ Tests → {test_dir}")
 
 
 def main() -> None:
@@ -402,6 +688,7 @@ def main() -> None:
     parser.add_argument("--out", default="src/lawpy/kr/generated")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--target", default=None, help="Generate only this target")
+    parser.add_argument("--test-dir", default=None, help="Output dir for auto-generated tests (e.g. tests/test_generated)")
     args = parser.parse_args()
 
     process_specs(
@@ -409,6 +696,7 @@ def main() -> None:
         None if args.dry_run else Path(args.out),
         args.dry_run,
         args.target,
+        Path(args.test_dir) if args.test_dir else None,
     )
 
 

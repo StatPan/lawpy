@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import ExpcDetail, ExpcList
 
 
-class ExpcClient(KoreanBaseClient):
+class GeneratedExpcClient(KoreanBaseClient):
     """Auto-generated client for target=expc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── expc ──────────────────────────────────────
@@ -30,7 +30,7 @@ class ExpcClient(KoreanBaseClient):
         explyd: str | None = None,
         sort: str | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[ExpcList]:
         """[GENERATED] 법령해석례 목록 조회
 
         Args:
@@ -48,7 +48,7 @@ class ExpcClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of ExpcList instances.
             Response path: Expc.expc
         """
         params: dict = {"target": "expc", "type": "JSON"}
@@ -82,14 +82,14 @@ class ExpcClient(KoreanBaseClient):
         items = root.get("expc", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [ExpcList.model_validate(item) for item in items]
 
     def get_expc_detail(
         self,
         id: int | None = None,
         lm: str | None = None,
         mobileyn: str | None = None,
-    ) -> dict:
+    ) -> ExpcDetail:
         """[GENERATED] 법령해석례 본문 조회
 
         Args:
@@ -98,7 +98,7 @@ class ExpcClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            ExpcDetail instance.
             Response path: Expc
         """
         params: dict = {"target": "expc", "type": "JSON"}
@@ -110,5 +110,6 @@ class ExpcClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("Expc", data)
+        raw = data.get("Expc", data)
+        return ExpcDetail.model_validate(raw)
 

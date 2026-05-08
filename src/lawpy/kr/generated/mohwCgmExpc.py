@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import MohwcgmexpcDetail, MohwcgmexpcList
 
 
-class MohwcgmexpcClient(KoreanBaseClient):
+class GeneratedMohwcgmexpcClient(KoreanBaseClient):
     """Auto-generated client for target=mohwCgmExpc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── mohwCgmExpc ──────────────────────────────────────
@@ -30,7 +30,7 @@ class MohwcgmexpcClient(KoreanBaseClient):
         sort: str | None = None,
         popyn: str | None = None,
         fields: str | None = None,
-    ) -> list[dict]:
+    ) -> list[MohwcgmexpcList]:
         """[GENERATED] 보건복지부 법령해석 목록
 
         Args:
@@ -48,7 +48,7 @@ class MohwcgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of MohwcgmexpcList instances.
             Response path: CgmExpc.cgmExpc
         """
         params: dict = {"target": "mohwCgmExpc", "type": "JSON"}
@@ -82,14 +82,14 @@ class MohwcgmexpcClient(KoreanBaseClient):
         items = root.get("cgmExpc", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [MohwcgmexpcList.model_validate(item) for item in items]
 
     def get_mohwCgmExpc_detail(
         self,
         id: int | None = None,
         lm: str | None = None,
         fields: str | None = None,
-    ) -> dict:
+    ) -> MohwcgmexpcDetail:
         """[GENERATED] 보건복지부 법령해석 본문
 
         Args:
@@ -98,7 +98,7 @@ class MohwcgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            MohwcgmexpcDetail instance.
             Response path: CgmExpc
         """
         params: dict = {"target": "mohwCgmExpc", "type": "JSON"}
@@ -110,5 +110,6 @@ class MohwcgmexpcClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("CgmExpc", data)
+        raw = data.get("CgmExpc", data)
+        return MohwcgmexpcDetail.model_validate(raw)
 

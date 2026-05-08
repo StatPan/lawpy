@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import TtspecialdeccDetail, TtspecialdeccList
 
 
-class TtspecialdeccClient(KoreanBaseClient):
+class GeneratedTtspecialdeccClient(KoreanBaseClient):
     """Auto-generated client for target=ttSpecialDecc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── ttSpecialDecc ──────────────────────────────────────
@@ -30,7 +30,7 @@ class TtspecialdeccClient(KoreanBaseClient):
         sort: str | None = None,
         popyn: str | None = None,
         fields: str | None = None,
-    ) -> list[dict]:
+    ) -> list[TtspecialdeccList]:
         """[GENERATED] 조세심판원 특별행정심판례 목록 조회
 
         Args:
@@ -48,7 +48,7 @@ class TtspecialdeccClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 청구번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of TtspecialdeccList instances.
             Response path: Decc.decc
         """
         params: dict = {"target": "ttSpecialDecc", "type": "JSON"}
@@ -82,14 +82,14 @@ class TtspecialdeccClient(KoreanBaseClient):
         items = root.get("decc", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [TtspecialdeccList.model_validate(item) for item in items]
 
     def get_ttSpecialDecc_detail(
         self,
         id: str | None = None,
         lm: str | None = None,
         fields: str | None = None,
-    ) -> dict:
+    ) -> TtspecialdeccDetail:
         """[GENERATED] 조세심판원 특별행정심판례 본문 조회
 
         Args:
@@ -98,7 +98,7 @@ class TtspecialdeccClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 사건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            TtspecialdeccDetail instance.
             Response path: Decc
         """
         params: dict = {"target": "ttSpecialDecc", "type": "JSON"}
@@ -110,5 +110,6 @@ class TtspecialdeccClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("Decc", data)
+        raw = data.get("Decc", data)
+        return TtspecialdeccDetail.model_validate(raw)
 

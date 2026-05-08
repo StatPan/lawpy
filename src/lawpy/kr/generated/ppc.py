@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import PpcDetail, PpcList
 
 
-class PpcClient(KoreanBaseClient):
+class GeneratedPpcClient(KoreanBaseClient):
     """Auto-generated client for target=ppc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── ppc ──────────────────────────────────────
@@ -25,7 +25,7 @@ class PpcClient(KoreanBaseClient):
         gana: str | None = None,
         sort: str | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[PpcList]:
         """[GENERATED] 개인정보보호위원회 결정문 목록 조회
 
         Args:
@@ -38,7 +38,7 @@ class PpcClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of PpcList instances.
             Root key not discovered — using best-effort extraction
         """
         params: dict = {"target": "ppc", "type": "JSON"}
@@ -59,30 +59,41 @@ class PpcClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         if isinstance(data, list):
-            return data
-        for v in data.values():
-            if isinstance(v, list):
-                return v
-            if isinstance(v, dict):
-                return [v]
-        return []
+            raw = data
+        else:
+            raw = []
+            for v in data.values():
+                if isinstance(v, list):
+                    raw = v
+                    break
+                if isinstance(v, dict):
+                    for _ik, _iv in v.items():
+                        if _ik in ("resultMsg", "resultCode", "page", "totalCnt", "target", "키워드", "section", "numOfRows", "display", "query"):
+                            continue
+                        if isinstance(_iv, list) and _iv:
+                            raw = _iv
+                            break
+                    if not raw:
+                        raw = [v]
+                    break
+        return [PpcList.model_validate(item) for item in raw]
 
     def get_ppc_detail(
         self,
         id: str | None = None,
-    ) -> dict:
+    ) -> PpcDetail:
         """[GENERATED] 개인정보보호위원회 결정문 본문 조회
 
         Args:
         id: 결정문 일련번호
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            PpcDetail instance.
             Root key not discovered — returning raw response
         """
         params: dict = {"target": "ppc", "type": "JSON"}
         if id is not None:
             params["ID"] = id
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        return PpcDetail.model_validate(response.json())
 

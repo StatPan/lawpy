@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import MfdscgmexpcDetail, MfdscgmexpcList
 
 
-class MfdscgmexpcClient(KoreanBaseClient):
+class GeneratedMfdscgmexpcClient(KoreanBaseClient):
     """Auto-generated client for target=mfdsCgmExpc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── mfdsCgmExpc ──────────────────────────────────────
@@ -30,7 +30,7 @@ class MfdscgmexpcClient(KoreanBaseClient):
         sort: str | None = None,
         popyn: str | None = None,
         fields: str | None = None,
-    ) -> list[dict]:
+    ) -> list[MfdscgmexpcList]:
         """[GENERATED] 식품의약품안전처 법령해석 목록
 
         Args:
@@ -48,7 +48,7 @@ class MfdscgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of MfdscgmexpcList instances.
             Response path: CgmExpc (item key not discovered)
         """
         params: dict = {"target": "mfdsCgmExpc", "type": "JSON"}
@@ -79,15 +79,15 @@ class MfdscgmexpcClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("CgmExpc", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [MfdscgmexpcList.model_validate(item) for item in items]
 
     def get_mfdsCgmExpc_detail(
         self,
         id: int | None = None,
         lm: str | None = None,
         fields: str | None = None,
-    ) -> dict:
+    ) -> MfdscgmexpcDetail:
         """[GENERATED] 식품의약품안전처 법령해석 본문
 
         Args:
@@ -96,7 +96,7 @@ class MfdscgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            MfdscgmexpcDetail instance.
             Response path: CgmExpc
         """
         params: dict = {"target": "mfdsCgmExpc", "type": "JSON"}
@@ -108,5 +108,6 @@ class MfdscgmexpcClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("CgmExpc", data)
+        raw = data.get("CgmExpc", data)
+        return MfdscgmexpcDetail.model_validate(raw)
 
