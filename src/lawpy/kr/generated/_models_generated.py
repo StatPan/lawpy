@@ -101,24 +101,7 @@ class AcrspecialdeccDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    특별행정심판재결례일련번호: str | None = Field(None, alias="특별행정심판재결례일련번호")
-    사건명: str | None = Field(None, alias="사건명")
-    사건번호: str | None = Field(None, alias="사건번호")
-    처분일자: str | None = Field(None, alias="처분일자")
-    의결일자: str | None = Field(None, alias="의결일자")
-    처분청: str | None = Field(None, alias="처분청")
-    재결청: str | None = Field(None, alias="재결청")
-    재결례유형명: str | None = Field(None, alias="재결례유형명")
-    재결례유형코드: str | None = Field(None, alias="재결례유형코드")
-    주문: str | None = Field(None, alias="주문")
-    청구취지: str | None = Field(None, alias="청구취지")
-    이유: str | None = Field(None, alias="이유")
-    재결요지: str | None = Field(None, alias="재결요지")
-    상위처분청코드: str | None = Field(None, alias="상위처분청코드")
-    상위처분청: str | None = Field(None, alias="상위처분청")
-    관계법령: str | None = Field(None, alias="관계법령")
-    원본다운로드url: str | None = Field(None, alias="원본다운로드URL")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class AdapspecialdeccList(BaseModel):
     """[GENERATED] Response model for 인사혁신처 소청심사위원회 특별행정심판재결례 목록 조회.
@@ -156,30 +139,7 @@ class AdapspecialdeccDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    특별행정심판재결례일련번호: str | None = Field(None, alias="특별행정심판재결례일련번호")
-    사건명: str | None = Field(None, alias="사건명")
-    사건번호: str | None = Field(None, alias="사건번호")
-    처분일자: str | None = Field(None, alias="처분일자")
-    의결일자: str | None = Field(None, alias="의결일자")
-    처분청: str | None = Field(None, alias="처분청")
-    재결청: str | None = Field(None, alias="재결청")
-    재결례유형명: str | None = Field(None, alias="재결례유형명")
-    재결례유형코드: str | None = Field(None, alias="재결례유형코드")
-    주문: str | None = Field(None, alias="주문")
-    청구취지: str | None = Field(None, alias="청구취지")
-    이유: str | None = Field(None, alias="이유")
-    재결요지: str | None = Field(None, alias="재결요지")
-    소청사례명: str | None = Field(None, alias="소청사례명")
-    처분요지: str | None = Field(None, alias="처분요지")
-    소청이유: str | None = Field(None, alias="소청이유")
-    소청인: str | None = Field(None, alias="소청인")
-    피소청인: str | None = Field(None, alias="피소청인")
-    원처분: str | None = Field(None, alias="원처분")
-    결정유형: str | None = Field(None, alias="결정유형")
-    대분류: str | None = Field(None, alias="대분류")
-    중분류: str | None = Field(None, alias="중분류")
-    소분류: str | None = Field(None, alias="소분류")
-    데이터기준일자: str | None = Field(None, alias="데이터기준일자")
+    pass  # no response fields in spec
 
 class AdmbylList(BaseModel):
     """[GENERATED] Response model for 행정규칙 별표ㆍ서식 목록 조회.
@@ -446,17 +406,7 @@ class BaipvcsDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    감사원사전컨설팅의견서일련번호: str | None = Field(None, alias="감사원사전컨설팅의견서일련번호")
-    의견서명: str | None = Field(None, alias="의견서명")
-    회신일자: str | None = Field(None, alias="회신일자")
-    요청기관명: str | None = Field(None, alias="요청기관명")
-    접수번호: str | None = Field(None, alias="접수번호")
-    개요: str | None = Field(None, alias="개요")
-    요지: str | None = Field(None, alias="요지")
-    판단기준: str | None = Field(None, alias="판단기준")
-    검토결과: str | None = Field(None, alias="검토결과")
-    종합의견: str | None = Field(None, alias="종합의견")
-    데이터기준일자: str | None = Field(None, alias="데이터기준일자")
+    pass  # no response fields in spec
 
 class CouseadmrulList(BaseModel):
     """[GENERATED] Response model for 맞춤형 행정규칙 조문 목록 조회.
@@ -584,21 +534,7 @@ class DapacgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class DeccList(BaseModel):
     """[GENERATED] Response model for 행정심판례 목록 조회.
@@ -638,16 +574,7 @@ class DeccDetail(BaseModel):
     행정심판례일련번호: str | None = Field(None, alias="행정심판례일련번호")
     사건명: str | None = Field(None, alias="사건명")
     사건번호: str | None = Field(None, alias="사건번호")
-    처분일자: str | None = Field(None, alias="처분일자")
-    의결일자: str | None = Field(None, alias="의결일자")
-    처분청: str | None = Field(None, alias="처분청")
-    재결청: str | None = Field(None, alias="재결청")
-    재결례유형명: str | None = Field(None, alias="재결례유형명")
-    재결례유형코드: str | None = Field(None, alias="재결례유형코드")
     주문: str | None = Field(None, alias="주문")
-    청구취지: str | None = Field(None, alias="청구취지")
-    이유: str | None = Field(None, alias="이유")
-    재결요지: str | None = Field(None, alias="재결요지")
 
 class DetcList(BaseModel):
     """[GENERATED] Response model for 헌재결정례 목록 조회.
@@ -679,19 +606,6 @@ class DetcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    헌재결정례일련번호: str | None = Field(None, alias="헌재결정례일련번호")
-    종국일자: str | None = Field(None, alias="종국일자")
-    사건번호: str | None = Field(None, alias="사건번호")
-    사건명: str | None = Field(None, alias="사건명")
-    사건종류명: str | None = Field(None, alias="사건종류명")
-    사건종류코드: str | None = Field(None, alias="사건종류코드")
-    재판부구분코드: str | None = Field(None, alias="재판부구분코드")
-    판시사항: str | None = Field(None, alias="판시사항")
-    결정요지: str | None = Field(None, alias="결정요지")
-    전문: str | None = Field(None, alias="전문")
-    참조조문: str | None = Field(None, alias="참조조문")
-    참조판례: str | None = Field(None, alias="참조판례")
-    심판대상조문: str | None = Field(None, alias="심판대상조문")
     id: str | None = Field(None, alias="ID")
     lm: str | None = Field(None, alias="LM")
 
@@ -878,6 +792,7 @@ class EflawDetail(BaseModel):
     별표hwp_파일명: str | None = Field(None, alias="별표HWP 파일명")
     별표서식_pdf파일링크: str | None = Field(None, alias="별표서식 PDF파일링크")
     별표pdf_파일명: str | None = Field(None, alias="별표PDF 파일명")
+    별표서식_이미지파일링크: str | None = Field(None, alias="별표서식 이미지파일링크")
     별표이미지_파일명: str | None = Field(None, alias="별표이미지 파일명")
     별표내용: str | None = Field(None, alias="별표내용")
     개정문내용: str | None = Field(None, alias="개정문내용")
@@ -1021,14 +936,7 @@ class ElawDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
-    id: str | None = Field(None, alias="ID")
-    mst: str | None = Field(None, alias="MST")
-    lm: str | None = Field(None, alias="LM")
-    ld: str | None = Field(None, alias="LD")
-    ln: str | None = Field(None, alias="LN")
-    type: str | None = Field(None, alias="type")
+    pass  # no response fields in spec
 
 class ExpcList(BaseModel):
     """[GENERATED] Response model for 법령해석례 목록 조회.
@@ -1064,19 +972,6 @@ class ExpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석례일련번호: str | None = Field(None, alias="법령해석례일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
     id: str | None = Field(None, alias="ID")
     lm: str | None = Field(None, alias="LM")
 
@@ -1161,22 +1056,18 @@ class FtcDetail(BaseModel):
     사건명: str | None = Field(None, alias="사건명")
     피심정보명: str | None = Field(None, alias="피심정보명")
     피심정보내용: str | None = Field(None, alias="피심정보내용")
-    회의종류: str | None = Field(None, alias="회의종류")
-    결정번호: str | None = Field(None, alias="결정번호")
-    결정일자: str | None = Field(None, alias="결정일자")
-    원심결: str | None = Field(None, alias="원심결")
-    재산정심결: str | None = Field(None, alias="재산정심결")
-    후속심결: str | None = Field(None, alias="후속심결")
-    심의정보명: str | None = Field(None, alias="심의정보명")
-    심의정보내용: str | None = Field(None, alias="심의정보내용")
-    의결문: str | None = Field(None, alias="의결문")
-    주문: str | None = Field(None, alias="주문")
-    신청취지: str | None = Field(None, alias="신청취지")
-    이유: str | None = Field(None, alias="이유")
-    의결일자: str | None = Field(None, alias="의결일자")
-    위원정보: str | None = Field(None, alias="위원정보")
-    각주번호: str | None = Field(None, alias="각주번호")
-    각주내용: str | None = Field(None, alias="각주내용")
+    의결서종류: str | None = Field(None, alias="의결서종류")
+    시정권고참조법률: str | None = Field(None, alias="시정권고참조법률")
+    시정권고사항: str | None = Field(None, alias="시정권고사항")
+    시정권고이유: str | None = Field(None, alias="시정권고이유")
+    법위반내용: str | None = Field(None, alias="법위반내용")
+    적용법조: str | None = Field(None, alias="적용법조")
+    법령의적용: str | None = Field(None, alias="법령의적용")
+    시정기한: str | None = Field(None, alias="시정기한")
+    수락여부통지기간: str | None = Field(None, alias="수락여부통지기간")
+    수락여부통지기한: str | None = Field(None, alias="수락여부통지기한")
+    수락거부시의조치: str | None = Field(None, alias="수락거부시의조치")
+    수락거부시조치방침: str | None = Field(None, alias="수락거부시조치방침")
     별지: str | None = Field(None, alias="별지")
     결정요지: str | None = Field(None, alias="결정요지")
 
@@ -1345,21 +1236,7 @@ class KcgcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class KcscgmexpcList(BaseModel):
     """[GENERATED] Response model for 관세청 법령해석 목록 조회.
@@ -1447,21 +1324,7 @@ class KdcacgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class KfscgmexpcList(BaseModel):
     """[GENERATED] Response model for 산림청 법령해석 목록.
@@ -1498,21 +1361,7 @@ class KfscgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class KhscgmexpcList(BaseModel):
     """[GENERATED] Response model for 국가유산청 법령해석 목록.
@@ -1549,21 +1398,7 @@ class KhscgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class KipocgmexpcList(BaseModel):
     """[GENERATED] Response model for 지식재산처 법령해석 목록.
@@ -1600,21 +1435,7 @@ class KipocgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class KmacgmexpcList(BaseModel):
     """[GENERATED] Response model for 기상청 법령해석 목록.
@@ -1651,21 +1472,7 @@ class KmacgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class KmstspecialdeccList(BaseModel):
     """[GENERATED] Response model for 해양안전심판원 특별행정심판례 목록 조회.
@@ -1703,29 +1510,7 @@ class KmstspecialdeccDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    특별행정심판재결례일련번호: str | None = Field(None, alias="특별행정심판재결례일련번호")
-    사건명: str | None = Field(None, alias="사건명")
-    사건번호: str | None = Field(None, alias="사건번호")
-    처분일자: str | None = Field(None, alias="처분일자")
-    의결일자: str | None = Field(None, alias="의결일자")
-    처분청: str | None = Field(None, alias="처분청")
-    재결청: str | None = Field(None, alias="재결청")
-    재결례유형명: str | None = Field(None, alias="재결례유형명")
-    재결례유형코드: str | None = Field(None, alias="재결례유형코드")
-    재결번호: str | None = Field(None, alias="재결번호")
-    주문: str | None = Field(None, alias="주문")
-    청구취지: str | None = Field(None, alias="청구취지")
-    이유: str | None = Field(None, alias="이유")
-    해양사고관련자: str | None = Field(None, alias="해양사고관련자")
-    심판관: str | None = Field(None, alias="심판관")
-    사고유형: str | None = Field(None, alias="사고유형")
-    선박유형: str | None = Field(None, alias="선박유형")
-    해심위치: str | None = Field(None, alias="해심위치")
-    재심청구안내: str | None = Field(None, alias="재심청구안내")
-    별지: str | None = Field(None, alias="별지")
-    의결종류: str | None = Field(None, alias="의결종류")
-    재결위원회: str | None = Field(None, alias="재결위원회")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class KostatcgmexpcList(BaseModel):
     """[GENERATED] Response model for 국가데이터처 법령해석 목록.
@@ -1762,21 +1547,7 @@ class KostatcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class LawList(BaseModel):
     """[GENERATED] Response model for 법령 목록 조회.
@@ -1818,22 +1589,7 @@ class LawDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
-    id: str | None = Field(None, alias="ID")
-    mst: str | None = Field(None, alias="MST")
-    lm: str | None = Field(None, alias="LM")
-    ld: str | None = Field(None, alias="LD")
-    ln: str | None = Field(None, alias="LN")
-    jo: str | None = Field(None, alias="JO")
-    pd: str | None = Field(None, alias="PD")
-    pn: str | None = Field(None, alias="PN")
-    bd: str | None = Field(None, alias="BD")
-    bt: str | None = Field(None, alias="BT")
-    bn: str | None = Field(None, alias="BN")
-    bg: str | None = Field(None, alias="BG")
-    type: str | None = Field(None, alias="type")
-    mobileyn: str | None = Field(None, alias="mobileYn")
+    pass  # no response fields in spec
 
 class LawjosubList(BaseModel):
     """[GENERATED] Response model for 현행법령(공포일) 본문 조항호목 조회.
@@ -1926,18 +1682,19 @@ class LnklsList(BaseModel):
     model_config = {"populate_by_name": True}
 
     target: str | None = Field(None, alias="target")
-    키워드: str | None = Field(None, alias="키워드")
     section: str | None = Field(None, alias="section")
     totalcnt: str | None = Field(None, alias="totalCnt")
     page: str | None = Field(None, alias="page")
     law_id: str | None = Field(None, alias="law id")
-    법령일련번호: str | None = Field(None, alias="법령일련번호")
     법령명한글: str | None = Field(None, alias="법령명한글")
     법령id: str | None = Field(None, alias="법령ID")
+    자치법규_일련번호: str | None = Field(None, alias="자치법규 일련번호")
+    자치법규명: str | None = Field(None, alias="자치법규명")
+    자치법규id: str | None = Field(None, alias="자치법규ID")
     공포일자: str | None = Field(None, alias="공포일자")
     공포번호: str | None = Field(None, alias="공포번호")
     제개정구분명: str | None = Field(None, alias="제개정구분명")
-    법령구분명: str | None = Field(None, alias="법령구분명")
+    자치법규종류: str | None = Field(None, alias="자치법규종류")
     시행일자: str | None = Field(None, alias="시행일자")
 
 class LnkordList(BaseModel):
@@ -1950,7 +1707,6 @@ class LnkordList(BaseModel):
     model_config = {"populate_by_name": True}
 
     target: str | None = Field(None, alias="target")
-    키워드: str | None = Field(None, alias="키워드")
     section: str | None = Field(None, alias="section")
     totalcnt: str | None = Field(None, alias="totalCnt")
     page: str | None = Field(None, alias="page")
@@ -1963,6 +1719,8 @@ class LnkordList(BaseModel):
     제개정구분명: str | None = Field(None, alias="제개정구분명")
     자치법규종류: str | None = Field(None, alias="자치법규종류")
     시행일자: str | None = Field(None, alias="시행일자")
+    법령명한글: str | None = Field(None, alias="법령명한글")
+    법령id: str | None = Field(None, alias="법령ID")
 
 class LsabrvList(BaseModel):
     """[GENERATED] Response model for 법률명 약칭 조회.
@@ -2001,23 +1759,7 @@ class LshistoryList(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
-    type: str | None = Field(None, alias="type")
-    query: str | None = Field(None, alias="query")
-    display: str | None = Field(None, alias="display")
-    page: str | None = Field(None, alias="page")
-    sort: str | None = Field(None, alias="sort")
-    efyd: str | None = Field(None, alias="efYd")
-    date: str | None = Field(None, alias="date")
-    ancyd: str | None = Field(None, alias="ancYd")
-    ancno: str | None = Field(None, alias="ancNo")
-    rrclscd: str | None = Field(None, alias="rrClsCd")
-    org: str | None = Field(None, alias="org")
-    knd: str | None = Field(None, alias="knd")
-    lschapno: str | None = Field(None, alias="lsChapNo")
-    gana: str | None = Field(None, alias="gana")
-    popyn: str | None = Field(None, alias="popYn")
+    pass  # no response fields in spec
 
 class LshistoryDetail(BaseModel):
     """[GENERATED] Response model for 법령 연혁 본문 조회.
@@ -2028,15 +1770,7 @@ class LshistoryDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
-    type: str | None = Field(None, alias="type")
-    id: str | None = Field(None, alias="ID")
-    mst: str | None = Field(None, alias="MST")
-    lm: str | None = Field(None, alias="LM")
-    ld: str | None = Field(None, alias="LD")
-    ln: str | None = Field(None, alias="LN")
-    chrclscd: str | None = Field(None, alias="chrClsCd")
+    pass  # no response fields in spec
 
 class LshstinfList(BaseModel):
     """[GENERATED] Response model for 법령 변경이력 목록 조회.
@@ -2309,21 +2043,7 @@ class MafracgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class McstcgmexpcList(BaseModel):
     """[GENERATED] Response model for 문화체육관광부 법령해석 목록.
@@ -2360,21 +2080,7 @@ class McstcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MecgmexpcList(BaseModel):
     """[GENERATED] Response model for 기후에너지환경부 법령해석 목록 조회.
@@ -2411,21 +2117,7 @@ class MecgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MfdscgmexpcList(BaseModel):
     """[GENERATED] Response model for 식품의약품안전처 법령해석 목록.
@@ -2462,21 +2154,7 @@ class MfdscgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MmacgmexpcList(BaseModel):
     """[GENERATED] Response model for 병무청 법령해석 목록.
@@ -2513,21 +2191,7 @@ class MmacgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MndcgmexpcList(BaseModel):
     """[GENERATED] Response model for 국방부 법령해석 목록.
@@ -2564,21 +2228,7 @@ class MndcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MoecgmexpcList(BaseModel):
     """[GENERATED] Response model for 교육부 법령해석 목록.
@@ -2615,21 +2265,7 @@ class MoecgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MoefcgmexpcList(BaseModel):
     """[GENERATED] Response model for 재정경제부 법령해석 목록 조회.
@@ -2692,21 +2328,7 @@ class MoelcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MofcgmexpcList(BaseModel):
     """[GENERATED] Response model for 해양수산부 법령해석 목록 조회.
@@ -2743,21 +2365,7 @@ class MofcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MofacgmexpcList(BaseModel):
     """[GENERATED] Response model for 외교부 법령해석 목록.
@@ -2794,21 +2402,7 @@ class MofacgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MogefcgmexpcList(BaseModel):
     """[GENERATED] Response model for 성평등가족부 법령해석 목록.
@@ -2845,21 +2439,7 @@ class MogefcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MohwcgmexpcList(BaseModel):
     """[GENERATED] Response model for 보건복지부 법령해석 목록.
@@ -2896,21 +2476,7 @@ class MohwcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MoiscgmexpcList(BaseModel):
     """[GENERATED] Response model for 행정안전부 법령해석 목록 조회.
@@ -2947,21 +2513,7 @@ class MoiscgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MojcgmexpcList(BaseModel):
     """[GENERATED] Response model for 법무부 법령해석 목록.
@@ -2998,21 +2550,7 @@ class MojcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MolegcgmexpcList(BaseModel):
     """[GENERATED] Response model for 법제처 법령해석 목록.
@@ -3049,21 +2587,7 @@ class MolegcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MolitcgmexpcList(BaseModel):
     """[GENERATED] Response model for 국토교통부 법령해석 목록 조회.
@@ -3100,24 +2624,7 @@ class MolitcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    대분류: str | None = Field(None, alias="대분류")
-    중분류: str | None = Field(None, alias="중분류")
-    소분류: str | None = Field(None, alias="소분류")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MotiecgmexpcList(BaseModel):
     """[GENERATED] Response model for 산업통상부 법령해석 목록.
@@ -3154,21 +2661,7 @@ class MotiecgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MoucgmexpcList(BaseModel):
     """[GENERATED] Response model for 통일부 법령해석 목록.
@@ -3205,21 +2698,7 @@ class MoucgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MpmcgmexpcList(BaseModel):
     """[GENERATED] Response model for 인사혁신처 법령해석 목록.
@@ -3256,21 +2735,7 @@ class MpmcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MpvacgmexpcList(BaseModel):
     """[GENERATED] Response model for 국가보훈부 법령해석 목록.
@@ -3307,21 +2772,7 @@ class MpvacgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MsitcgmexpcList(BaseModel):
     """[GENERATED] Response model for 과학기술정보통신부 법령해석 목록.
@@ -3358,21 +2809,7 @@ class MsitcgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class MsscgmexpcList(BaseModel):
     """[GENERATED] Response model for 중소벤처기업부 법령해석 목록.
@@ -3409,21 +2846,7 @@ class MsscgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class NaacccgmexpcList(BaseModel):
     """[GENERATED] Response model for 행정중심복합도시건설청 법령해석 목록.
@@ -3460,21 +2883,7 @@ class NaacccgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class NfacgmexpcList(BaseModel):
     """[GENERATED] Response model for 소방청 법령해석 목록.
@@ -3511,21 +2920,7 @@ class NfacgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class NhrckList(BaseModel):
     """[GENERATED] Response model for 국가인권위원회 결정문 목록 조회.
@@ -3663,21 +3058,7 @@ class NpacgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class NtscgmexpcList(BaseModel):
     """[GENERATED] Response model for 국세청 법령해석 목록 조회.
@@ -3779,21 +3160,7 @@ class OkacgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class OldandnewList(BaseModel):
     """[GENERATED] Response model for 신구법 목록 조회.
@@ -3905,19 +3272,9 @@ class OrdinList(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    자치법규_일련번호: str | None = Field(None, alias="자치법규 일련번호")
     자치법규명: str | None = Field(None, alias="자치법규명")
-    자치법규id: str | None = Field(None, alias="자치법규ID")
-    공포일자: str | None = Field(None, alias="공포일자")
-    공포번호: str | None = Field(None, alias="공포번호")
-    제개정구분명: str | None = Field(None, alias="제개정구분명")
-    지자체기관명: str | None = Field(None, alias="지자체기관명")
-    자치법규종류: str | None = Field(None, alias="자치법규종류")
-    시행일자: str | None = Field(None, alias="시행일자")
-    자치법규상세링크: str | None = Field(None, alias="자치법규상세링크")
-    자치법규분야명: str | None = Field(None, alias="자치법규분야명")
-    참조데이터구분: str | None = Field(None, alias="참조데이터구분")
     자치법규일련번호: str | None = Field(None, alias="자치법규일련번호")
+    자치법규종류: str | None = Field(None, alias="자치법규종류")
 
 class OrdinDetail(BaseModel):
     """[GENERATED] Response model for 자치법규 본문 조회.
@@ -3928,34 +3285,7 @@ class OrdinDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    자치법규id: str | None = Field(None, alias="자치법규ID")
-    자치법규일련번호: str | None = Field(None, alias="자치법규일련번호")
-    공포일자: str | None = Field(None, alias="공포일자")
-    공포번호: str | None = Field(None, alias="공포번호")
-    자치법규명: str | None = Field(None, alias="자치법규명")
-    시행일자: str | None = Field(None, alias="시행일자")
-    자치법규종류: str | None = Field(None, alias="자치법규종류")
-    지자체기관명: str | None = Field(None, alias="지자체기관명")
-    자치법규발의종류: str | None = Field(None, alias="자치법규발의종류")
-    담당부서명: str | None = Field(None, alias="담당부서명")
-    전화번호: str | None = Field(None, alias="전화번호")
-    제개정정보: str | None = Field(None, alias="제개정정보")
-    조문번호: str | None = Field(None, alias="조문번호")
-    조문여부: str | None = Field(None, alias="조문여부")
-    조제목: str | None = Field(None, alias="조제목")
-    조내용: str | None = Field(None, alias="조내용")
-    부칙공포일자: str | None = Field(None, alias="부칙공포일자")
-    부칙공포번호: str | None = Field(None, alias="부칙공포번호")
-    부칙내용: str | None = Field(None, alias="부칙내용")
-    별표: str | None = Field(None, alias="별표")
-    별표번호: str | None = Field(None, alias="별표번호")
-    별표가지번호: str | None = Field(None, alias="별표가지번호")
-    별표구분: str | None = Field(None, alias="별표구분")
-    별표제목: str | None = Field(None, alias="별표제목")
-    별표첨부파일명: str | None = Field(None, alias="별표첨부파일명")
-    별표내용: str | None = Field(None, alias="별표내용")
-    개정문내용: str | None = Field(None, alias="개정문내용")
-    제개정이유내용: str | None = Field(None, alias="제개정이유내용")
+    pass  # no response fields in spec
 
 class OrdinbylList(BaseModel):
     """[GENERATED] Response model for 자치법규 별표ㆍ서식 목록 조회.
@@ -4073,21 +3403,7 @@ class PpscgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class PrecList(BaseModel):
     """[GENERATED] Response model for 판례 목록 조회.
@@ -4127,21 +3443,7 @@ class PrecDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    판례정보일련번호: str | None = Field(None, alias="판례정보일련번호")
-    사건명: str | None = Field(None, alias="사건명")
-    사건번호: str | None = Field(None, alias="사건번호")
-    선고일자: str | None = Field(None, alias="선고일자")
-    선고: str | None = Field(None, alias="선고")
-    법원명: str | None = Field(None, alias="법원명")
-    법원종류코드: str | None = Field(None, alias="법원종류코드")
-    사건종류명: str | None = Field(None, alias="사건종류명")
-    사건종류코드: str | None = Field(None, alias="사건종류코드")
-    판결유형: str | None = Field(None, alias="판결유형")
-    판시사항: str | None = Field(None, alias="판시사항")
-    판결요지: str | None = Field(None, alias="판결요지")
-    참조조문: str | None = Field(None, alias="참조조문")
-    참조판례: str | None = Field(None, alias="참조판례")
-    판례내용: str | None = Field(None, alias="판례내용")
+    pass  # no response fields in spec
 
 class RdacgmexpcList(BaseModel):
     """[GENERATED] Response model for 농촌진흥청 법령해석 목록.
@@ -4178,21 +3480,7 @@ class RdacgmexpcDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    법령해석일련번호: str | None = Field(None, alias="법령해석일련번호")
-    안건명: str | None = Field(None, alias="안건명")
-    안건번호: str | None = Field(None, alias="안건번호")
-    해석일자: str | None = Field(None, alias="해석일자")
-    해석기관코드: str | None = Field(None, alias="해석기관코드")
-    해석기관명: str | None = Field(None, alias="해석기관명")
-    질의기관코드: str | None = Field(None, alias="질의기관코드")
-    질의기관명: str | None = Field(None, alias="질의기관명")
-    관리기관코드: str | None = Field(None, alias="관리기관코드")
-    등록일시: str | None = Field(None, alias="등록일시")
-    질의요지: str | None = Field(None, alias="질의요지")
-    회답: str | None = Field(None, alias="회답")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 class SchoolList(BaseModel):
     """[GENERATED] Response model for 학칙ㆍ공단ㆍ공공기관 목록 조회.
@@ -4351,36 +3639,26 @@ class ThdcmpDetail(BaseModel):
 
     기본정보: str | None = Field(None, alias="기본정보")
     법령id: str | None = Field(None, alias="법령ID")
-    시행령id: str | None = Field(None, alias="시행령ID")
-    시행규칙id: str | None = Field(None, alias="시행규칙ID")
+    법령일련번호: str | None = Field(None, alias="법령일련번호")
+    공포일자: str | None = Field(None, alias="공포일자")
+    공포번호: str | None = Field(None, alias="공포번호")
+    법종구분: str | None = Field(None, alias="법종구분")
     법령명: str | None = Field(None, alias="법령명")
-    시행령명: str | None = Field(None, alias="시행령명")
-    시행규칙명: str | None = Field(None, alias="시행규칙명")
-    법령요약정보: str | None = Field(None, alias="법령요약정보")
-    시행령_요약정보: str | None = Field(None, alias="시행령 요약정보")
-    시행규칙_요약정보: str | None = Field(None, alias="시행규칙 요약정보")
-    삼단비교기준: str | None = Field(None, alias="삼단비교기준")
-    삼단비교_존재여부: str | None = Field(None, alias="삼단비교 존재여부")
     시행일자: str | None = Field(None, alias="시행일자")
-    관련삼단비교목록: str | None = Field(None, alias="관련삼단비교목록")
-    목록명: str | None = Field(None, alias="목록명")
-    삼단비교_목록상세링크: str | None = Field(None, alias="삼단비교 목록상세링크")
-    인용조문_삼단비교: str | None = Field(None, alias="인용조문 삼단비교")
+    제개정구분: str | None = Field(None, alias="제개정구분")
+    삼단비교_존재여부: str | None = Field(None, alias="삼단비교 존재여부")
+    기준법_법령명: str | None = Field(None, alias="기준법 법령명")
+    기준법령목록: str | None = Field(None, alias="기준법령목록")
+    위임3비교_상세링크: str | None = Field(None, alias="위임3비교 상세링크")
+    위임조문_삼단비교: str | None = Field(None, alias="위임조문 삼단비교")
     법률조문: str | None = Field(None, alias="법률조문")
     조번호: str | None = Field(None, alias="조번호")
     조가지번호: str | None = Field(None, alias="조가지번호")
     조제목: str | None = Field(None, alias="조제목")
     조내용: str | None = Field(None, alias="조내용")
-    시행령_조문목록: str | None = Field(None, alias="시행령 조문목록")
     시행령조문: str | None = Field(None, alias="시행령조문")
     시행규칙_조문목록: str | None = Field(None, alias="시행규칙 조문목록")
     시행규칙조문: str | None = Field(None, alias="시행규칙조문")
-    위임행정규칙목록: str | None = Field(None, alias="위임행정규칙목록")
-    위임행정규칙: str | None = Field(None, alias="위임행정규칙")
-    위임행정규칙명: str | None = Field(None, alias="위임행정규칙명")
-    위임행정규칙일련번호: str | None = Field(None, alias="위임행정규칙일련번호")
-    위임행정규칙조번호: str | None = Field(None, alias="위임행정규칙조번호")
-    위임행정규칙조가지번호: str | None = Field(None, alias="위임행정규칙조가지번호")
 
 class TrtyList(BaseModel):
     """[GENERATED] Response model for 조약 목록 조회.
@@ -4487,25 +3765,7 @@ class TtspecialdeccDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    특별행정심판재결례일련번호: str | None = Field(None, alias="특별행정심판재결례일련번호")
-    사건명: str | None = Field(None, alias="사건명")
-    사건번호: str | None = Field(None, alias="사건번호")
-    청구번호: str | None = Field(None, alias="청구번호")
-    처분일자: str | None = Field(None, alias="처분일자")
-    의결일자: str | None = Field(None, alias="의결일자")
-    처분청: str | None = Field(None, alias="처분청")
-    재결청: str | None = Field(None, alias="재결청")
-    재결례유형명: str | None = Field(None, alias="재결례유형명")
-    재결례유형코드: str | None = Field(None, alias="재결례유형코드")
-    세목: str | None = Field(None, alias="세목")
-    재결요지: str | None = Field(None, alias="재결요지")
-    따른결정: str | None = Field(None, alias="따른결정")
-    참조결정: str | None = Field(None, alias="참조결정")
-    주문: str | None = Field(None, alias="주문")
-    청구취지: str | None = Field(None, alias="청구취지")
-    이유: str | None = Field(None, alias="이유")
-    관련법령: str | None = Field(None, alias="관련법령")
-    데이터기준일시: str | None = Field(None, alias="데이터기준일시")
+    pass  # no response fields in spec
 
 
 

@@ -37,7 +37,7 @@ class GeneratedLawjosubClient(KoreanBaseClient):
 
         Returns:
             List of LawjosubList instances.
-            Response path: 법령.법령키
+            Root key not discovered — using best-effort extraction
         """
         params: dict = {"target": "lawjosub", "type": "JSON"}
         if id is not None:
@@ -54,12 +54,23 @@ class GeneratedLawjosubClient(KoreanBaseClient):
             params["MOK"] = mok
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        root = data.get("법령", {})
-        if isinstance(root, dict):
-            items = root.get("법령키", [])
+        if isinstance(data, list):
+            raw = data
         else:
-            items = root if isinstance(root, list) else []
-        if isinstance(items, dict):
-            items = [items]
-        return [LawjosubList.model_validate(item) for item in items]
+            raw = []
+            for v in data.values():
+                if isinstance(v, list):
+                    raw = v
+                    break
+                if isinstance(v, dict):
+                    for _ik, _iv in v.items():
+                        if _ik in ("resultMsg", "resultCode", "page", "totalCnt", "target", "키워드", "section", "numOfRows", "display", "query"):
+                            continue
+                        if isinstance(_iv, list) and _iv:
+                            raw = _iv
+                            break
+                    if not raw:
+                        raw = [v]
+                    break
+        return [LawjosubList.model_validate(item) for item in raw]
 

@@ -36,34 +36,19 @@
   ],
   "response": [
     {
-      "요청변수": "OC",
-      "값": "string(필수)",
-      "설명": "신청한 API인증값"
+      "col0": "샘플 URL"
     },
     {
-      "요청변수": "target",
-      "값": "string : detc(필수)",
-      "설명": "서비스 대상"
+      "col0": "1. 헌재결정례 일련번호가 58386인 헌재결정례 HTML 조회"
     },
     {
-      "요청변수": "ID",
-      "값": "char(필수)",
-      "설명": "헌재결정례 일련번호"
+      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=detc&ID=58386&type=HTML&mobileYn=Y"
     },
     {
-      "요청변수": "LM",
-      "값": "string",
-      "설명": "헌재결정례명"
+      "col0": "2. 산림기술자 자격취소처분 취소청구 등 헌재결정례 조회"
     },
     {
-      "요청변수": "type",
-      "값": "string",
-      "설명": "출력 형태 : HTML"
-    },
-    {
-      "요청변수": "mobileYn",
-      "값": "char : Y (필수)",
-      "설명": "모바일여부"
+      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=detc&ID=127830&&LM=자동차관리법제26조등위헌확인등&type=HTML&mobileYn=Y"
     }
   ],
   "raw_url": "https://open.law.go.kr/LSO/openApi/guideResult.do"

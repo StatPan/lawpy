@@ -49,7 +49,7 @@ class GeneratedAdapspecialdeccClient(KoreanBaseClient):
 
         Returns:
             List of AdapspecialdeccList instances.
-            Response path: Decc.decc
+            Response path: Decc (item key not discovered)
         """
         params: dict = {"target": "adapSpecialDecc", "type": "JSON"}
         if search is not None:
@@ -79,10 +79,20 @@ class GeneratedAdapspecialdeccClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("Decc", {})
-        if isinstance(root, dict):
-            items = root.get("decc", [])
+        if isinstance(root, list):
+            items = root
+        elif isinstance(root, dict):
+            items = []
+            found_items = False
+            for value in root.values():
+                if isinstance(value, list):
+                    items = value
+                    found_items = True
+                    break
+            if not found_items and root:
+                items = [root]
         else:
-            items = root if isinstance(root, list) else []
+            items = []
         if isinstance(items, dict):
             items = [items]
         return [AdapspecialdeccList.model_validate(item) for item in items]
