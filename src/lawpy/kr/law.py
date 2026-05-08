@@ -4,7 +4,7 @@ from typing import Any
 
 import xmltodict
 
-from lawpy.exceptions import ParseError
+from lawpy.exceptions import ApiResponseTypeError, ParseError
 from lawpy.kr.generated.elaw import GeneratedElawClient
 from lawpy.kr.generated.lsAbrv import GeneratedLsabrvClient
 from lawpy.kr.generated.lsHstInf import GeneratedLshstinfClient
@@ -510,6 +510,11 @@ class LawClient(
         Raises:
             ParseError: If parsing fails
         """
+        preview = self._content_preview(content)
+        if preview.startswith("<!DOCTYPE") or preview.lower().startswith("<html"):
+            msg = f"Expected XML law list response but received HTML; response preview: {preview}"
+            raise ApiResponseTypeError(msg, response=content)
+
         try:
             data = xmltodict.parse(content)
             if not data or data.get("LawSearch") is None:
@@ -538,7 +543,6 @@ class LawClient(
             return laws
 
         except Exception as e:
-            preview = self._content_preview(content)
             msg = f"Failed to parse XML law list response: {e}; response preview: {preview}"
             raise ParseError(msg) from e
 

@@ -70,8 +70,28 @@ def test_search_customized_articles_requires_classification_code_before_request(
     client = KRClient(api_key="test_key")
     client._make_request = Mock()
 
-    with pytest.raises(ValueError, match="vcode is required"):
+    with pytest.raises(ValueError, match="classification_code must be"):
         client.search_customized_articles("law", None)  # type: ignore[arg-type]
+
+    client._make_request.assert_not_called()
+
+
+def test_search_customized_articles_rejects_invalid_classification_code_before_request() -> None:
+    client = KRClient(api_key="test_key")
+    client._make_request = Mock()
+
+    with pytest.raises(ValueError, match="classification_code must be"):
+        client.search_customized_articles("law", "001")
+
+    client._make_request.assert_not_called()
+
+
+def test_search_customized_articles_rejects_wrong_source_prefix_before_request() -> None:
+    client = KRClient(api_key="test_key")
+    client._make_request = Mock()
+
+    with pytest.raises(ValueError, match="prefix does not match"):
+        client.search_customized_articles("administrative_rule", "L0000000000001")
 
     client._make_request.assert_not_called()
 
