@@ -9,6 +9,7 @@ from lawpy.kr.legal_interpretation import LegalInterpretationClient
 from lawpy.kr.legal_terminology import LegalTerminologyClient
 from lawpy.kr.ordinance import OrdinanceClient
 from lawpy.kr.precedent import PrecedentClient
+from lawpy.kr.school_public_rule import SchoolPublicRuleClient
 from lawpy.kr.treaty import TreatyClient
 
 
@@ -22,6 +23,7 @@ class KRClient(
     LegalInterpretationClient,
     ConstitutionalDecisionClient,
     AdministrativeReviewDecisionClient,
+    SchoolPublicRuleClient,
     TreatyClient,
 ):
     """Integrated client for Korean National Law Information Center API.
@@ -91,6 +93,10 @@ class KRClient(
     **행정심판례 (Administrative Review Decision) — implemented**:
       - :meth:`search_administrative_review_decisions`      행정심판례 목록 조회
       - :meth:`get_administrative_review_decision_detail`   행정심판례 본문 조회
+
+    **학칙·공단·공공기관 (School/Public Rules) — implemented**:
+      - :meth:`search_school_public_rules`      학칙·공단·공공기관 목록 조회
+      - :meth:`get_school_public_rule_detail`   학칙·공단·공공기관 본문 조회
 
     **조약 (Treaty) — implemented**:
       - :meth:`search_treaties`         조약 목록 조회

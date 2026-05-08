@@ -91,12 +91,13 @@ prefer `KRClient`.
 | `KRClient`, `constitutional_decision.py` | `detc` | Thin public wrapper over generated `detc`: constitutional decision search and detail |
 | `KRClient`, `administrative_review_decision.py` | `decc` | Thin public wrapper over generated `decc`: administrative review decision search and detail |
 | `KRClient`, `precedent.py` | `prec` | Public wrapper: stable precedent search/detail models plus inherited generated `prec` methods |
+| `KRClient`, `school_public_rule.py` | `school` | Thin public wrapper over generated `school`: school/corporation/public institution rule search and detail |
 | `KRClient`, `treaty.py` | `trty` | Public wrapper over generated `trty`: treaty search and detail |
 
 ## Generated-Only Targets
 
-The generated package contains 89 law.go.kr target clients. Seventeen targets are
-wrapped by `KRClient` today (`law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`, `lstrm`, `expc`, `detc`, `decc`, `trty`), leaving 72
+The generated package contains 89 law.go.kr target clients. Eighteen targets are
+wrapped by `KRClient` today (`law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`, `lstrm`, `expc`, `detc`, `decc`, `school`, `trty`), leaving 71
 generated-only target modules.
 
 Use generated-only clients directly:

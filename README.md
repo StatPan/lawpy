@@ -8,7 +8,7 @@ Universal law information API client library.
 - **Simple interface**: Intuitive API design for easy integration
 - **Type-safe**: Full type hints for better IDE support
 - **KRClient first**: One ergonomic entry point for implemented Korean APIs
-- **Generated KR coverage**: 89 Korean law.go.kr target clients are generated from specs; 80 are generated-only until public wrappers are added
+- **Generated KR coverage**: 89 Korean law.go.kr target clients are generated from specs; 71 are generated-only until public wrappers are added
 
 ## Installation
 
@@ -158,9 +158,9 @@ article_changes = client.search_law_article_change_history(law_id="009682", arti
 ### Generated-only KR targets
 
 KR v1 includes generated clients for 89 public law.go.kr targets. `KRClient`
-wraps 17 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
+wraps 18 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
 `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`,
-`lstrm`, `expc`, `detc`, `decc`, and `trty`. The remaining 72 targets are generated-only; import those clients directly from
+`lstrm`, `expc`, `detc`, `decc`, `school`, and `trty`. The remaining 71 targets are generated-only; import those clients directly from
 `lawpy.kr.generated`.
 
 ```python
