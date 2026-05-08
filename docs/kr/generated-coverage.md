@@ -69,6 +69,45 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `oclt` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
 | `ppc` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
 | `sfc` | `CommitteeDecisionClient`, `KRClient` | implemented as committee decision wrapper |
+| `dapaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `kcgCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `kcsCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `kdcaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `kfsCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `khsCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `kipoCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `kmaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `kostatCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mafraCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mcstCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `meCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mfdsCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mmaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mndCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `moeCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `moefCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `moelCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mofCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mofaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mogefCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mohwCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `moisCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mojCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `molegCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `molitCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `motieCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mouCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mpmCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mpvaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `msitCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `mssCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `naaccCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `nfaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `npaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `ntsCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `okaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `ppsCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
+| `rdaCgmExpc` | `MinistryInterpretationClient`, `KRClient` | implemented as ministry interpretation wrapper |
 
 ## Generated Matrix
 
@@ -86,7 +125,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `couseAdmrul` | `GeneratedCouseadmrulClient` | `search_couseAdmruls` | yes | yes | generated only |
 | `couseLs` | `GeneratedCouselsClient` | `search_couseLss` | yes | yes | generated only |
 | `couseOrdin` | `GeneratedCouseordinClient` | `search_couseOrdins` | yes | yes | generated only |
-| `dapaCgmExpc` | `GeneratedDapacgmexpcClient` | `search_dapaCgmExpcs`, `get_dapaCgmExpc_detail` | yes | yes | generated only |
+| `dapaCgmExpc` | `GeneratedDapacgmexpcClient` | `search_dapaCgmExpcs`, `get_dapaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `decc` | `GeneratedDeccClient` | `search_deccs`, `get_decc_detail` | yes | yes | `AdministrativeReviewDecisionClient`, `KRClient` |
 | `detc` | `GeneratedDetcClient` | `search_detcs`, `get_detc_detail` | yes | yes | `ConstitutionalDecisionClient`, `KRClient` |
 | `drlaw` | `GeneratedDrlawClient` | `search_drlaws` | yes | yes | generated only |
@@ -103,15 +142,15 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `iaciac` | `GeneratedIaciacClient` | `search_iaciacs`, `get_iaciac_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `joRltLstrm` | `GeneratedJorltlstrmClient` | `get_joRltLstrm_detail` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `kcc` | `GeneratedKccClient` | `search_kccs`, `get_kcc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
-| `kcgCgmExpc` | `GeneratedKcgcgmexpcClient` | `search_kcgCgmExpcs`, `get_kcgCgmExpc_detail` | yes | yes | generated only |
-| `kcsCgmExpc` | `GeneratedKcscgmexpcClient` | `search_kcsCgmExpcs`, `get_kcsCgmExpc_detail` | yes | yes | generated only |
-| `kdcaCgmExpc` | `GeneratedKdcacgmexpcClient` | `search_kdcaCgmExpcs`, `get_kdcaCgmExpc_detail` | yes | yes | generated only |
-| `kfsCgmExpc` | `GeneratedKfscgmexpcClient` | `search_kfsCgmExpcs`, `get_kfsCgmExpc_detail` | yes | yes | generated only |
-| `khsCgmExpc` | `GeneratedKhscgmexpcClient` | `search_khsCgmExpcs`, `get_khsCgmExpc_detail` | yes | yes | generated only |
-| `kipoCgmExpc` | `GeneratedKipocgmexpcClient` | `search_kipoCgmExpcs`, `get_kipoCgmExpc_detail` | yes | yes | generated only |
-| `kmaCgmExpc` | `GeneratedKmacgmexpcClient` | `search_kmaCgmExpcs`, `get_kmaCgmExpc_detail` | yes | yes | generated only |
+| `kcgCgmExpc` | `GeneratedKcgcgmexpcClient` | `search_kcgCgmExpcs`, `get_kcgCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `kcsCgmExpc` | `GeneratedKcscgmexpcClient` | `search_kcsCgmExpcs`, `get_kcsCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `kdcaCgmExpc` | `GeneratedKdcacgmexpcClient` | `search_kdcaCgmExpcs`, `get_kdcaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `kfsCgmExpc` | `GeneratedKfscgmexpcClient` | `search_kfsCgmExpcs`, `get_kfsCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `khsCgmExpc` | `GeneratedKhscgmexpcClient` | `search_khsCgmExpcs`, `get_khsCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `kipoCgmExpc` | `GeneratedKipocgmexpcClient` | `search_kipoCgmExpcs`, `get_kipoCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `kmaCgmExpc` | `GeneratedKmacgmexpcClient` | `search_kmaCgmExpcs`, `get_kmaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `kmstSpecialDecc` | `GeneratedKmstspecialdeccClient` | `search_kmstSpecialDeccs`, `get_kmstSpecialDecc_detail` | yes | yes | generated only |
-| `kostatCgmExpc` | `GeneratedKostatcgmexpcClient` | `search_kostatCgmExpcs`, `get_kostatCgmExpc_detail` | yes | yes | generated only |
+| `kostatCgmExpc` | `GeneratedKostatcgmexpcClient` | `search_kostatCgmExpcs`, `get_kostatCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `law` | `GeneratedLawClient` | `search_laws`, `get_law_detail` | yes | yes | `LawClient`, `KRClient` |
 | `lawjosub` | `GeneratedLawjosubClient` | `search_lawjosubs` | yes | yes | generated only |
 | `licbyl` | `GeneratedLicbylClient` | `search_licbyls` | yes | yes | `AnnexFormClient`, `KRClient` |
@@ -128,45 +167,45 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `lstrmAI` | `GeneratedLstrmaiClient` | `search_lstrmAIs` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `lstrmRlt` | `GeneratedLstrmrltClient` | `get_lstrmRlt_detail` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `lstrmRltJo` | `GeneratedLstrmrltjoClient` | `get_lstrmRltJo_detail` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
-| `mafraCgmExpc` | `GeneratedMafracgmexpcClient` | `search_mafraCgmExpcs`, `get_mafraCgmExpc_detail` | yes | yes | generated only |
-| `mcstCgmExpc` | `GeneratedMcstcgmexpcClient` | `search_mcstCgmExpcs`, `get_mcstCgmExpc_detail` | yes | yes | generated only |
-| `meCgmExpc` | `GeneratedMecgmexpcClient` | `search_meCgmExpcs`, `get_meCgmExpc_detail` | yes | yes | generated only |
-| `mfdsCgmExpc` | `GeneratedMfdscgmexpcClient` | `search_mfdsCgmExpcs`, `get_mfdsCgmExpc_detail` | yes | yes | generated only |
-| `mmaCgmExpc` | `GeneratedMmacgmexpcClient` | `search_mmaCgmExpcs`, `get_mmaCgmExpc_detail` | yes | yes | generated only |
-| `mndCgmExpc` | `GeneratedMndcgmexpcClient` | `search_mndCgmExpcs`, `get_mndCgmExpc_detail` | yes | yes | generated only |
-| `moeCgmExpc` | `GeneratedMoecgmexpcClient` | `search_moeCgmExpcs`, `get_moeCgmExpc_detail` | yes | yes | generated only |
-| `moefCgmExpc` | `GeneratedMoefcgmexpcClient` | `search_moefCgmExpcs` | yes | yes | generated only |
-| `moelCgmExpc` | `GeneratedMoelcgmexpcClient` | `search_moelCgmExpcs`, `get_moelCgmExpc_detail` | yes | yes | generated only |
-| `mofaCgmExpc` | `GeneratedMofacgmexpcClient` | `search_mofaCgmExpcs`, `get_mofaCgmExpc_detail` | yes | yes | generated only |
-| `mofCgmExpc` | `GeneratedMofcgmexpcClient` | `search_mofCgmExpcs`, `get_mofCgmExpc_detail` | yes | yes | generated only |
-| `mogefCgmExpc` | `GeneratedMogefcgmexpcClient` | `search_mogefCgmExpcs`, `get_mogefCgmExpc_detail` | yes | yes | generated only |
-| `mohwCgmExpc` | `GeneratedMohwcgmexpcClient` | `search_mohwCgmExpcs`, `get_mohwCgmExpc_detail` | yes | yes | generated only |
-| `moisCgmExpc` | `GeneratedMoiscgmexpcClient` | `search_moisCgmExpcs`, `get_moisCgmExpc_detail` | yes | yes | generated only |
-| `mojCgmExpc` | `GeneratedMojcgmexpcClient` | `search_mojCgmExpcs`, `get_mojCgmExpc_detail` | yes | yes | generated only |
-| `molegCgmExpc` | `GeneratedMolegcgmexpcClient` | `search_molegCgmExpcs`, `get_molegCgmExpc_detail` | yes | yes | generated only |
-| `molitCgmExpc` | `GeneratedMolitcgmexpcClient` | `search_molitCgmExpcs`, `get_molitCgmExpc_detail` | yes | yes | generated only |
-| `motieCgmExpc` | `GeneratedMotiecgmexpcClient` | `search_motieCgmExpcs`, `get_motieCgmExpc_detail` | yes | yes | generated only |
-| `mouCgmExpc` | `GeneratedMoucgmexpcClient` | `search_mouCgmExpcs`, `get_mouCgmExpc_detail` | yes | yes | generated only |
-| `mpmCgmExpc` | `GeneratedMpmcgmexpcClient` | `search_mpmCgmExpcs`, `get_mpmCgmExpc_detail` | yes | yes | generated only |
-| `mpvaCgmExpc` | `GeneratedMpvacgmexpcClient` | `search_mpvaCgmExpcs`, `get_mpvaCgmExpc_detail` | yes | yes | generated only |
-| `msitCgmExpc` | `GeneratedMsitcgmexpcClient` | `search_msitCgmExpcs`, `get_msitCgmExpc_detail` | yes | yes | generated only |
-| `mssCgmExpc` | `GeneratedMsscgmexpcClient` | `search_mssCgmExpcs`, `get_mssCgmExpc_detail` | yes | yes | generated only |
-| `naaccCgmExpc` | `GeneratedNaacccgmexpcClient` | `search_naaccCgmExpcs`, `get_naaccCgmExpc_detail` | yes | yes | generated only |
-| `nfaCgmExpc` | `GeneratedNfacgmexpcClient` | `search_nfaCgmExpcs`, `get_nfaCgmExpc_detail` | yes | yes | generated only |
+| `mafraCgmExpc` | `GeneratedMafracgmexpcClient` | `search_mafraCgmExpcs`, `get_mafraCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mcstCgmExpc` | `GeneratedMcstcgmexpcClient` | `search_mcstCgmExpcs`, `get_mcstCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `meCgmExpc` | `GeneratedMecgmexpcClient` | `search_meCgmExpcs`, `get_meCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mfdsCgmExpc` | `GeneratedMfdscgmexpcClient` | `search_mfdsCgmExpcs`, `get_mfdsCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mmaCgmExpc` | `GeneratedMmacgmexpcClient` | `search_mmaCgmExpcs`, `get_mmaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mndCgmExpc` | `GeneratedMndcgmexpcClient` | `search_mndCgmExpcs`, `get_mndCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `moeCgmExpc` | `GeneratedMoecgmexpcClient` | `search_moeCgmExpcs`, `get_moeCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `moefCgmExpc` | `GeneratedMoefcgmexpcClient` | `search_moefCgmExpcs` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `moelCgmExpc` | `GeneratedMoelcgmexpcClient` | `search_moelCgmExpcs`, `get_moelCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mofaCgmExpc` | `GeneratedMofacgmexpcClient` | `search_mofaCgmExpcs`, `get_mofaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mofCgmExpc` | `GeneratedMofcgmexpcClient` | `search_mofCgmExpcs`, `get_mofCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mogefCgmExpc` | `GeneratedMogefcgmexpcClient` | `search_mogefCgmExpcs`, `get_mogefCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mohwCgmExpc` | `GeneratedMohwcgmexpcClient` | `search_mohwCgmExpcs`, `get_mohwCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `moisCgmExpc` | `GeneratedMoiscgmexpcClient` | `search_moisCgmExpcs`, `get_moisCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mojCgmExpc` | `GeneratedMojcgmexpcClient` | `search_mojCgmExpcs`, `get_mojCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `molegCgmExpc` | `GeneratedMolegcgmexpcClient` | `search_molegCgmExpcs`, `get_molegCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `molitCgmExpc` | `GeneratedMolitcgmexpcClient` | `search_molitCgmExpcs`, `get_molitCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `motieCgmExpc` | `GeneratedMotiecgmexpcClient` | `search_motieCgmExpcs`, `get_motieCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mouCgmExpc` | `GeneratedMoucgmexpcClient` | `search_mouCgmExpcs`, `get_mouCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mpmCgmExpc` | `GeneratedMpmcgmexpcClient` | `search_mpmCgmExpcs`, `get_mpmCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mpvaCgmExpc` | `GeneratedMpvacgmexpcClient` | `search_mpvaCgmExpcs`, `get_mpvaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `msitCgmExpc` | `GeneratedMsitcgmexpcClient` | `search_msitCgmExpcs`, `get_msitCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `mssCgmExpc` | `GeneratedMsscgmexpcClient` | `search_mssCgmExpcs`, `get_mssCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `naaccCgmExpc` | `GeneratedNaacccgmexpcClient` | `search_naaccCgmExpcs`, `get_naaccCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `nfaCgmExpc` | `GeneratedNfacgmexpcClient` | `search_nfaCgmExpcs`, `get_nfaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `nhrck` | `GeneratedNhrckClient` | `search_nhrcks`, `get_nhrck_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `nlrc` | `GeneratedNlrcClient` | `search_nlrcs`, `get_nlrc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
-| `npaCgmExpc` | `GeneratedNpacgmexpcClient` | `search_npaCgmExpcs`, `get_npaCgmExpc_detail` | yes | yes | generated only |
-| `ntsCgmExpc` | `GeneratedNtscgmexpcClient` | `search_ntsCgmExpcs` | yes | yes | generated only |
+| `npaCgmExpc` | `GeneratedNpacgmexpcClient` | `search_npaCgmExpcs`, `get_npaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
+| `ntsCgmExpc` | `GeneratedNtscgmexpcClient` | `search_ntsCgmExpcs` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `oclt` | `GeneratedOcltClient` | `search_oclts`, `get_oclt_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
-| `okaCgmExpc` | `GeneratedOkacgmexpcClient` | `search_okaCgmExpcs`, `get_okaCgmExpc_detail` | yes | yes | generated only |
+| `okaCgmExpc` | `GeneratedOkacgmexpcClient` | `search_okaCgmExpcs`, `get_okaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `oldAndNew` | `GeneratedOldandnewClient` | `search_oldAndNews`, `get_oldAndNew_detail` | yes | yes | `LawClient`, `KRClient` |
 | `oneview` | `GeneratedOneviewClient` | `search_oneviews`, `get_oneview_detail` | yes | yes | generated only |
 | `ordin` | `GeneratedOrdinClient` | `search_ordins`, `get_ordin_detail` | yes | yes | `OrdinanceClient`, `KRClient` |
 | `ordinbyl` | `GeneratedOrdinbylClient` | `search_ordinbyls` | yes | yes | `AnnexFormClient`, `KRClient` |
 | `ppc` | `GeneratedPpcClient` | `search_ppcs`, `get_ppc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
-| `ppsCgmExpc` | `GeneratedPpscgmexpcClient` | `search_ppsCgmExpcs`, `get_ppsCgmExpc_detail` | yes | yes | generated only |
+| `ppsCgmExpc` | `GeneratedPpscgmexpcClient` | `search_ppsCgmExpcs`, `get_ppsCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `prec` | `GeneratedPrecClient` | `search_precs`, `get_prec_detail` | yes | yes | `PrecedentClient`, `KRClient` |
-| `rdaCgmExpc` | `GeneratedRdacgmexpcClient` | `search_rdaCgmExpcs`, `get_rdaCgmExpc_detail` | yes | yes | generated only |
+| `rdaCgmExpc` | `GeneratedRdacgmexpcClient` | `search_rdaCgmExpcs`, `get_rdaCgmExpc_detail` | yes | yes | `MinistryInterpretationClient`, `KRClient` |
 | `school` | `GeneratedSchoolClient` | `search_schools`, `get_school_detail` | yes | yes | `SchoolPublicRuleClient`, `KRClient` |
 | `sfc` | `GeneratedSfcClient` | `search_sfcs`, `get_sfc_detail` | yes | yes | `CommitteeDecisionClient`, `KRClient` |
 | `thdCmp` | `GeneratedThdcmpClient` | `search_thdCmps`, `get_thdCmp_detail` | yes | yes | generated only |

@@ -25,6 +25,7 @@ from lawpy.kr.law import LawClient
 from lawpy.kr.legal_interpretation import LegalInterpretationClient
 from lawpy.kr.legal_knowledge_base import LegalKnowledgeBaseClient
 from lawpy.kr.legal_terminology import LegalTerminologyClient
+from lawpy.kr.ministry_interpretation import MinistryInterpretationClient
 from lawpy.kr.ordinance import OrdinanceClient
 from lawpy.kr.precedent import PrecedentClient
 from lawpy.kr.school_public_rule import SchoolPublicRuleClient
@@ -42,6 +43,7 @@ __all__ = [
     "LegalKnowledgeBaseClient",
     "LegalInterpretationClient",
     "LegalTerminologyClient",
+    "MinistryInterpretationClient",
     "OrdinanceClient",
     "PrecedentClient",
     "SchoolPublicRuleClient",

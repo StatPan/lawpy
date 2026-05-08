@@ -19,6 +19,7 @@ from lawpy.kr import (
     CommitteeDecisionClient,
     KoreanLawClient,
     KRClient,
+    MinistryInterpretationClient,
     OrdinanceClient,
     PrecedentClient,
 )
@@ -58,6 +59,7 @@ __all__ = [
     "CommitteeDecisionClient",
     "KRClient",
     "KoreanLawClient",
+    "MinistryInterpretationClient",
     "OrdinanceClient",
     "OrdinDetail",
     "OrdinList",
