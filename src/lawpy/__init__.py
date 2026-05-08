@@ -16,6 +16,7 @@ lawpy.help("generated") for generated-only KR targets.
 
 from lawpy.kr import (
     AdministrativeRuleClient,
+    CommitteeDecisionClient,
     KoreanLawClient,
     KRClient,
     OrdinanceClient,
@@ -54,6 +55,7 @@ __all__ = [
     "AdministrativeRuleClient",
     "AdmrulDetail",
     "AdmrulList",
+    "CommitteeDecisionClient",
     "KRClient",
     "KoreanLawClient",
     "OrdinanceClient",
