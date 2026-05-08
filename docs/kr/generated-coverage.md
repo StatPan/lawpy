@@ -32,6 +32,9 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `law` | `LawClient`, `KRClient` | implemented |
 | `prec` | `PrecedentClient`, `KRClient` | implemented |
 | `admrul` | `AdministrativeRuleClient`, `KRClient` | implemented |
+| `licbyl` | `AnnexFormClient`, `KRClient` | implemented as annex/form wrapper |
+| `admbyl` | `AnnexFormClient`, `KRClient` | implemented as annex/form wrapper |
+| `ordinbyl` | `AnnexFormClient`, `KRClient` | implemented as annex/form wrapper |
 | `ordin` | `OrdinanceClient`, `KRClient` | implemented |
 | `lstrm` | `LegalTerminologyClient`, `KRClient` | implemented |
 | `expc` | `LegalInterpretationClient`, `KRClient` | implemented |
@@ -51,7 +54,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `acr` | `GeneratedAcrClient` | `search_acrs`, `get_acr_detail` | yes | yes | generated only |
 | `acrSpecialDecc` | `GeneratedAcrspecialdeccClient` | `search_acrSpecialDeccs`, `get_acrSpecialDecc_detail` | yes | yes | generated only |
 | `adapSpecialDecc` | `GeneratedAdapspecialdeccClient` | `search_adapSpecialDeccs`, `get_adapSpecialDecc_detail` | yes | yes | generated only |
-| `admbyl` | `GeneratedAdmbylClient` | `search_admbyls` | yes | yes | generated only |
+| `admbyl` | `GeneratedAdmbylClient` | `search_admbyls` | yes | yes | `AnnexFormClient`, `KRClient` |
 | `admrul` | `GeneratedAdmrulClient` | `search_admruls`, `get_admrul_detail` | yes | yes | `AdministrativeRuleClient`, `KRClient` |
 | `admrulOldAndNew` | `GeneratedAdmruloldandnewClient` | `search_admrulOldAndNews`, `get_admrulOldAndNew_detail` | yes | yes | generated only |
 | `baiPvcs` | `GeneratedBaipvcsClient` | `search_baiPvcss`, `get_baiPvcs_detail` | yes | yes | generated only |
@@ -83,7 +86,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `kostatCgmExpc` | `GeneratedKostatcgmexpcClient` | `search_kostatCgmExpcs`, `get_kostatCgmExpc_detail` | yes | yes | generated only |
 | `law` | `GeneratedLawClient` | `search_laws`, `get_law_detail` | yes | yes | `LawClient`, `KRClient` |
 | `lawjosub` | `GeneratedLawjosubClient` | `search_lawjosubs` | yes | yes | generated only |
-| `licbyl` | `GeneratedLicbylClient` | `search_licbyls` | yes | yes | generated only |
+| `licbyl` | `GeneratedLicbylClient` | `search_licbyls` | yes | yes | `AnnexFormClient`, `KRClient` |
 | `lnkLs` | `GeneratedLnklsClient` | `search_lnkLss` | yes | yes | generated only |
 | `lnkOrd` | `GeneratedLnkordClient` | `search_lnkOrds` | yes | yes | generated only |
 | `lsAbrv` | `GeneratedLsabrvClient` | `search_lsAbrvs` | yes | yes | `LawClient`, `KRClient` |
@@ -127,7 +130,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `oldAndNew` | `GeneratedOldandnewClient` | `search_oldAndNews`, `get_oldAndNew_detail` | yes | yes | `LawClient`, `KRClient` |
 | `oneview` | `GeneratedOneviewClient` | `search_oneviews`, `get_oneview_detail` | yes | yes | generated only |
 | `ordin` | `GeneratedOrdinClient` | `search_ordins`, `get_ordin_detail` | yes | yes | `OrdinanceClient`, `KRClient` |
-| `ordinbyl` | `GeneratedOrdinbylClient` | `search_ordinbyls` | yes | yes | generated only |
+| `ordinbyl` | `GeneratedOrdinbylClient` | `search_ordinbyls` | yes | yes | `AnnexFormClient`, `KRClient` |
 | `ppc` | `GeneratedPpcClient` | `search_ppcs`, `get_ppc_detail` | yes | yes | generated only |
 | `ppsCgmExpc` | `GeneratedPpscgmexpcClient` | `search_ppsCgmExpcs`, `get_ppsCgmExpc_detail` | yes | yes | generated only |
 | `prec` | `GeneratedPrecClient` | `search_precs`, `get_prec_detail` | yes | yes | `PrecedentClient`, `KRClient` |

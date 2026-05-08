@@ -2,6 +2,7 @@
 
 from lawpy.kr.administrative_review_decision import AdministrativeReviewDecisionClient
 from lawpy.kr.administrative_rule import AdministrativeRuleClient
+from lawpy.kr.annex_form import AnnexFormClient
 from lawpy.kr.constitutional_decision import ConstitutionalDecisionClient
 from lawpy.kr.law import LawClient
 from lawpy.kr.legal_interpretation import LegalInterpretationClient
@@ -15,6 +16,7 @@ class KRClient(
     LawClient,
     PrecedentClient,
     AdministrativeRuleClient,
+    AnnexFormClient,
     OrdinanceClient,
     LegalTerminologyClient,
     LegalInterpretationClient,
@@ -64,6 +66,11 @@ class KRClient(
       - :meth:`search_notices`              고시 목록 조회 (행정규칙 knd=3)
       - :meth:`get_administrative_rule_detail` 행정규칙 본문 조회
 
+    **별표·서식 (Annexes and Forms) — implemented**:
+      - :meth:`search_law_annex_forms` 법령 별표·서식 목록 조회
+      - :meth:`search_administrative_rule_annex_forms` 행정규칙 별표·서식 목록 조회
+      - :meth:`search_ordinance_annex_forms` 자치법규 별표·서식 목록 조회
+
     **자치법규 (Local Ordinance) — implemented**:
       - :meth:`search_ordinances`      자치법규 목록 조회
       - :meth:`search_local_notices`   자치법규 고시 목록 조회 (자치법규 knd=30010)
@@ -91,7 +98,6 @@ class KRClient(
 
     **향후 구현 예정**:
       - 위원회결정문 (Committee Decisions)
-      - 별표·서식 (Annexes and Forms)
     """
 
     pass
