@@ -36,6 +36,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `lstrm` | `LegalTerminologyClient`, `KRClient` | implemented |
 | `expc` | `LegalInterpretationClient`, `KRClient` | implemented |
 | `detc` | `ConstitutionalDecisionClient`, `KRClient` | implemented |
+| `decc` | `AdministrativeReviewDecisionClient`, `KRClient` | implemented |
 | `trty` | `TreatyClient`, `KRClient` | implemented |
 
 ## Generated Matrix
@@ -53,7 +54,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `couseLs` | `GeneratedCouselsClient` | `search_couseLss` | yes | yes | generated only |
 | `couseOrdin` | `GeneratedCouseordinClient` | `search_couseOrdins` | yes | yes | generated only |
 | `dapaCgmExpc` | `GeneratedDapacgmexpcClient` | `search_dapaCgmExpcs`, `get_dapaCgmExpc_detail` | yes | yes | generated only |
-| `decc` | `GeneratedDeccClient` | `search_deccs`, `get_decc_detail` | yes | yes | generated only |
+| `decc` | `GeneratedDeccClient` | `search_deccs`, `get_decc_detail` | yes | yes | `AdministrativeReviewDecisionClient`, `KRClient` |
 | `detc` | `GeneratedDetcClient` | `search_detcs`, `get_detc_detail` | yes | yes | `ConstitutionalDecisionClient`, `KRClient` |
 | `drlaw` | `GeneratedDrlawClient` | `search_drlaws` | yes | yes | generated only |
 | `ecc` | `GeneratedEccClient` | `search_eccs`, `get_ecc_detail` | yes | yes | generated only |

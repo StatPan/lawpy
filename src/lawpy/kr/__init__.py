@@ -15,6 +15,7 @@ For installed guidance, run:
     print(lawpy.help("kr"))
 """
 
+from lawpy.kr.administrative_review_decision import AdministrativeReviewDecisionClient
 from lawpy.kr.administrative_rule import AdministrativeRuleClient
 from lawpy.kr.client import KoreanLawClient, KRClient
 from lawpy.kr.constitutional_decision import ConstitutionalDecisionClient
@@ -27,6 +28,7 @@ from lawpy.kr.treaty import TreatyClient
 
 __all__ = [
     "AdministrativeRuleClient",
+    "AdministrativeReviewDecisionClient",
     "ConstitutionalDecisionClient",
     "KRClient",
     "KoreanLawClient",
