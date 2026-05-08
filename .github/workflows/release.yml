@@ -53,7 +53,7 @@ jobs:
 
       - name: Bump version
         run: |
-          uv run bump-my-version ${{ github.event.inputs.version_bump }}
+          uv run bump-my-version bump ${{ github.event.inputs.version_bump }}
 
       - name: Push changes
         run: |
