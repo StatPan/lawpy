@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       spec_changed: ${{ steps.spec-diff.outputs.changed }}
+      snapshot_verify_failed: ${{ steps.probe-verify.outputs.failed }}
       drift_detected: ${{ steps.probe-diff.outputs.drift }}
 
     steps:
@@ -53,7 +54,17 @@ jobs:
       - name: Show spec diff summary
         run: cat /tmp/spec_diff_result.json | python3 -m json.tool || true
 
-      # 1c. Live API probe diff (response schema vs snapshots)
+      # 1c. Snapshot vs generated model verification (no live API call)
+      - name: Run probe snapshot verify
+        id: probe-verify
+        run: |
+          if uv run lawpy-probe verify --all --output json > /tmp/probe_verify.json; then
+            echo "failed=false" >> $GITHUB_OUTPUT
+          else
+            echo "failed=true" >> $GITHUB_OUTPUT
+          fi
+
+      # 1d. Live API probe diff (response schema vs snapshots)
       - name: Run probe diff
         id: probe-diff
         env:
@@ -71,6 +82,7 @@ jobs:
           name: detection-reports-${{ github.run_id }}
           path: |
             /tmp/spec_diff_result.json
+            /tmp/probe_verify.json
             /tmp/probe_drift.json
           retention-days: 30
 

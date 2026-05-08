@@ -14,6 +14,15 @@ def test_probe_diff_json_output_option_precedes_subcommand() -> None:
     assert "uv run lawpy-probe diff --all --output json > /tmp/probe_drift.json" not in workflow
 
 
+def test_probe_verify_json_report_is_uploaded() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "uv run lawpy-probe verify --all --output json > /tmp/probe_verify.json" in workflow
+    assert "snapshot_verify_failed: ${{ steps.probe-verify.outputs.failed }}" in workflow
+    assert 'echo "failed=true" >> $GITHUB_OUTPUT' in workflow
+    assert "/tmp/probe_verify.json" in workflow
+
+
 def test_notify_drift_tolerates_empty_probe_report() -> None:
     workflow = WORKFLOW.read_text()
 
