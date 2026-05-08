@@ -74,6 +74,7 @@ jobs:
   publish:
     name: Publish to PyPI
     runs-on: ubuntu-latest
+    environment: pypi
     needs: bump-version
     if: always() && (github.event_name == 'push' || github.event.inputs.publish_tag != '' || needs.bump-version.result == 'success')
 
