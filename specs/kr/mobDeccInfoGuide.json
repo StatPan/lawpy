@@ -36,19 +36,34 @@
   ],
   "response": [
     {
-      "col0": "샘플 URL"
+      "요청변수": "OC",
+      "값": "string(필수)",
+      "설명": "신청한 API인증값"
     },
     {
-      "col0": "1. 행정심판례 일련번호가 2782인 행정심판례 HTML 조회"
+      "요청변수": "target",
+      "값": "string : decc(필수)",
+      "설명": "서비스 대상"
     },
     {
-      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=decc&ID=2782&type=HTML&mobileYn=Y"
+      "요청변수": "ID",
+      "값": "char",
+      "설명": "행정심판례 일련번호"
     },
     {
-      "col0": "2. 산림기술자 자격취소처분 취소청구 등 행정심판례 조회"
+      "요청변수": "LM",
+      "값": "char",
+      "설명": "행정심판례명"
     },
     {
-      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=decc&ID=222883&LM=산림기술자 자격취소처분 취소청구 등&type=HTML&mobileYn=Y"
+      "요청변수": "type",
+      "값": "char",
+      "설명": "출력 형태 : HTML"
+    },
+    {
+      "요청변수": "mobileYn",
+      "값": "char : Y (필수)",
+      "설명": "모바일여부"
     }
   ],
   "raw_url": "https://open.law.go.kr/LSO/openApi/guideResult.do"

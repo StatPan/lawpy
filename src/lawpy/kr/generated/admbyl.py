@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import AdmbylList
 
 
-class AdmbylClient(KoreanBaseClient):
+class GeneratedAdmbylClient(KoreanBaseClient):
     """Auto-generated client for target=admbyl.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── admbyl ──────────────────────────────────────
@@ -27,7 +27,7 @@ class AdmbylClient(KoreanBaseClient):
         knd: str | None = None,
         gana: str | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[AdmbylList]:
         """[GENERATED] 행정규칙 별표ㆍ서식 목록 조회
 
         Args:
@@ -42,7 +42,7 @@ class AdmbylClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of AdmbylList instances.
             Response path: admRulBylSearch.admrulbyl
         """
         params: dict = {"target": "admbyl", "type": "JSON"}
@@ -70,5 +70,5 @@ class AdmbylClient(KoreanBaseClient):
         items = root.get("admrulbyl", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [AdmbylList.model_validate(item) for item in items]
 

@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import MoiscgmexpcDetail, MoiscgmexpcList
 
 
-class MoiscgmexpcClient(KoreanBaseClient):
+class GeneratedMoiscgmexpcClient(KoreanBaseClient):
     """Auto-generated client for target=moisCgmExpc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── moisCgmExpc ──────────────────────────────────────
@@ -30,7 +30,7 @@ class MoiscgmexpcClient(KoreanBaseClient):
         sort: str | None = None,
         popyn: str | None = None,
         fields: str | None = None,
-    ) -> list[dict]:
+    ) -> list[MoiscgmexpcList]:
         """[GENERATED] 행정안전부 법령해석 목록 조회
 
         Args:
@@ -48,7 +48,7 @@ class MoiscgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of MoiscgmexpcList instances.
             Response path: CgmExpc (item key not discovered)
         """
         params: dict = {"target": "moisCgmExpc", "type": "JSON"}
@@ -79,15 +79,15 @@ class MoiscgmexpcClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("CgmExpc", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [MoiscgmexpcList.model_validate(item) for item in items]
 
     def get_moisCgmExpc_detail(
         self,
         id: int | None = None,
         lm: str | None = None,
         fields: str | None = None,
-    ) -> dict:
+    ) -> MoiscgmexpcDetail:
         """[GENERATED] 행정안전부 법령해석 본문 조회
 
         Args:
@@ -96,7 +96,7 @@ class MoiscgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            MoiscgmexpcDetail instance.
             Response path: CgmExpc
         """
         params: dict = {"target": "moisCgmExpc", "type": "JSON"}
@@ -108,5 +108,6 @@ class MoiscgmexpcClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("CgmExpc", data)
+        raw = data.get("CgmExpc", data)
+        return MoiscgmexpcDetail.model_validate(raw)
 

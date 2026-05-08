@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import LstrmDetail, LstrmList
 
 
-class LstrmClient(KoreanBaseClient):
+class GeneratedLstrmClient(KoreanBaseClient):
     """Auto-generated client for target=lstrm.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── lstrm ──────────────────────────────────────
@@ -25,7 +25,7 @@ class LstrmClient(KoreanBaseClient):
         gana: str | None = None,
         dickndcd: int | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[LstrmList]:
         """[GENERATED] 법령 용어 목록 조회
 
         Args:
@@ -38,7 +38,7 @@ class LstrmClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of LstrmList instances.
             Response path: LsTrmSearch.lstrm
         """
         params: dict = {"target": "lstrm", "type": "JSON"}
@@ -62,19 +62,19 @@ class LstrmClient(KoreanBaseClient):
         items = root.get("lstrm", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [LstrmList.model_validate(item) for item in items]
 
     def get_lstrm_detail(
         self,
         query: str | None = None,
-    ) -> dict:
+    ) -> LstrmDetail:
         """[GENERATED] 법령 용어 본문 조회
 
         Args:
         query: 상세조회하고자 하는 법령용어 명
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            LstrmDetail instance.
             Response path: LsTrmSearch
         """
         params: dict = {"target": "lstrm", "type": "JSON"}
@@ -82,5 +82,6 @@ class LstrmClient(KoreanBaseClient):
             params["query"] = query
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("LsTrmSearch", data)
+        raw = data.get("LsTrmSearch", data)
+        return LstrmDetail.model_validate(raw)
 

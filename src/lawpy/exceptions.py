@@ -46,3 +46,15 @@ class ParseError(LawpyError):
     """Raised when parsing API response fails."""
 
     pass
+
+
+class ApiSubscriptionError(APIError):
+    """Raised when the target is not subscribed/activated in the API plan."""
+
+    pass
+
+
+class ApiResponseTypeError(APIError):
+    """Raised when the API returns an unexpected content type (e.g. HTML instead of JSON)."""
+
+    pass

@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import PrecDetail, PrecList
 
 
-class PrecClient(KoreanBaseClient):
+class GeneratedPrecClient(KoreanBaseClient):
     """Auto-generated client for target=prec.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── prec ──────────────────────────────────────
@@ -32,7 +32,7 @@ class PrecClient(KoreanBaseClient):
         nb: int | None = None,
         datsrcnm: str | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[PrecList]:
         """[GENERATED] 판례 목록 조회
 
         Args:
@@ -52,7 +52,7 @@ class PrecClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of PrecList instances.
             Response path: PrecSearch.prec
         """
         params: dict = {"target": "prec", "type": "JSON"}
@@ -90,14 +90,14 @@ class PrecClient(KoreanBaseClient):
         items = root.get("prec", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [PrecList.model_validate(item) for item in items]
 
     def get_prec_detail(
         self,
         id: str | None = None,
         lm: str | None = None,
         mobileyn: str | None = None,
-    ) -> dict:
+    ) -> PrecDetail:
         """[GENERATED] 판례 본문 조회
 
         Args:
@@ -106,7 +106,7 @@ class PrecClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            PrecDetail instance.
             Response path: PrecSearch
         """
         params: dict = {"target": "prec", "type": "JSON"}
@@ -118,5 +118,6 @@ class PrecClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("PrecSearch", data)
+        raw = data.get("PrecSearch", data)
+        return PrecDetail.model_validate(raw)
 

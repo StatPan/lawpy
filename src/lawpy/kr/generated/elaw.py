@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import ElawDetail, ElawList
 
 
-class ElawClient(KoreanBaseClient):
+class GeneratedElawClient(KoreanBaseClient):
     """Auto-generated client for target=elaw.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── elaw ──────────────────────────────────────
@@ -33,7 +33,7 @@ class ElawClient(KoreanBaseClient):
         knd: str | None = None,
         gana: str | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[ElawList]:
         """[GENERATED] 영문 법령 목록 조회
 
         Args:
@@ -54,7 +54,7 @@ class ElawClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of ElawList instances.
             Response path: LawSearch.law
         """
         params: dict = {"target": "elaw", "type": "JSON"}
@@ -94,7 +94,7 @@ class ElawClient(KoreanBaseClient):
         items = root.get("law", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [ElawList.model_validate(item) for item in items]
 
     def get_elaw_detail(
         self,
@@ -103,7 +103,7 @@ class ElawClient(KoreanBaseClient):
         lm: str | None = None,
         ld: int | None = None,
         ln: int | None = None,
-    ) -> dict:
+    ) -> ElawDetail:
         """[GENERATED] 영문 법령 본문 조회
 
         Args:
@@ -114,7 +114,7 @@ class ElawClient(KoreanBaseClient):
         ln: 법령의 공포번호
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            ElawDetail instance.
             Response path: LawSearch
         """
         params: dict = {"target": "elaw", "type": "JSON"}
@@ -130,5 +130,6 @@ class ElawClient(KoreanBaseClient):
             params["LN"] = ln
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("LawSearch", data)
+        raw = data.get("LawSearch", data)
+        return ElawDetail.model_validate(raw)
 

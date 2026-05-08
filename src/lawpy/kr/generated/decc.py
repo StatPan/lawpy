@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import DeccDetail, DeccList
 
 
-class DeccClient(KoreanBaseClient):
+class GeneratedDeccClient(KoreanBaseClient):
     """Auto-generated client for target=decc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── decc ──────────────────────────────────────
@@ -29,7 +29,7 @@ class DeccClient(KoreanBaseClient):
         rslyd: str | None = None,
         sort: str | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[DeccList]:
         """[GENERATED] 행정심판례 목록 조회
 
         Args:
@@ -46,7 +46,7 @@ class DeccClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of DeccList instances.
             Response path: Decc (item key not discovered)
         """
         params: dict = {"target": "decc", "type": "JSON"}
@@ -75,15 +75,15 @@ class DeccClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("Decc", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [DeccList.model_validate(item) for item in items]
 
     def get_decc_detail(
         self,
         id: str | None = None,
         lm: str | None = None,
         mobileyn: str | None = None,
-    ) -> dict:
+    ) -> DeccDetail:
         """[GENERATED] 행정심판례 본문 조회
 
         Args:
@@ -92,7 +92,7 @@ class DeccClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            DeccDetail instance.
             Response path: Decc
         """
         params: dict = {"target": "decc", "type": "JSON"}
@@ -104,5 +104,6 @@ class DeccClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("Decc", data)
+        raw = data.get("Decc", data)
+        return DeccDetail.model_validate(raw)
 

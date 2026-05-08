@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import TrtyDetail, TrtyList
 
 
-class TrtyClient(KoreanBaseClient):
+class GeneratedTrtyClient(KoreanBaseClient):
     """Auto-generated client for target=trty.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── trty ──────────────────────────────────────
@@ -28,7 +28,7 @@ class TrtyClient(KoreanBaseClient):
         cls: int | None = None,
         sort: str | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[TrtyList]:
         """[GENERATED] 조약 목록 조회
 
         Args:
@@ -44,7 +44,7 @@ class TrtyClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of TrtyList instances.
             Response path: TrtySearch.Trty
         """
         params: dict = {"target": "trty", "type": "JSON"}
@@ -74,13 +74,13 @@ class TrtyClient(KoreanBaseClient):
         items = root.get("Trty", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [TrtyList.model_validate(item) for item in items]
 
     def get_trty_detail(
         self,
         id: str | None = None,
         mobileyn: str | None = None,
-    ) -> dict:
+    ) -> TrtyDetail:
         """[GENERATED] 조약 본문 조회
 
         Args:
@@ -88,7 +88,7 @@ class TrtyClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            TrtyDetail instance.
             Response path: TrtySearch
         """
         params: dict = {"target": "trty", "type": "JSON"}
@@ -98,5 +98,6 @@ class TrtyClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("TrtySearch", data)
+        raw = data.get("TrtySearch", data)
+        return TrtyDetail.model_validate(raw)
 

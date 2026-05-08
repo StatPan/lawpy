@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import OneviewDetail, OneviewList
 
 
-class OneviewClient(KoreanBaseClient):
+class GeneratedOneviewClient(KoreanBaseClient):
     """Auto-generated client for target=oneview.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── oneview ──────────────────────────────────────
@@ -21,7 +21,7 @@ class OneviewClient(KoreanBaseClient):
         query: str | None = None,
         display: int | None = None,
         page: int | None = None,
-    ) -> list[dict]:
+    ) -> list[OneviewList]:
         """[GENERATED] 한눈보기 목록 조회
 
         Args:
@@ -30,7 +30,7 @@ class OneviewClient(KoreanBaseClient):
         page: 검색 결과 페이지 (default=1)
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of OneviewList instances.
             Response path: items (item key not discovered)
         """
         params: dict = {"target": "oneview", "type": "JSON"}
@@ -43,8 +43,8 @@ class OneviewClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("items", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [OneviewList.model_validate(item) for item in items]
 
     def get_oneview_detail(
         self,
@@ -53,7 +53,7 @@ class OneviewClient(KoreanBaseClient):
         ld: int | None = None,
         ln: int | None = None,
         jo: int | None = None,
-    ) -> dict:
+    ) -> OneviewDetail:
         """[GENERATED] 한눈보기 본문 조회
 
         Args:
@@ -64,7 +64,7 @@ class OneviewClient(KoreanBaseClient):
         jo: 조번호 생략(기본값) : 모든 조를 표시함 6자리숫자 : 조번호(4자리)+조가지번호(2자리) (000200 : 2조, 001002 : 10조의 2)
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            OneviewDetail instance.
             Response path: items
         """
         params: dict = {"target": "oneview", "type": "JSON"}
@@ -80,5 +80,6 @@ class OneviewClient(KoreanBaseClient):
             params["JO"] = jo
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("items", data)
+        raw = data.get("items", data)
+        return OneviewDetail.model_validate(raw)
 

@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import AdapspecialdeccDetail, AdapspecialdeccList
 
 
-class AdapspecialdeccClient(KoreanBaseClient):
+class GeneratedAdapspecialdeccClient(KoreanBaseClient):
     """Auto-generated client for target=adapSpecialDecc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── adapSpecialDecc ──────────────────────────────────────
@@ -30,7 +30,7 @@ class AdapspecialdeccClient(KoreanBaseClient):
         sort: str | None = None,
         popyn: str | None = None,
         fields: str | None = None,
-    ) -> list[dict]:
+    ) -> list[AdapspecialdeccList]:
         """[GENERATED] 인사혁신처 소청심사위원회 특별행정심판재결례 목록 조회
 
         Args:
@@ -48,7 +48,7 @@ class AdapspecialdeccClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 사건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of AdapspecialdeccList instances.
             Response path: Decc (item key not discovered)
         """
         params: dict = {"target": "adapSpecialDecc", "type": "JSON"}
@@ -79,15 +79,15 @@ class AdapspecialdeccClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("Decc", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [AdapspecialdeccList.model_validate(item) for item in items]
 
     def get_adapSpecialDecc_detail(
         self,
         id: str | None = None,
         lm: str | None = None,
         fields: str | None = None,
-    ) -> dict:
+    ) -> AdapspecialdeccDetail:
         """[GENERATED] 인사혁신처 소청심사위원회 특별행정심판례 본문 조회
 
         Args:
@@ -96,7 +96,7 @@ class AdapspecialdeccClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 사건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            AdapspecialdeccDetail instance.
             Response path: Decc
         """
         params: dict = {"target": "adapSpecialDecc", "type": "JSON"}
@@ -108,5 +108,6 @@ class AdapspecialdeccClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("Decc", data)
+        raw = data.get("Decc", data)
+        return AdapspecialdeccDetail.model_validate(raw)
 

@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import LsstmdDetail, LsstmdList
 
 
-class LsstmdClient(KoreanBaseClient):
+class GeneratedLsstmdClient(KoreanBaseClient):
     """Auto-generated client for target=lsStmd.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── lsStmd ──────────────────────────────────────
@@ -32,7 +32,7 @@ class LsstmdClient(KoreanBaseClient):
         knd: str | None = None,
         gana: str | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[LsstmdList]:
         """[GENERATED] 법령 체계도 목록 조회
 
         Args:
@@ -52,7 +52,7 @@ class LsstmdClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of LsstmdList instances.
             Response path: LsStmdSearch.law
         """
         params: dict = {"target": "lsStmd", "type": "JSON"}
@@ -90,7 +90,7 @@ class LsstmdClient(KoreanBaseClient):
         items = root.get("law", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [LsstmdList.model_validate(item) for item in items]
 
     def get_lsStmd_detail(
         self,
@@ -99,7 +99,7 @@ class LsstmdClient(KoreanBaseClient):
         lm: str | None = None,
         ld: int | None = None,
         ln: int | None = None,
-    ) -> dict:
+    ) -> LsstmdDetail:
         """[GENERATED] 법령 체계도 본문 조회
 
         Args:
@@ -110,7 +110,7 @@ class LsstmdClient(KoreanBaseClient):
         ln: 법령의 공포번호
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            LsstmdDetail instance.
             Response path: LsStmdSearch
         """
         params: dict = {"target": "lsStmd", "type": "JSON"}
@@ -126,5 +126,6 @@ class LsstmdClient(KoreanBaseClient):
             params["LN"] = ln
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("LsStmdSearch", data)
+        raw = data.get("LsStmdSearch", data)
+        return LsstmdDetail.model_validate(raw)
 

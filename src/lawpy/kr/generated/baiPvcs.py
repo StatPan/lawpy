@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import BaipvcsDetail, BaipvcsList
 
 
-class BaipvcsClient(KoreanBaseClient):
+class GeneratedBaipvcsClient(KoreanBaseClient):
     """Auto-generated client for target=baiPvcs.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── baiPvcs ──────────────────────────────────────
@@ -28,7 +28,7 @@ class BaipvcsClient(KoreanBaseClient):
         sort: str | None = None,
         popyn: str | None = None,
         fields: str | None = None,
-    ) -> list[dict]:
+    ) -> list[BaipvcsList]:
         """[GENERATED] 감사원 사전컨설팅 의견서 목록 조회
 
         Args:
@@ -44,8 +44,8 @@ class BaipvcsClient(KoreanBaseClient):
         fields: 응답항목 옵션(의견서명, 접수번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts. Fields match the API response schema.
-            Root key not discovered — using best-effort extraction
+            List of BaipvcsList instances.
+            Response path: BaiPvcs (item key not discovered)
         """
         params: dict = {"target": "baiPvcs", "type": "JSON"}
         if search is not None:
@@ -70,21 +70,16 @@ class BaipvcsClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
-        if isinstance(data, list):
-            return data
-        for v in data.values():
-            if isinstance(v, list):
-                return v
-            if isinstance(v, dict):
-                return [v]
-        return []
+        root = data.get("BaiPvcs", {})
+        items = root if isinstance(root, list) else [root] if root else []
+        return [BaipvcsList.model_validate(item) for item in items]
 
     def get_baiPvcs_detail(
         self,
         id: str | None = None,
         lm: str | None = None,
         fields: str | None = None,
-    ) -> dict:
+    ) -> BaipvcsDetail:
         """[GENERATED] 감사원 사전컨설팅 의견서 본문 조회
 
         Args:
@@ -93,8 +88,8 @@ class BaipvcsClient(KoreanBaseClient):
         fields: 응답항목 옵션(의견서명, 접수번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict. Fields match the API response schema.
-            Root key not discovered — returning raw response
+            BaipvcsDetail instance.
+            Response path: BaiPvcs
         """
         params: dict = {"target": "baiPvcs", "type": "JSON"}
         if id is not None:
@@ -104,5 +99,7 @@ class BaipvcsClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        data = response.json()
+        raw = data.get("BaiPvcs", data)
+        return BaipvcsDetail.model_validate(raw)
 

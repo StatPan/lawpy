@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import EflawDetail, EflawList
 
 
-class EflawClient(KoreanBaseClient):
+class GeneratedEflawClient(KoreanBaseClient):
     """Auto-generated client for target=eflaw.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── eflaw ──────────────────────────────────────
@@ -35,7 +35,7 @@ class EflawClient(KoreanBaseClient):
         knd: str | None = None,
         gana: str | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[EflawList]:
         """[GENERATED] 현행법령(시행일) 목록 조회 (국가법령정보센터 기준)
 
         Args:
@@ -58,7 +58,7 @@ class EflawClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of EflawList instances.
             Response path: LawSearch.law
         """
         params: dict = {"target": "eflaw", "type": "JSON"}
@@ -102,7 +102,7 @@ class EflawClient(KoreanBaseClient):
         items = root.get("law", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [EflawList.model_validate(item) for item in items]
 
     def get_eflaw_detail(
         self,
@@ -111,7 +111,7 @@ class EflawClient(KoreanBaseClient):
         efyd: int | None = None,
         jo: int | None = None,
         chrclscd: str | None = None,
-    ) -> dict:
+    ) -> EflawDetail:
         """[GENERATED] 현행법령(시행일) 본문 조회 (국가법령정보센터 기준)
 
         Args:
@@ -122,7 +122,7 @@ class EflawClient(KoreanBaseClient):
         chrclscd: 원문/한글 여부 생략(기본값) : 한글 (010202 : 한글, 010201 : 원문)
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            EflawDetail instance.
             Response path: LawSearch
         """
         params: dict = {"target": "eflaw", "type": "JSON"}
@@ -138,5 +138,6 @@ class EflawClient(KoreanBaseClient):
             params["chrClsCd"] = chrclscd
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("LawSearch", data)
+        raw = data.get("LawSearch", data)
+        return EflawDetail.model_validate(raw)
 

@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import LnklsList
 
 
-class LnklsClient(KoreanBaseClient):
+class GeneratedLnklsClient(KoreanBaseClient):
     """Auto-generated client for target=lnkLs.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── lnkLs ──────────────────────────────────────
@@ -23,7 +23,7 @@ class LnklsClient(KoreanBaseClient):
         page: int | None = None,
         sort: str | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[LnklsList]:
         """[GENERATED] 법령 기준 자치법규 연계 관련 목록 조회
 
         Args:
@@ -34,7 +34,7 @@ class LnklsClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of LnklsList instances.
             Response path: LawSearch (item key not discovered)
         """
         params: dict = {"target": "lnkLs", "type": "JSON"}
@@ -51,6 +51,6 @@ class LnklsClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("LawSearch", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [LnklsList.model_validate(item) for item in items]
 

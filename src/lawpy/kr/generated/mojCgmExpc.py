@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import MojcgmexpcDetail, MojcgmexpcList
 
 
-class MojcgmexpcClient(KoreanBaseClient):
+class GeneratedMojcgmexpcClient(KoreanBaseClient):
     """Auto-generated client for target=mojCgmExpc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── mojCgmExpc ──────────────────────────────────────
@@ -30,7 +30,7 @@ class MojcgmexpcClient(KoreanBaseClient):
         sort: str | None = None,
         popyn: str | None = None,
         fields: str | None = None,
-    ) -> list[dict]:
+    ) -> list[MojcgmexpcList]:
         """[GENERATED] 법무부 법령해석 목록
 
         Args:
@@ -48,7 +48,7 @@ class MojcgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of MojcgmexpcList instances.
             Response path: CgmExpc.cgmExpc
         """
         params: dict = {"target": "mojCgmExpc", "type": "JSON"}
@@ -82,14 +82,14 @@ class MojcgmexpcClient(KoreanBaseClient):
         items = root.get("cgmExpc", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [MojcgmexpcList.model_validate(item) for item in items]
 
     def get_mojCgmExpc_detail(
         self,
         id: int | None = None,
         lm: str | None = None,
         fields: str | None = None,
-    ) -> dict:
+    ) -> MojcgmexpcDetail:
         """[GENERATED] 법무부 법령해석 본문
 
         Args:
@@ -98,7 +98,7 @@ class MojcgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            MojcgmexpcDetail instance.
             Response path: CgmExpc
         """
         params: dict = {"target": "mojCgmExpc", "type": "JSON"}
@@ -110,5 +110,6 @@ class MojcgmexpcClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("CgmExpc", data)
+        raw = data.get("CgmExpc", data)
+        return MojcgmexpcDetail.model_validate(raw)
 

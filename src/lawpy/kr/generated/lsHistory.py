@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import LshistoryDetail, LshistoryList
 
 
-class LshistoryClient(KoreanBaseClient):
+class GeneratedLshistoryClient(KoreanBaseClient):
     """Auto-generated client for target=lsHistory.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── lsHistory ──────────────────────────────────────
@@ -32,7 +32,7 @@ class LshistoryClient(KoreanBaseClient):
         lschapno: str | None = None,
         gana: str | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[LshistoryList]:
         """[GENERATED] 법령 연혁 목록 조회
 
         Args:
@@ -52,7 +52,7 @@ class LshistoryClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of LshistoryList instances.
             Root key not discovered — using best-effort extraction
         """
         params: dict = {"target": "lsHistory", "type": "JSON"}
@@ -87,13 +87,24 @@ class LshistoryClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         if isinstance(data, list):
-            return data
-        for v in data.values():
-            if isinstance(v, list):
-                return v
-            if isinstance(v, dict):
-                return [v]
-        return []
+            raw = data
+        else:
+            raw = []
+            for v in data.values():
+                if isinstance(v, list):
+                    raw = v
+                    break
+                if isinstance(v, dict):
+                    for _ik, _iv in v.items():
+                        if _ik in ("resultMsg", "resultCode", "page", "totalCnt", "target", "키워드", "section", "numOfRows", "display", "query"):
+                            continue
+                        if isinstance(_iv, list) and _iv:
+                            raw = _iv
+                            break
+                    if not raw:
+                        raw = [v]
+                    break
+        return [LshistoryList.model_validate(item) for item in raw]
 
     def get_lsHistory_detail(
         self,
@@ -103,7 +114,7 @@ class LshistoryClient(KoreanBaseClient):
         ld: int | None = None,
         ln: int | None = None,
         chrclscd: str | None = None,
-    ) -> dict:
+    ) -> LshistoryDetail:
         """[GENERATED] 법령 연혁 본문 조회
 
         Args:
@@ -115,7 +126,7 @@ class LshistoryClient(KoreanBaseClient):
         chrclscd: 원문/한글 여부 생략(기본값) : 한글 (010202 : 한글, 010201 : 원문)
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            LshistoryDetail instance.
             Root key not discovered — returning raw response
         """
         params: dict = {"target": "lsHistory", "type": "JSON"}
@@ -132,5 +143,5 @@ class LshistoryClient(KoreanBaseClient):
         if chrclscd is not None:
             params["chrClsCd"] = chrclscd
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        return LshistoryDetail.model_validate(response.json())
 
