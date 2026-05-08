@@ -17,6 +17,7 @@ lawpy/kr/
 ├── legal_terminology.py       # Public legal terminology (법령용어) wrapper
 ├── legal_interpretation.py    # Public legal interpretation (법령해석례) wrapper
 ├── constitutional_decision.py # Public constitutional decision (헌재결정례) wrapper
+├── administrative_review_decision.py # Public administrative review decision (행정심판례) wrapper
 ├── precedent.py               # Public precedent (판례) wrapper
 ├── treaty.py                  # Public treaty (조약) wrapper
 ├── generated/                 # 89 spec-generated law.go.kr target clients
@@ -60,6 +61,11 @@ constitutional_decision_detail = client.get_constitutional_decision_detail(
     decision_id=constitutional_decisions[0].헌재결정례일련번호
 )
 
+administrative_review_decisions = client.search_administrative_review_decisions("영업정지")
+administrative_review_decision_detail = client.get_administrative_review_decision_detail(
+    decision_id=administrative_review_decisions[0].행정심판재결례일련번호
+)
+
 treaties = client.search_treaties("FTA", treaty_class=1)
 treaty_detail = client.get_treaty_detail(treaties[0].조약일련번호)
 ```
@@ -77,13 +83,14 @@ prefer `KRClient`.
 | `KRClient`, `legal_terminology.py` | `lstrm` | Public wrapper over generated `lstrm`: legal term search and detail |
 | `KRClient`, `legal_interpretation.py` | `expc` | Thin public wrapper over generated `expc`: legal interpretation search and detail |
 | `KRClient`, `constitutional_decision.py` | `detc` | Thin public wrapper over generated `detc`: constitutional decision search and detail |
+| `KRClient`, `administrative_review_decision.py` | `decc` | Thin public wrapper over generated `decc`: administrative review decision search and detail |
 | `KRClient`, `precedent.py` | `prec` | Partial public wrapper: precedent search and detail using handwritten XML parsing; generated `prec` also exists |
 | `KRClient`, `treaty.py` | `trty` | Public wrapper over generated `trty`: treaty search and detail |
 
 ## Generated-Only Targets
 
-The generated package contains 89 law.go.kr target clients. Eight targets are
-wrapped by `KRClient` today (`law`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`, `detc`, `trty`), leaving 81
+The generated package contains 89 law.go.kr target clients. Nine targets are
+wrapped by `KRClient` today (`law`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`, `detc`, `decc`, `trty`), leaving 80
 generated-only target modules.
 
 Use generated-only clients directly:
