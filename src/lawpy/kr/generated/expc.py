@@ -29,22 +29,24 @@ class GeneratedExpcClient(KoreanBaseClient):
         regyd: str | None = None,
         explyd: str | None = None,
         sort: str | None = None,
+        popyn: str | None = None,
         mobileyn: str | None = None,
     ) -> list[ExpcList]:
         """[GENERATED] 법령해석례 목록 조회
 
         Args:
         search: 검색범위 (기본 : 1 법령해석례명) 2 : 본문검색
-        query: 검색범위에서 검색을 원하는 질의(검색 결과 리스트)
+        query: 검색범위에서 검색을 원하는 질의 (정확한 검색을 위한 문자열 검색 query='자동차')
         display: 검색된 결과 개수 (default=20 max=100)
         page: 검색 결과 페이지 (default=1)
         inq: 질의기관
         rpl: 회신기관
         gana: 사전식 검색(ga,na,da…,etc)
-        itmno: 안건번호
+        itmno: 안건번호 13-0217 검색을 원할시 itmno=130217
         regyd: 등록일자 검색(20090101~20090130)
         explyd: 해석일자 검색(20090101~20090130)
         sort: 정렬옵션 (기본 : lasc 법령해석례명 오름차순) ldes 법령해석례명 내림차순 dasc : 해석일자 오름차순 ddes : 해석일자 내림차순 nasc : 안건번호 오름차순 ndes : 안건번호 내림차순
+        popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
         mobileyn: 모바일여부
 
         Returns:
@@ -74,6 +76,8 @@ class GeneratedExpcClient(KoreanBaseClient):
             params["explYd"] = explyd
         if sort is not None:
             params["sort"] = sort
+        if popyn is not None:
+            params["popYn"] = popyn
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)

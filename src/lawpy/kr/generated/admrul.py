@@ -32,6 +32,7 @@ class GeneratedAdmrulClient(KoreanBaseClient):
         modyd: str | None = None,
         nb: int | None = None,
         popyn: str | None = None,
+        mobileyn: str | None = None,
     ) -> list[AdmrulList]:
         """[GENERATED] 행정규칙 목록 조회
 
@@ -50,6 +51,7 @@ class GeneratedAdmrulClient(KoreanBaseClient):
         modyd: 수정일자 기간검색(20090101~20090130)
         nb: 행정규칙 발령번호 ex)제2023-8호 검색을 원할시 nb=20238
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
+        mobileyn: 모바일여부
 
         Returns:
             List of AdmrulList instances.
@@ -84,6 +86,8 @@ class GeneratedAdmrulClient(KoreanBaseClient):
             params["nb"] = nb
         if popyn is not None:
             params["popYn"] = popyn
+        if mobileyn is not None:
+            params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("AdmRulSearch", {})
@@ -98,6 +102,7 @@ class GeneratedAdmrulClient(KoreanBaseClient):
     def get_admrul_detail(
         self,
         id: str | None = None,
+        lid: str | None = None,
         lm: str | None = None,
         mobileyn: str | None = None,
     ) -> AdmrulDetail:
@@ -105,6 +110,7 @@ class GeneratedAdmrulClient(KoreanBaseClient):
 
         Args:
         id: 행정규칙 일련번호
+        lid: 행정규칙 ID
         lm: 행정규칙명 조회하고자 하는 정확한 행정규칙명을 입력
         mobileyn: 모바일여부
 
@@ -115,6 +121,8 @@ class GeneratedAdmrulClient(KoreanBaseClient):
         params: dict = {"target": "admrul", "type": "JSON"}
         if id is not None:
             params["ID"] = id
+        if lid is not None:
+            params["LID"] = lid
         if lm is not None:
             params["LM"] = lm
         if mobileyn is not None:

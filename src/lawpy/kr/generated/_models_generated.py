@@ -184,24 +184,31 @@ class AdapspecialdeccDetail(BaseModel):
 class AdmbylList(BaseModel):
     """[GENERATED] Response model for 행정규칙 별표ㆍ서식 목록 조회.
 
-    Source: specs/kr/mobAdmrulBylListGuide.json
+    Source: specs/kr/admrulBylListGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
     target: str | None = Field(None, alias="target")
-    search: str | None = Field(None, alias="search")
-    query: str | None = Field(None, alias="query")
-    display: str | None = Field(None, alias="display")
+    키워드: str | None = Field(None, alias="키워드")
+    section: str | None = Field(None, alias="section")
+    totalcnt: str | None = Field(None, alias="totalCnt")
     page: str | None = Field(None, alias="page")
-    sort: str | None = Field(None, alias="sort")
-    org: str | None = Field(None, alias="org")
-    knd: str | None = Field(None, alias="knd")
-    gana: str | None = Field(None, alias="gana")
-    type: str | None = Field(None, alias="type")
-    mobileyn: str | None = Field(None, alias="mobileYn")
+    admrulbyl_id: str | None = Field(None, alias="admrulbyl id")
+    별표일련번호: str | None = Field(None, alias="별표일련번호")
+    관련행정규칙_일련번호: str | None = Field(None, alias="관련행정규칙 일련번호")
+    별표명: str | None = Field(None, alias="별표명")
+    관련행정규칙명: str | None = Field(None, alias="관련행정규칙명")
+    별표번호: str | None = Field(None, alias="별표번호")
+    별표종류: str | None = Field(None, alias="별표종류")
+    소관부처명: str | None = Field(None, alias="소관부처명")
+    발령일자: str | None = Field(None, alias="발령일자")
+    발령번호: str | None = Field(None, alias="발령번호")
+    관련법령id: str | None = Field(None, alias="관련법령ID")
+    행정규칙종류: str | None = Field(None, alias="행정규칙종류")
+    별표서식파일링크: str | None = Field(None, alias="별표서식파일링크")
+    별표행정규칙_상세링크: str | None = Field(None, alias="별표행정규칙 상세링크")
 
 class AdmrulList(BaseModel):
     """[GENERATED] Response model for 행정규칙 목록 조회.
@@ -235,18 +242,48 @@ class AdmrulList(BaseModel):
 class AdmrulDetail(BaseModel):
     """[GENERATED] Response model for 행정규칙 본문 조회.
 
-    Source: specs/kr/mobAdmrulInfoGuide.json
+    Source: specs/kr/admrulInfoGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
-    id: str | None = Field(None, alias="ID")
-    lm: str | None = Field(None, alias="LM")
-    type: str | None = Field(None, alias="type")
-    mobileyn: str | None = Field(None, alias="mobileYn")
+    행정규칙_일련번호: str | None = Field(None, alias="행정규칙 일련번호")
+    행정규칙명: str | None = Field(None, alias="행정규칙명")
+    행정규칙종류: str | None = Field(None, alias="행정규칙종류")
+    행정규칙종류코드: str | None = Field(None, alias="행정규칙종류코드")
+    발령일자: str | None = Field(None, alias="발령일자")
+    발령번호: str | None = Field(None, alias="발령번호")
+    제개정구분명: str | None = Field(None, alias="제개정구분명")
+    제개정_구분코드: str | None = Field(None, alias="제개정 구분코드")
+    조문형식여부: str | None = Field(None, alias="조문형식여부")
+    행정규칙id: str | None = Field(None, alias="행정규칙ID")
+    소관부처명: str | None = Field(None, alias="소관부처명")
+    소관부처코드: str | None = Field(None, alias="소관부처코드")
+    상위부처명: str | None = Field(None, alias="상위부처명")
+    담당부서기관코드: str | None = Field(None, alias="담당부서기관코드")
+    담당부서기관명: str | None = Field(None, alias="담당부서기관명")
+    담당자명: str | None = Field(None, alias="담당자명")
+    전화번호: str | None = Field(None, alias="전화번호")
+    현행여부: str | None = Field(None, alias="현행여부")
+    시행일자: str | None = Field(None, alias="시행일자")
+    생성일자: str | None = Field(None, alias="생성일자")
+    조문내용: str | None = Field(None, alias="조문내용")
+    부칙: str | None = Field(None, alias="부칙")
+    부칙공포일자: str | None = Field(None, alias="부칙공포일자")
+    부칙공포번호: str | None = Field(None, alias="부칙공포번호")
+    부칙내용: str | None = Field(None, alias="부칙내용")
+    별표: str | None = Field(None, alias="별표")
+    별표번호: str | None = Field(None, alias="별표번호")
+    별표가지번호: str | None = Field(None, alias="별표가지번호")
+    별표구분: str | None = Field(None, alias="별표구분")
+    별표제목: str | None = Field(None, alias="별표제목")
+    별표서식파일링크: str | None = Field(None, alias="별표서식파일링크")
+    별표서식pdf파일링크: str | None = Field(None, alias="별표서식PDF파일링크")
+    별표내용: str | None = Field(None, alias="별표내용")
+    첨부파일: str | None = Field(None, alias="첨부파일")
+    첨부파일명: str | None = Field(None, alias="첨부파일명")
+    첨부파일링크: str | None = Field(None, alias="첨부파일링크")
 
 class AdmruloldandnewList(BaseModel):
     """[GENERATED] Response model for 행정규칙 신구법 비교 목록 조회.
@@ -615,7 +652,7 @@ class DeccDetail(BaseModel):
 class DetcList(BaseModel):
     """[GENERATED] Response model for 헌재결정례 목록 조회.
 
-    Source: specs/kr/mobDetcListGuide.json
+    Source: specs/kr/detcListGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
@@ -636,18 +673,27 @@ class DetcList(BaseModel):
 class DetcDetail(BaseModel):
     """[GENERATED] Response model for 헌재결정례 본문 조회.
 
-    Source: specs/kr/mobDetcInfoGuide.json
+    Source: specs/kr/detcInfoGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
+    헌재결정례일련번호: str | None = Field(None, alias="헌재결정례일련번호")
+    종국일자: str | None = Field(None, alias="종국일자")
+    사건번호: str | None = Field(None, alias="사건번호")
+    사건명: str | None = Field(None, alias="사건명")
+    사건종류명: str | None = Field(None, alias="사건종류명")
+    사건종류코드: str | None = Field(None, alias="사건종류코드")
+    재판부구분코드: str | None = Field(None, alias="재판부구분코드")
+    판시사항: str | None = Field(None, alias="판시사항")
+    결정요지: str | None = Field(None, alias="결정요지")
+    전문: str | None = Field(None, alias="전문")
+    참조조문: str | None = Field(None, alias="참조조문")
+    참조판례: str | None = Field(None, alias="참조판례")
+    심판대상조문: str | None = Field(None, alias="심판대상조문")
     id: str | None = Field(None, alias="ID")
     lm: str | None = Field(None, alias="LM")
-    type: str | None = Field(None, alias="type")
-    mobileyn: str | None = Field(None, alias="mobileYn")
 
 class DlytrmList(BaseModel):
     """[GENERATED] Response model for 일상용어 조회.
@@ -987,7 +1033,7 @@ class ElawDetail(BaseModel):
 class ExpcList(BaseModel):
     """[GENERATED] Response model for 법령해석례 목록 조회.
 
-    Source: specs/kr/mobExpcListGuide.json
+    Source: specs/kr/expcListGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
@@ -1012,18 +1058,27 @@ class ExpcList(BaseModel):
 class ExpcDetail(BaseModel):
     """[GENERATED] Response model for 법령해석례 본문 조회.
 
-    Source: specs/kr/mobExpcInfoGuide.json
+    Source: specs/kr/expcInfoGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
+    법령해석례일련번호: str | None = Field(None, alias="법령해석례일련번호")
+    안건명: str | None = Field(None, alias="안건명")
+    안건번호: str | None = Field(None, alias="안건번호")
+    해석일자: str | None = Field(None, alias="해석일자")
+    해석기관코드: str | None = Field(None, alias="해석기관코드")
+    해석기관명: str | None = Field(None, alias="해석기관명")
+    질의기관코드: str | None = Field(None, alias="질의기관코드")
+    질의기관명: str | None = Field(None, alias="질의기관명")
+    관리기관코드: str | None = Field(None, alias="관리기관코드")
+    등록일시: str | None = Field(None, alias="등록일시")
+    질의요지: str | None = Field(None, alias="질의요지")
+    회답: str | None = Field(None, alias="회답")
+    이유: str | None = Field(None, alias="이유")
     id: str | None = Field(None, alias="ID")
     lm: str | None = Field(None, alias="LM")
-    type: str | None = Field(None, alias="type")
-    mobileyn: str | None = Field(None, alias="mobileYn")
 
 class FscList(BaseModel):
     """[GENERATED] Response model for 금융위원회 결정문 목록 조회.
@@ -1833,24 +1888,33 @@ class LawjosubList(BaseModel):
 class LicbylList(BaseModel):
     """[GENERATED] Response model for 법령 별표ㆍ서식 목록 조회.
 
-    Source: specs/kr/mobLsBylListGuide.json
+    Source: specs/kr/lsBylListGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
     target: str | None = Field(None, alias="target")
-    type: str | None = Field(None, alias="type")
-    search: str | None = Field(None, alias="search")
-    query: str | None = Field(None, alias="query")
-    display: str | None = Field(None, alias="display")
+    키워드: str | None = Field(None, alias="키워드")
+    section: str | None = Field(None, alias="section")
+    totalcnt: str | None = Field(None, alias="totalCnt")
     page: str | None = Field(None, alias="page")
-    sort: str | None = Field(None, alias="sort")
-    org: str | None = Field(None, alias="org")
-    knd: str | None = Field(None, alias="knd")
-    gana: str | None = Field(None, alias="gana")
-    mobileyn: str | None = Field(None, alias="mobileYn")
+    licbyl_id: str | None = Field(None, alias="licbyl id")
+    별표일련번호: str | None = Field(None, alias="별표일련번호")
+    관련법령일련번호: str | None = Field(None, alias="관련법령일련번호")
+    관련법령id: str | None = Field(None, alias="관련법령ID")
+    별표명: str | None = Field(None, alias="별표명")
+    관련법령명: str | None = Field(None, alias="관련법령명")
+    별표번호: str | None = Field(None, alias="별표번호")
+    별표종류: str | None = Field(None, alias="별표종류")
+    소관부처명: str | None = Field(None, alias="소관부처명")
+    공포일자: str | None = Field(None, alias="공포일자")
+    공포번호: str | None = Field(None, alias="공포번호")
+    제개정구분명: str | None = Field(None, alias="제개정구분명")
+    법령종류: str | None = Field(None, alias="법령종류")
+    별표서식_파일링크: str | None = Field(None, alias="별표서식 파일링크")
+    별표서식_pdf파일링크: str | None = Field(None, alias="별표서식 PDF파일링크")
+    별표법령_상세링크: str | None = Field(None, alias="별표법령 상세링크")
 
 class LnklsList(BaseModel):
     """[GENERATED] Response model for 법령 기준 자치법규 연계 관련 목록 조회.
@@ -2105,7 +2169,7 @@ class LsstmdDetail(BaseModel):
 class LstrmList(BaseModel):
     """[GENERATED] Response model for 법령 용어 목록 조회.
 
-    Source: specs/kr/mobLsTrmListGuide.json
+    Source: specs/kr/lsTrmListGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
@@ -2121,7 +2185,7 @@ class LstrmList(BaseModel):
     법령용어명: str | None = Field(None, alias="법령용어명")
     법령용어상세검색: str | None = Field(None, alias="법령용어상세검색")
     사전구분코드: str | None = Field(None, alias="사전구분코드")
-    법령용어상세링크: str | None = Field(None, alias="법령용어상세링크")
+    법령용어_상세링크: str | None = Field(None, alias="법령용어 상세링크")
     법령종류코드: str | None = Field(None, alias="법령종류코드")
 
 class LstrmDetail(BaseModel):
@@ -3835,7 +3899,67 @@ class OneviewDetail(BaseModel):
 class OrdinList(BaseModel):
     """[GENERATED] Response model for 자치법규 목록 조회.
 
-    Source: specs/kr/mobOrdinListGuide.json
+    Source: specs/kr/ordinListGuide.json
+    Fields reflect API spec — actual data may differ.
+    All fields are optional (str | None) as API may omit any field.
+    """
+    model_config = {"populate_by_name": True}
+
+    자치법규_일련번호: str | None = Field(None, alias="자치법규 일련번호")
+    자치법규명: str | None = Field(None, alias="자치법규명")
+    자치법규id: str | None = Field(None, alias="자치법규ID")
+    공포일자: str | None = Field(None, alias="공포일자")
+    공포번호: str | None = Field(None, alias="공포번호")
+    제개정구분명: str | None = Field(None, alias="제개정구분명")
+    지자체기관명: str | None = Field(None, alias="지자체기관명")
+    자치법규종류: str | None = Field(None, alias="자치법규종류")
+    시행일자: str | None = Field(None, alias="시행일자")
+    자치법규상세링크: str | None = Field(None, alias="자치법규상세링크")
+    자치법규분야명: str | None = Field(None, alias="자치법규분야명")
+    참조데이터구분: str | None = Field(None, alias="참조데이터구분")
+
+class OrdinDetail(BaseModel):
+    """[GENERATED] Response model for 자치법규 본문 조회.
+
+    Source: specs/kr/ordinInfoGuide.json
+    Fields reflect API spec — actual data may differ.
+    All fields are optional (str | None) as API may omit any field.
+    """
+    model_config = {"populate_by_name": True}
+
+    자치법규id: str | None = Field(None, alias="자치법규ID")
+    자치법규일련번호: str | None = Field(None, alias="자치법규일련번호")
+    공포일자: str | None = Field(None, alias="공포일자")
+    공포번호: str | None = Field(None, alias="공포번호")
+    자치법규명: str | None = Field(None, alias="자치법규명")
+    시행일자: str | None = Field(None, alias="시행일자")
+    자치법규종류: str | None = Field(None, alias="자치법규종류")
+    지자체기관명: str | None = Field(None, alias="지자체기관명")
+    자치법규발의종류: str | None = Field(None, alias="자치법규발의종류")
+    담당부서명: str | None = Field(None, alias="담당부서명")
+    전화번호: str | None = Field(None, alias="전화번호")
+    제개정정보: str | None = Field(None, alias="제개정정보")
+    조문번호: str | None = Field(None, alias="조문번호")
+    조문여부: str | None = Field(None, alias="조문여부")
+    조제목: str | None = Field(None, alias="조제목")
+    조내용: str | None = Field(None, alias="조내용")
+    부칙공포일자: str | None = Field(None, alias="부칙공포일자")
+    부칙공포번호: str | None = Field(None, alias="부칙공포번호")
+    부칙내용: str | None = Field(None, alias="부칙내용")
+    별표: str | None = Field(None, alias="별표")
+    별표번호: str | None = Field(None, alias="별표번호")
+    별표가지번호: str | None = Field(None, alias="별표가지번호")
+    별표구분: str | None = Field(None, alias="별표구분")
+    별표제목: str | None = Field(None, alias="별표제목")
+    별표첨부파일명: str | None = Field(None, alias="별표첨부파일명")
+    별표내용: str | None = Field(None, alias="별표내용")
+    개정문내용: str | None = Field(None, alias="개정문내용")
+    제개정이유내용: str | None = Field(None, alias="제개정이유내용")
+
+class OrdinbylList(BaseModel):
+    """[GENERATED] Response model for 자치법규 별표ㆍ서식 목록 조회.
+
+    Source: specs/kr/ordinBylListGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
@@ -3846,57 +3970,21 @@ class OrdinList(BaseModel):
     section: str | None = Field(None, alias="section")
     totalcnt: str | None = Field(None, alias="totalCnt")
     page: str | None = Field(None, alias="page")
-    law_id: str | None = Field(None, alias="law id")
-    자치법규일련번호: str | None = Field(None, alias="자치법규일련번호")
-    자치법규명: str | None = Field(None, alias="자치법규명")
-    자치법규id: str | None = Field(None, alias="자치법규ID")
+    ordinbyl_id: str | None = Field(None, alias="ordinbyl id")
+    별표일련번호: str | None = Field(None, alias="별표일련번호")
+    관련자치법규일련번호: str | None = Field(None, alias="관련자치법규일련번호")
+    별표명: str | None = Field(None, alias="별표명")
+    관련자치법규명: str | None = Field(None, alias="관련자치법규명")
+    별표번호: str | None = Field(None, alias="별표번호")
+    별표종류: str | None = Field(None, alias="별표종류")
+    지자체기관명: str | None = Field(None, alias="지자체기관명")
+    전체기관명: str | None = Field(None, alias="전체기관명")
+    자치법규시행일자: str | None = Field(None, alias="자치법규시행일자")
     공포일자: str | None = Field(None, alias="공포일자")
     공포번호: str | None = Field(None, alias="공포번호")
     제개정구분명: str | None = Field(None, alias="제개정구분명")
-    지자체기관명: str | None = Field(None, alias="지자체기관명")
-    자치법규종류: str | None = Field(None, alias="자치법규종류")
-    시행일자: str | None = Field(None, alias="시행일자")
-    자치법규_상세링크: str | None = Field(None, alias="자치법규 상세링크")
-    자치법규분야명: str | None = Field(None, alias="자치법규분야명")
-    참조데이터구분: str | None = Field(None, alias="참조데이터구분")
-
-class OrdinDetail(BaseModel):
-    """[GENERATED] Response model for 자치법규 본문 조회.
-
-    Source: specs/kr/mobOrdinInfoGuide.json
-    Fields reflect API spec — actual data may differ.
-    All fields are optional (str | None) as API may omit any field.
-    """
-    model_config = {"populate_by_name": True}
-
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
-    id: str | None = Field(None, alias="ID")
-    mst: str | None = Field(None, alias="MST")
-    type: str | None = Field(None, alias="type")
-    mobileyn: str | None = Field(None, alias="mobileYn")
-
-class OrdinbylList(BaseModel):
-    """[GENERATED] Response model for 자치법규 별표ㆍ서식 목록 조회.
-
-    Source: specs/kr/mobOrdinBylListGuide.json
-    Fields reflect API spec — actual data may differ.
-    All fields are optional (str | None) as API may omit any field.
-    """
-    model_config = {"populate_by_name": True}
-
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
-    search: str | None = Field(None, alias="search")
-    query: str | None = Field(None, alias="query")
-    display: str | None = Field(None, alias="display")
-    page: str | None = Field(None, alias="page")
-    sort: str | None = Field(None, alias="sort")
-    org: str | None = Field(None, alias="org")
-    knd: str | None = Field(None, alias="knd")
-    gana: str | None = Field(None, alias="gana")
-    type: str | None = Field(None, alias="type")
-    mobileyn: str | None = Field(None, alias="mobileYn")
+    별표서식파일링크: str | None = Field(None, alias="별표서식파일링크")
+    별표자치법규상세링크: str | None = Field(None, alias="별표자치법규상세링크")
 
 class PpcList(BaseModel):
     """[GENERATED] Response model for 개인정보보호위원회 결정문 목록 조회.
@@ -4003,13 +4091,14 @@ class PpscgmexpcDetail(BaseModel):
 class PrecList(BaseModel):
     """[GENERATED] Response model for 판례 목록 조회.
 
-    Source: specs/kr/mobPrecListGuide.json
+    Source: specs/kr/precListGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
     model_config = {"populate_by_name": True}
 
     target: str | None = Field(None, alias="target")
+    공포번호: str | None = Field(None, alias="공포번호")
     키워드: str | None = Field(None, alias="키워드")
     section: str | None = Field(None, alias="section")
     totalcnt: str | None = Field(None, alias="totalCnt")
@@ -4031,18 +4120,27 @@ class PrecList(BaseModel):
 class PrecDetail(BaseModel):
     """[GENERATED] Response model for 판례 본문 조회.
 
-    Source: specs/kr/mobPrecInfoGuide.json
+    Source: specs/kr/precInfoGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
-    id: str | None = Field(None, alias="ID")
-    lm: str | None = Field(None, alias="LM")
-    type: str | None = Field(None, alias="type")
-    mobileyn: str | None = Field(None, alias="mobileYn")
+    판례정보일련번호: str | None = Field(None, alias="판례정보일련번호")
+    사건명: str | None = Field(None, alias="사건명")
+    사건번호: str | None = Field(None, alias="사건번호")
+    선고일자: str | None = Field(None, alias="선고일자")
+    선고: str | None = Field(None, alias="선고")
+    법원명: str | None = Field(None, alias="법원명")
+    법원종류코드: str | None = Field(None, alias="법원종류코드")
+    사건종류명: str | None = Field(None, alias="사건종류명")
+    사건종류코드: str | None = Field(None, alias="사건종류코드")
+    판결유형: str | None = Field(None, alias="판결유형")
+    판시사항: str | None = Field(None, alias="판시사항")
+    판결요지: str | None = Field(None, alias="판결요지")
+    참조조문: str | None = Field(None, alias="참조조문")
+    참조판례: str | None = Field(None, alias="참조판례")
+    판례내용: str | None = Field(None, alias="판례내용")
 
 class RdacgmexpcList(BaseModel):
     """[GENERATED] Response model for 농촌진흥청 법령해석 목록.
@@ -4286,7 +4384,7 @@ class ThdcmpDetail(BaseModel):
 class TrtyList(BaseModel):
     """[GENERATED] Response model for 조약 목록 조회.
 
-    Source: specs/kr/mobTrtyListGuide.json
+    Source: specs/kr/trtyListGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
@@ -4304,24 +4402,53 @@ class TrtyList(BaseModel):
     조약구분명: str | None = Field(None, alias="조약구분명")
     발효일자: str | None = Field(None, alias="발효일자")
     서명일자: str | None = Field(None, alias="서명일자")
-    관보게재일자: str | None = Field(None, alias="관보게재일자")
+    관보게제일자: str | None = Field(None, alias="관보게제일자")
     조약번호: str | None = Field(None, alias="조약번호")
+    국가번호: str | None = Field(None, alias="국가번호")
     조약상세링크: str | None = Field(None, alias="조약상세링크")
 
 class TrtyDetail(BaseModel):
     """[GENERATED] Response model for 조약 본문 조회.
 
-    Source: specs/kr/mobTrtyInfoGuide.json
+    Source: specs/kr/trtyInfoGuide.json
     Fields reflect API spec — actual data may differ.
     All fields are optional (str | None) as API may omit any field.
     """
     model_config = {"populate_by_name": True}
 
-    oc: str | None = Field(None, alias="OC")
-    target: str | None = Field(None, alias="target")
+    조약일련번호: str | None = Field(None, alias="조약일련번호")
+    조약명_한글: str | None = Field(None, alias="조약명_한글")
+    조약명_영문: str | None = Field(None, alias="조약명_영문")
+    조약구분코드: str | None = Field(None, alias="조약구분코드")
+    대통령재가일자: str | None = Field(None, alias="대통령재가일자")
+    발효일자: str | None = Field(None, alias="발효일자")
+    조약번호: str | None = Field(None, alias="조약번호")
+    관보게재일자: str | None = Field(None, alias="관보게재일자")
+    국무회의심의일자: str | None = Field(None, alias="국무회의심의일자")
+    국무회의심의회차: str | None = Field(None, alias="국무회의심의회차")
+    국회비준동의여부: str | None = Field(None, alias="국회비준동의여부")
+    국회비준동의일자: str | None = Field(None, alias="국회비준동의일자")
+    서명일자: str | None = Field(None, alias="서명일자")
+    서명장소: str | None = Field(None, alias="서명장소")
+    비고: str | None = Field(None, alias="비고")
+    추가정보: str | None = Field(None, alias="추가정보")
+    체결대상국가: str | None = Field(None, alias="체결대상국가")
+    체결대상국가한글: str | None = Field(None, alias="체결대상국가한글")
+    우리측국내절차완료통보: str | None = Field(None, alias="우리측국내절차완료통보")
+    상대국측국내절차완료통보: str | None = Field(None, alias="상대국측국내절차완료통보")
+    양자조약분야코드: str | None = Field(None, alias="양자조약분야코드")
+    양자조약분야명: str | None = Field(None, alias="양자조약분야명")
+    제2외국어종류: str | None = Field(None, alias="제2외국어종류")
+    국가코드: str | None = Field(None, alias="국가코드")
+    조약내용: str | None = Field(None, alias="조약내용")
+    체결일자: str | None = Field(None, alias="체결일자")
+    체결장소: str | None = Field(None, alias="체결장소")
+    기탁처: str | None = Field(None, alias="기탁처")
+    다자조약분야코드: str | None = Field(None, alias="다자조약분야코드")
+    다자조약분야명: str | None = Field(None, alias="다자조약분야명")
+    수락서기탁일자: str | None = Field(None, alias="수락서기탁일자")
+    국내발효일자: str | None = Field(None, alias="국내발효일자")
     id: str | None = Field(None, alias="ID")
-    type: str | None = Field(None, alias="type")
-    mobileyn: str | None = Field(None, alias="mobileYn")
 
 class TtspecialdeccList(BaseModel):
     """[GENERATED] Response model for 조세심판원 특별행정심판례 목록 조회.

@@ -31,7 +31,7 @@ def test_decc_prefers_non_mobile_spec_over_mobile_duplicate() -> None:
     assert not codegen.should_replace_spec("decc", non_mobile, mobile)
 
 
-def test_non_decc_duplicate_policy_keeps_existing_last_write_behavior() -> None:
+def test_duplicate_policy_prefers_non_mobile_spec_for_all_targets() -> None:
     codegen = _load_codegen_module()
     current = {
         "html_name": "lawInfoGuide",
@@ -42,4 +42,34 @@ def test_non_decc_duplicate_policy_keeps_existing_last_write_behavior() -> None:
         "request_url": "http://www.law.go.kr/DRF/lawService.do?target=law&mobileYn=Y",
     }
 
+    assert not codegen.should_replace_spec("law", current, candidate)
+    assert codegen.should_replace_spec("law", candidate, current)
+
+
+def test_mobile_policy_does_not_mix_different_guide_families() -> None:
+    codegen = _load_codegen_module()
+    current = {
+        "html_name": "lsNwInfoGuide",
+        "request_url": "http://www.law.go.kr/DRF/lawService.do?target=law",
+    }
+    candidate = {
+        "html_name": "mobLsInfoGuide",
+        "request_url": "http://www.law.go.kr/DRF/lawService.do?target=law&mobileYn=Y",
+    }
+
     assert codegen.should_replace_spec("law", current, candidate)
+
+
+def test_detail_models_keep_known_request_echo_compat_fields() -> None:
+    codegen = _load_codegen_module()
+
+    rendered = codegen.render_model(
+        "detc",
+        "Detail",
+        "헌재결정례 본문 조회",
+        [{"key": "사건명", "pyname": "사건명", "description": ""}],
+        "detcInfoGuide",
+    )
+
+    assert 'id: str | None = Field(None, alias="ID")' in rendered
+    assert 'lm: str | None = Field(None, alias="LM")' in rendered

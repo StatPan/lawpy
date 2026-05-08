@@ -14,9 +14,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+
+_URL_RE = re.compile(r"https?://\S+")
 
 
 @dataclass
@@ -45,9 +48,30 @@ def _field_set(rows: list[dict], key: str) -> set[str]:
     result = set()
     for row in rows:
         val = row.get(key, "").strip()
-        if val:
+        if _is_valid_field_name(val):
             result.add(val)
     return result
+
+
+def _field_set_any(rows: list[dict], keys: list[str]) -> set[str]:
+    """Extract field names from any matching key in *keys*."""
+    result: set[str] = set()
+    for key in keys:
+        result.update(_field_set(rows, key))
+    return result
+
+
+def _is_valid_field_name(name: str) -> bool:
+    """Return True when *name* looks like an API field, not guide prose."""
+    if not name:
+        return False
+    if _URL_RE.match(name):
+        return False
+    if re.match(r"^\d+\.", name):
+        return False
+    if name in ("샘플 URL", "샘플 URL:"):
+        return False
+    return True
 
 
 def diff_specs(old_dir: Path, new_dir: Path) -> SpecDiff:
@@ -86,14 +110,9 @@ def diff_specs(old_dir: Path, new_dir: Path) -> SpecDiff:
             new_params = _field_set(new_spec.get("params", []), "col0")
 
         # Compare response fields
-        resp_key_candidates = ["출력변수", "출력결과", "col0"]
-        old_resp: set[str] = set()
-        new_resp: set[str] = set()
-        for k in resp_key_candidates:
-            old_resp = _field_set(old_spec.get("response", []), k)
-            new_resp = _field_set(new_spec.get("response", []), k)
-            if old_resp or new_resp:
-                break
+        resp_key_candidates = ["출력변수", "출력결과", "필드", "요청변수", "col0"]
+        old_resp = _field_set_any(old_spec.get("response", []), resp_key_candidates)
+        new_resp = _field_set_any(new_spec.get("response", []), resp_key_candidates)
 
         added_params = sorted(new_params - old_params)
         removed_params = sorted(old_params - new_params)

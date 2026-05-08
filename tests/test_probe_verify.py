@@ -31,7 +31,7 @@ def _snapshot() -> Snapshot:
     )
 
 
-def test_verify_snapshot_compares_snapshot_top_level_fields_to_model_aliases(monkeypatch):
+def test_verify_snapshot_compares_snapshot_leaf_fields_to_model_aliases(monkeypatch):
     monkeypatch.setitem(verify.SNAPSHOT_MODEL_MAP, "sample", "FakeModel")
     monkeypatch.setattr(verify.SnapshotStore, "load", lambda name: _snapshot())
     monkeypatch.setattr(verify.generated_models, "FakeModel", FakeModel, raising=False)
@@ -39,10 +39,23 @@ def test_verify_snapshot_compares_snapshot_top_level_fields_to_model_aliases(mon
     result = verify.verify_snapshot("sample")
 
     assert result.model == "FakeModel"
-    assert result.snapshot_fields == ["사건명", "사건번호", "중첩"]
-    assert result.missing_model_aliases == ["중첩"]
+    assert result.snapshot_fields == ["사건명", "사건번호", "하위필드"]
+    assert result.missing_model_aliases == ["하위필드"]
     assert result.extra_model_aliases == ["generated_only"]
     assert not result.is_clean
+
+
+def test_verify_snapshot_ignores_configured_transport_fields(monkeypatch):
+    monkeypatch.setitem(verify.SNAPSHOT_MODEL_MAP, "sample", "FakeModel")
+    monkeypatch.setitem(verify.SNAPSHOT_IGNORED_FIELDS, "sample", {"하위필드"})
+    monkeypatch.setattr(verify.SnapshotStore, "load", lambda name: _snapshot())
+    monkeypatch.setattr(verify.generated_models, "FakeModel", FakeModel, raising=False)
+
+    result = verify.verify_snapshot("sample")
+
+    assert result.snapshot_fields == ["사건명", "사건번호"]
+    assert result.missing_model_aliases == []
+    assert result.is_clean
 
 
 def test_verify_snapshot_reports_missing_mapping() -> None:

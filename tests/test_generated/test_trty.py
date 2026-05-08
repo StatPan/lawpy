@@ -39,6 +39,13 @@ class TestGeneratedTrtyClient:
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "search" in call_params
 
+    def test_search_passes_mobileyn_param(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"TrtySearch": {"Trty": [{"target": "val", "키워드": "val", "section": "val"}]}}))
+        client.search_trtys(mobileyn="Y")
+        call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
+        assert call_params["mobileYn"] == "Y"
+
     def test_search_accepts_root_list_fallback(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({"TrtySearch": [{"target": "val", "키워드": "val", "section": "val"}]}))
@@ -49,13 +56,20 @@ class TestGeneratedTrtyClient:
 
     def test_detail_returns_model(self):
         client = _make_client()
-        client._make_request = Mock(return_value=_mock_response({"TrtySearch": {"OC": "val", "target": "val", "ID": "val"}}))
+        client._make_request = Mock(return_value=_mock_response({"TrtySearch": {"조약일련번호": "val", "조약명_한글": "val", "조약명_영문": "val"}}))
         result = client.get_trty_detail()
         assert isinstance(result, TrtyDetail)
 
     def test_detail_passes_params(self):
         client = _make_client()
-        client._make_request = Mock(return_value=_mock_response({"TrtySearch": {"OC": "val", "target": "val", "ID": "val"}}))
+        client._make_request = Mock(return_value=_mock_response({"TrtySearch": {"조약일련번호": "val", "조약명_한글": "val", "조약명_영문": "val"}}))
         client.get_trty_detail(id="1")
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "ID" in call_params
+
+    def test_detail_passes_mobileyn_param(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"TrtySearch": {"조약일련번호": "val", "조약명_한글": "val", "조약명_영문": "val"}}))
+        client.get_trty_detail(mobileyn="Y")
+        call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
+        assert call_params["mobileYn"] == "Y"
