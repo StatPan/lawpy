@@ -21,6 +21,7 @@ from lawpy.kr.law import LawClient
 from lawpy.kr.legal_terminology import LegalTerminologyClient
 from lawpy.kr.ordinance import OrdinanceClient
 from lawpy.kr.precedent import PrecedentClient
+from lawpy.kr.treaty import TreatyClient
 
 __all__ = [
     "AdministrativeRuleClient",
@@ -30,4 +31,5 @@ __all__ = [
     "LegalTerminologyClient",
     "OrdinanceClient",
     "PrecedentClient",
+    "TreatyClient",
 ]

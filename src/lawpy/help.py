@@ -24,7 +24,7 @@ QUICKSTART = dedent(
     Meaning:
         KRClient is the ergonomic entry point for Korean law.go.kr data.
         It combines the public wrappers for law, precedent, administrative rule,
-        local ordinance, and legal terminology workflows.
+        local ordinance, legal terminology, and treaty workflows.
         KoreanLawClient is kept as a compatibility alias.
 
     Basic pattern:
@@ -78,6 +78,10 @@ KR = dedent(
             search_legal_terms(query=None, page=1, per_page=20)
             get_legal_term_detail(term)
 
+        Treaties:
+            search_treaties(query=None, page=1, per_page=20)
+            get_treaty_detail(treaty_id)
+
     One pattern teaches the rest:
         items = client.search_ordinances("서울", per_page=10)
         first = items[0]
@@ -99,12 +103,12 @@ GENERATED = dedent(
     client directly from lawpy.kr.generated.<target>.
 
     Example:
-        from lawpy.kr.generated.trty import GeneratedTrtyClient
+        from lawpy.kr.generated.decc import GeneratedDeccClient
 
-        client = GeneratedTrtyClient(api_key="your-open-law-email-id")
-        treaties = client.search_trtys(query="FTA", display=10, page=1)
+        client = GeneratedDeccClient(api_key="your-open-law-email-id")
+        decisions = client.search_deccs(query="영업정지", display=10, page=1)
 
-        row = treaties[0]
+        row = decisions[0]
         data = row.model_dump(by_alias=True)
 
     Naming pattern:
@@ -115,7 +119,7 @@ GENERATED = dedent(
 
     Coverage:
         KR v1 generated coverage includes 195 spec files, 89 generated modules,
-        89 generated tests, and five public wrapper targets. See
+        89 generated tests, and six public wrapper targets. See
         docs/kr/generated-coverage.md in the source repository for the full
         target/method matrix.
     """
