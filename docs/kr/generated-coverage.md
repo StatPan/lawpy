@@ -23,6 +23,7 @@ For v1, "generated coverage" means every generated KR module has:
 
 Public wrappers are tracked separately. They are the ergonomic API layer intended for `KRClient` and `datapan-data` workflows.
 `KoreanLawClient` is kept as a compatibility alias for existing code.
+See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for wrapper promotion rules.
 
 ## Public Wrapper Status
 
