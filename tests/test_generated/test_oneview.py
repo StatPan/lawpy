@@ -39,6 +39,13 @@ class TestGeneratedOneviewClient:
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "query" in call_params
 
+    def test_search_nested_empty_list_response(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"items": {"items": []}}))
+        result = client.search_oneviews()
+        assert isinstance(result, list)
+        assert len(result) == 0
+
     def test_detail_returns_model(self):
         client = _make_client()
         client._make_request = Mock(return_value=_mock_response({"items": {"패턴일련번호": "val", "법령일련번호": "val", "법령명": "val"}}))

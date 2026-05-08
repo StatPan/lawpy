@@ -3917,6 +3917,7 @@ class OrdinList(BaseModel):
     자치법규상세링크: str | None = Field(None, alias="자치법규상세링크")
     자치법규분야명: str | None = Field(None, alias="자치법규분야명")
     참조데이터구분: str | None = Field(None, alias="참조데이터구분")
+    자치법규일련번호: str | None = Field(None, alias="자치법규일련번호")
 
 class OrdinDetail(BaseModel):
     """[GENERATED] Response model for 자치법규 본문 조회.

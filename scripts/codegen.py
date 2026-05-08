@@ -32,9 +32,28 @@ RESP_KEY_CANDIDATES = ["출력변수", "출력결과", "필드", "요청변수",
 DESC_KEY = "설명"
 VAL_KEY = "값"
 DETAIL_COMPAT_FIELDS: dict[str, list[tuple[str, str]]] = {
+    "decc": [
+        ("행정심판례일련번호", "행정심판례일련번호"),
+        ("사건명", "사건명"),
+        ("사건번호", "사건번호"),
+        ("주문", "주문"),
+    ],
     "detc": [("id", "ID"), ("lm", "LM")],
     "expc": [("id", "ID"), ("lm", "LM")],
     "trty": [("id", "ID")],
+}
+MODEL_COMPAT_FIELDS: dict[tuple[str, str], list[tuple[str, str]]] = {
+    ("decc", "List"): [
+        ("행정심판재결례일련번호", "행정심판재결례일련번호"),
+        ("사건명", "사건명"),
+        ("사건번호", "사건번호"),
+        ("의결일자", "의결일자"),
+    ],
+    ("ordin", "List"): [
+        ("자치법규명", "자치법규명"),
+        ("자치법규일련번호", "자치법규일련번호"),
+        ("자치법규종류", "자치법규종류"),
+    ],
 }
 MOBILE_COMPAT_PARAMS: dict[str, list[dict[str, object]]] = {
     target: [
@@ -379,7 +398,22 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
         parse_block = (
             f'        data = response.json()\n'
             f'        root = data.get("{root_key}", {{}})\n'
-            f'        items = root if isinstance(root, list) else [root] if root else []\n'
+            f'        if isinstance(root, list):\n'
+            f'            items = root\n'
+            f'        elif isinstance(root, dict):\n'
+            f'            items = []\n'
+            f'            found_items = False\n'
+            f'            for value in root.values():\n'
+            f'                if isinstance(value, list):\n'
+            f'                    items = value\n'
+            f'                    found_items = True\n'
+            f'                    break\n'
+            f'            if not found_items and root:\n'
+            f'                items = [root]\n'
+            f'        else:\n'
+            f'            items = []\n'
+            f'        if isinstance(items, dict):\n'
+            f'            items = [items]\n'
             f'        return [{model_cls}.model_validate(item) for item in items]\n'
         )
         note = f"Response path: {root_key} (item key not discovered)"
@@ -599,6 +633,15 @@ def render_test_file(
         assert len(result) == 1
         assert isinstance(result[0], {list_model})''')
 
+    if has_list and root_key_search and not item_key:
+        test_methods.append(f'''\
+    def test_search_nested_empty_list_response(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({{"{root_key_search}": {{"items": []}}}}))
+        result = client.search_{target}s()
+        assert isinstance(result, list)
+        assert len(result) == 0''')
+
     if has_detail:
         detail_params = extract_params(specs["info"])
         first_detail_param = detail_params[0] if detail_params else None
@@ -675,6 +718,21 @@ def render_model(target: str, kind: str, label: str, fields: list[dict], html_na
         if field_lines == ["    pass  # no response fields in spec"]:
             field_lines = []
         for pyname, alias in DETAIL_COMPAT_FIELDS[target]:
+            if pyname not in existing_pynames:
+                field_lines.append(f'    {pyname}: str | None = Field(None, alias="{alias}")')
+
+    compat_fields = MODEL_COMPAT_FIELDS.get((target, kind), [])
+    if compat_fields:
+        existing_pynames = {
+            f["pyname"] for f in fields
+        } | {
+            line.split(":", 1)[0].strip()
+            for line in field_lines
+            if ":" in line
+        }
+        if field_lines == ["    pass  # no response fields in spec"]:
+            field_lines = []
+        for pyname, alias in compat_fields:
             if pyname not in existing_pynames:
                 field_lines.append(f'    {pyname}: str | None = Field(None, alias="{alias}")')
 
