@@ -150,6 +150,15 @@ KR = dedent(
         Public wrappers return typed Python objects or generated Pydantic models.
         For generated Pydantic models, use model_dump(by_alias=True) when storing
         the original Korean API field names.
+
+    Collector metadata:
+        KRClient.get_method_specs()
+        KRClient.describe_methods()
+        KRClient.describe_method("get_law_detail")
+
+        These return installed, JSON-serializable metadata for target builders:
+        kind, required params, alternative seed params, seed_source, fixed params,
+        allowed values, and upstream target names where known.
     """
 ).strip()
 
