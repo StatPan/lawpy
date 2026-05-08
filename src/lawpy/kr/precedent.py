@@ -3,17 +3,22 @@
 import xmltodict
 
 from lawpy.exceptions import NotFoundError, ParseError
-from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated.prec import GeneratedPrecClient
 from lawpy.models import Precedent, PrecedentDetail
 
 
-class PrecedentClient(KoreanBaseClient):
+class PrecedentClient(GeneratedPrecClient):
     """Client for Precedent (판례) APIs.
 
     Wraps the National Law Information Center's precedent (판례) search and
     content-retrieval endpoints:
       - List:    GET http://www.law.go.kr/DRF/lawSearch.do?target=prec
       - Detail:  GET http://www.law.go.kr/DRF/lawService.do?target=prec&ID=<id>
+
+    The ergonomic public methods return stable ``Precedent`` and
+    ``PrecedentDetail`` models. The generated ``search_precs`` and
+    ``get_prec_detail`` methods remain available through inheritance when
+    source-aligned Pydantic models are needed.
     """
 
     # ------------------------------------------------------------------ #

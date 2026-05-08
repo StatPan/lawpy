@@ -58,7 +58,7 @@ The same pattern applies to other public wrappers:
 
 ```python
 precedents = client.search_precedents("손해배상", per_page=5)
-precedent = client.get_precedent_detail(case_id=precedents[0].case_id)
+precedent = client.get_precedent_detail(prec_id=precedents[0].prec_id)
 
 rules = client.search_administrative_rules("개인정보", per_page=5)
 rule = client.get_administrative_rule_detail(rule_id=rules[0].행정규칙ID)

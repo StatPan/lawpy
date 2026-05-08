@@ -6,6 +6,7 @@ import pytest
 
 from lawpy.exceptions import APIError, NotFoundError, ParseError
 from lawpy.kr import KoreanLawClient
+from lawpy.kr.generated._models_generated import PrecList
 
 
 @pytest.fixture
@@ -180,6 +181,28 @@ class TestSearchPrecedents:
         with patch.object(client._client, "get", return_value=mock_resp):
             with pytest.raises(ParseError):
                 client.search_precedents()
+
+    def test_generated_prec_surface_is_available(self, client: KoreanLawClient) -> None:
+        """KRClient also exposes the generated source-aligned prec methods."""
+        mock_resp = Mock()
+        mock_resp.json.return_value = {
+            "PrecSearch": {
+                "prec": [
+                    {
+                        "판례일련번호": "12345",
+                        "사건명": "손해배상(기)",
+                        "사건번호": "2020다12345",
+                    }
+                ]
+            }
+        }
+
+        with patch.object(client._client, "get", return_value=mock_resp):
+            results = client.search_precs(query="손해배상", display=1)
+
+        assert len(results) == 1
+        assert isinstance(results[0], PrecList)
+        assert results[0].판례일련번호 == "12345"
 
 
 # ---------------------------------------------------------------------------
