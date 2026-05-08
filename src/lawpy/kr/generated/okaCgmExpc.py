@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import OkacgmexpcDetail, OkacgmexpcList
 
 
-class OkacgmexpcClient(KoreanBaseClient):
+class GeneratedOkacgmexpcClient(KoreanBaseClient):
     """Auto-generated client for target=okaCgmExpc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── okaCgmExpc ──────────────────────────────────────
@@ -30,7 +30,7 @@ class OkacgmexpcClient(KoreanBaseClient):
         sort: str | None = None,
         popyn: str | None = None,
         fields: str | None = None,
-    ) -> list[dict]:
+    ) -> list[OkacgmexpcList]:
         """[GENERATED] 재외동포청 법령해석 목록
 
         Args:
@@ -48,7 +48,7 @@ class OkacgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of OkacgmexpcList instances.
             Response path: CgmExpc (item key not discovered)
         """
         params: dict = {"target": "okaCgmExpc", "type": "JSON"}
@@ -79,15 +79,15 @@ class OkacgmexpcClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("CgmExpc", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [OkacgmexpcList.model_validate(item) for item in items]
 
     def get_okaCgmExpc_detail(
         self,
         id: int | None = None,
         lm: str | None = None,
         fields: str | None = None,
-    ) -> dict:
+    ) -> OkacgmexpcDetail:
         """[GENERATED] 재외동포청 법령해석 본문
 
         Args:
@@ -96,7 +96,7 @@ class OkacgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            OkacgmexpcDetail instance.
             Response path: CgmExpc
         """
         params: dict = {"target": "okaCgmExpc", "type": "JSON"}
@@ -108,5 +108,6 @@ class OkacgmexpcClient(KoreanBaseClient):
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("CgmExpc", data)
+        raw = data.get("CgmExpc", data)
+        return OkacgmexpcDetail.model_validate(raw)
 

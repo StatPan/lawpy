@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import LawDetail, LawList
 
 
-class LawClient(KoreanBaseClient):
+class GeneratedLawClient(KoreanBaseClient):
     """Auto-generated client for target=law.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── law ──────────────────────────────────────
@@ -33,7 +33,7 @@ class LawClient(KoreanBaseClient):
         knd: str | None = None,
         gana: str | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[LawList]:
         """[GENERATED] 법령 목록 조회
 
         Args:
@@ -54,7 +54,7 @@ class LawClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of LawList instances.
             Response path: LawSearch.law
         """
         params: dict = {"target": "law", "type": "JSON"}
@@ -94,7 +94,7 @@ class LawClient(KoreanBaseClient):
         items = root.get("law", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [LawList.model_validate(item) for item in items]
 
     def get_law_detail(
         self,
@@ -111,7 +111,7 @@ class LawClient(KoreanBaseClient):
         bn: int | None = None,
         bg: int | None = None,
         mobileyn: str | None = None,
-    ) -> dict:
+    ) -> LawDetail:
         """[GENERATED] 법령 본문 조회
 
         Args:
@@ -130,7 +130,7 @@ class LawClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            LawDetail instance.
             Response path: LawSearch
         """
         params: dict = {"target": "law", "type": "JSON"}
@@ -162,5 +162,6 @@ class LawClient(KoreanBaseClient):
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("LawSearch", data)
+        raw = data.get("LawSearch", data)
+        return LawDetail.model_validate(raw)
 

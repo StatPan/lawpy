@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import LnkordList
 
 
-class LnkordClient(KoreanBaseClient):
+class GeneratedLnkordClient(KoreanBaseClient):
     """Auto-generated client for target=lnkOrd.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── lnkOrd ──────────────────────────────────────
@@ -23,7 +23,7 @@ class LnkordClient(KoreanBaseClient):
         page: int | None = None,
         sort: str | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[LnkordList]:
         """[GENERATED] 자치법규 기준 법령 연계 관련 목록 조회
 
         Args:
@@ -34,7 +34,7 @@ class LnkordClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of LnkordList instances.
             Response path: OrdinSearch (item key not discovered)
         """
         params: dict = {"target": "lnkOrd", "type": "JSON"}
@@ -51,6 +51,6 @@ class LnkordClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("OrdinSearch", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [LnkordList.model_validate(item) for item in items]
 

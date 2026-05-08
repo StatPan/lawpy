@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import NhrckDetail, NhrckList
 
 
-class NhrckClient(KoreanBaseClient):
+class GeneratedNhrckClient(KoreanBaseClient):
     """Auto-generated client for target=nhrck.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── nhrck ──────────────────────────────────────
@@ -26,7 +26,7 @@ class NhrckClient(KoreanBaseClient):
         sort: str | None = None,
         popyn: str | None = None,
         fields: str | None = None,
-    ) -> list[dict]:
+    ) -> list[NhrckList]:
         """[GENERATED] 국가인권위원회 결정문 목록 조회
 
         Args:
@@ -40,7 +40,7 @@ class NhrckClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 사건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of NhrckList instances.
             Root key not discovered — using best-effort extraction
         """
         params: dict = {"target": "nhrck", "type": "JSON"}
@@ -63,20 +63,31 @@ class NhrckClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         if isinstance(data, list):
-            return data
-        for v in data.values():
-            if isinstance(v, list):
-                return v
-            if isinstance(v, dict):
-                return [v]
-        return []
+            raw = data
+        else:
+            raw = []
+            for v in data.values():
+                if isinstance(v, list):
+                    raw = v
+                    break
+                if isinstance(v, dict):
+                    for _ik, _iv in v.items():
+                        if _ik in ("resultMsg", "resultCode", "page", "totalCnt", "target", "키워드", "section", "numOfRows", "display", "query"):
+                            continue
+                        if isinstance(_iv, list) and _iv:
+                            raw = _iv
+                            break
+                    if not raw:
+                        raw = [v]
+                    break
+        return [NhrckList.model_validate(item) for item in raw]
 
     def get_nhrck_detail(
         self,
         id: str | None = None,
         lm: str | None = None,
         fields: str | None = None,
-    ) -> dict:
+    ) -> NhrckDetail:
         """[GENERATED] 국가인권위원회 결정문 본문 조회
 
         Args:
@@ -85,7 +96,7 @@ class NhrckClient(KoreanBaseClient):
         fields: 응답항목 옵션(사건명, 사건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            NhrckDetail instance.
             Root key not discovered — returning raw response
         """
         params: dict = {"target": "nhrck", "type": "JSON"}
@@ -96,5 +107,5 @@ class NhrckClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
-        return response.json()
+        return NhrckDetail.model_validate(response.json())
 

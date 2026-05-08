@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import CouseordinList
 
 
-class CouseordinClient(KoreanBaseClient):
+class GeneratedCouseordinClient(KoreanBaseClient):
     """Auto-generated client for target=couseOrdin.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── couseOrdin ──────────────────────────────────────
@@ -23,7 +23,7 @@ class CouseordinClient(KoreanBaseClient):
         display: int | None = None,
         page: int | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[CouseordinList]:
         """[GENERATED] 맞춤형 자치법규 조문 목록 조회
 
         Args:
@@ -34,7 +34,7 @@ class CouseordinClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of CouseordinList instances.
             Root key not discovered — using best-effort extraction
         """
         params: dict = {"target": "couseOrdin", "type": "JSON"}
@@ -51,11 +51,22 @@ class CouseordinClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         if isinstance(data, list):
-            return data
-        for v in data.values():
-            if isinstance(v, list):
-                return v
-            if isinstance(v, dict):
-                return [v]
-        return []
+            raw = data
+        else:
+            raw = []
+            for v in data.values():
+                if isinstance(v, list):
+                    raw = v
+                    break
+                if isinstance(v, dict):
+                    for _ik, _iv in v.items():
+                        if _ik in ("resultMsg", "resultCode", "page", "totalCnt", "target", "키워드", "section", "numOfRows", "display", "query"):
+                            continue
+                        if isinstance(_iv, list) and _iv:
+                            raw = _iv
+                            break
+                    if not raw:
+                        raw = [v]
+                    break
+        return [CouseordinList.model_validate(item) for item in raw]
 

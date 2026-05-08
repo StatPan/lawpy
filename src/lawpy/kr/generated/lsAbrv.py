@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import LsabrvList
 
 
-class LsabrvClient(KoreanBaseClient):
+class GeneratedLsabrvClient(KoreanBaseClient):
     """Auto-generated client for target=lsAbrv.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── lsAbrv ──────────────────────────────────────
@@ -20,7 +20,7 @@ class LsabrvClient(KoreanBaseClient):
         self,
         stddt: int | None = None,
         enddt: int | None = None,
-    ) -> list[dict]:
+    ) -> list[LsabrvList]:
         """[GENERATED] 법률명 약칭 조회
 
         Args:
@@ -28,7 +28,7 @@ class LsabrvClient(KoreanBaseClient):
         enddt: 등록일(검색종료날짜)
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of LsabrvList instances.
             Response path: LawSearch.law
         """
         params: dict = {"target": "lsAbrv", "type": "JSON"}
@@ -42,5 +42,5 @@ class LsabrvClient(KoreanBaseClient):
         items = root.get("law", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [LsabrvList.model_validate(item) for item in items]
 

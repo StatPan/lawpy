@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import OrdinbylList
 
 
-class OrdinbylClient(KoreanBaseClient):
+class GeneratedOrdinbylClient(KoreanBaseClient):
     """Auto-generated client for target=ordinbyl.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── ordinbyl ──────────────────────────────────────
@@ -27,7 +27,7 @@ class OrdinbylClient(KoreanBaseClient):
         knd: str | None = None,
         gana: str | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[OrdinbylList]:
         """[GENERATED] 자치법규 별표ㆍ서식 목록 조회
 
         Args:
@@ -42,7 +42,7 @@ class OrdinbylClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of OrdinbylList instances.
             Response path: licBylSearch (item key not discovered)
         """
         params: dict = {"target": "ordinbyl", "type": "JSON"}
@@ -67,6 +67,6 @@ class OrdinbylClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("licBylSearch", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [OrdinbylList.model_validate(item) for item in items]
 

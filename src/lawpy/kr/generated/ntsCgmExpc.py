@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import NtscgmexpcList
 
 
-class NtscgmexpcClient(KoreanBaseClient):
+class GeneratedNtscgmexpcClient(KoreanBaseClient):
     """Auto-generated client for target=ntsCgmExpc.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── ntsCgmExpc ──────────────────────────────────────
@@ -30,7 +30,7 @@ class NtscgmexpcClient(KoreanBaseClient):
         sort: str | None = None,
         popyn: str | None = None,
         fields: str | None = None,
-    ) -> list[dict]:
+    ) -> list[NtscgmexpcList]:
         """[GENERATED] 국세청 법령해석 목록 조회
 
         Args:
@@ -48,7 +48,7 @@ class NtscgmexpcClient(KoreanBaseClient):
         fields: 응답항목 옵션(안건명, 안건번호, ...) * 빈 값일 경우 전체 항목 표출 * 출력 형태 HTML일 경우 적용 불가능
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of NtscgmexpcList instances.
             Response path: CgmExpc.cgmExpc
         """
         params: dict = {"target": "ntsCgmExpc", "type": "JSON"}
@@ -82,5 +82,5 @@ class NtscgmexpcClient(KoreanBaseClient):
         items = root.get("cgmExpc", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [NtscgmexpcList.model_validate(item) for item in items]
 

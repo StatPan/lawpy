@@ -1,202 +1,151 @@
 # Korean Law API Modules
 
-This directory contains the Korean National Law Information Center Open API implementation.
+This package implements Korean National Law Information Center Open API clients.
+Use `KRClient` first for normal work; use `lawpy.kr.generated` when a law.go.kr
+target does not have an ergonomic wrapper yet.
 
-## Architecture
-
-The module structure follows the official [Korean Law Open API Guide](https://open.law.go.kr/LSO/openApi/guideList.do) to provide an intuitive and maintainable interface.
-
-### Design Principles
-
-1. **API Guide Alignment**: Module structure mirrors the official API guide (구분 → 분류 → 제공API)
-2. **Modular Design**: Each category (구분) is a separate module for easy maintenance
-3. **Unified Interface**: All modules share a common base class for consistency
-4. **Flexible Usage**: Use individual modules or the integrated client based on needs
-
-## Module Structure
+## Current Structure
 
 ```
 lawpy/kr/
-├── base.py                    # Common base class (HTTP client, exception handling)
-├── law.py                     # Law (법령) - main text, articles, history, etc.
-├── admin_rule.py              # Administrative Rules (행정규칙)
-├── ordinance.py               # Autonomous Ordinances (자치법규)
-├── precedent.py               # Precedents (판례)
-├── constitutional_decision.py # Constitutional Court Decisions (헌재결정례)
-├── interpretation.py          # Legal Interpretation Cases (법령해석례)
-├── admin_review.py            # Administrative Review Cases (행정심판례)
-├── committee/                 # Committee Decisions (위원회결정문 - 12 committees)
-├── treaty.py                  # Treaties (조약)
-├── annex_form.py              # Annexes and Forms (별표·서식)
-├── school_public.py           # School Regulations, Public Agencies (학칙·공단·공공기관)
-├── terminology.py             # Legal Terminology (법령용어)
-├── mobile/                    # Mobile APIs (optimized for mobile)
-├── customized.py              # Customized Services (맞춤형)
-├── knowledge_base.py          # Legal Knowledge Base (법령정보지식베이스)
-├── ministry_interpretation/   # Ministry Interpretations (중앙부처 1차 해석 - 26 ministries)
-└── client.py                   # Integrated Client (all APIs in one)
+├── __init__.py
+├── base.py                    # Shared Korean HTTP client behavior
+├── client.py                  # KRClient, the primary integrated client
+├── law.py                     # Public law (법령) wrapper
+├── administrative_rule.py     # Public administrative rule (행정규칙) wrapper
+├── ordinance.py               # Public local ordinance (자치법규) wrapper
+├── legal_terminology.py       # Public legal terminology (법령용어) wrapper
+├── legal_interpretation.py    # Public legal interpretation (법령해석례) wrapper
+├── constitutional_decision.py # Public constitutional decision (헌재결정례) wrapper
+├── administrative_review_decision.py # Public administrative review decision (행정심판례) wrapper
+├── precedent.py               # Public precedent (판례) wrapper
+├── treaty.py                  # Public treaty (조약) wrapper
+├── generated/                 # 89 spec-generated law.go.kr target clients
+└── README.md
 ```
 
-## Category Mapping
+Targets such as `committee/` or `ministry_interpretation/` are not public
+wrapper modules today. Their targets are available only through generated
+clients until wrappers are added.
 
-| 구분 (Category) | Module | Description |
-|----------------|--------|-------------|
-| 법령 | `law.py` | Laws, decrees, ordinances with full text, articles, history |
-| 행정규칙 | `admin_rule.py` | Administrative rules and regulations |
-| 자치법규 | `ordinance.py` | Local government ordinances |
-| 판례 | `precedent.py` | Court precedents |
-| 헌재결정례 | `constitutional_decision.py` | Constitutional Court decisions |
-| 법령해석례 | `interpretation.py` | Legal interpretation cases |
-| 행정심판례 | `admin_review.py` | Administrative review cases |
-| 위원회결정문 | `committee/` | Decisions from 12 committees |
-| 조약 | `treaty.py` | International treaties |
-| 별표·서식 | `annex_form.py` | Annexes and forms |
-| 학칙·공단·공공기관 | `school_public.py` | School regulations, public agencies |
-| 법령용어 | `terminology.py` | Legal terminology |
-| 모바일 | `mobile/` | Mobile-optimized APIs |
-| 맞춤형 | `customized.py` | Customized services |
-| 법령정보지식베이스 | `knowledge_base.py` | Legal knowledge base (terms, relations, AI search) |
-| 중앙부처 1차 해석 | `ministry_interpretation/` | First-level interpretations from 26 ministries |
-
-## Usage
-
-### Integrated Client (All APIs)
+## Primary Usage
 
 ```python
-from lawpy.kr import KoreanLawClient
+from lawpy.kr import KRClient
 
-client = KoreanLawClient(api_key="your_email_id")
+client = KRClient(api_key="your_email_id")
 
-# Law APIs
 laws = client.search_laws("민법")
 law_detail = client.get_law_detail(law_id="009682")
 law_history = client.get_law_history(query="민법")
-history_detail = client.get_law_history_detail(mst=9094)
 
-# Precedent APIs (to be implemented)
 precedents = client.search_precedents("민법")
+precedent_detail = client.get_precedent_detail(precedents[0].prec_id)
+
+rules = client.search_administrative_rules("개인정보", rule_type="3")
+notices = client.search_notices("고시")
+
+ordinances = client.search_ordinances("서울특별시", ordinance_type="30001")
+local_notices = client.search_local_notices("고시")
+
+terms = client.search_legal_terms("과태료", law_kind_code=10101)
+term_detail = client.get_legal_term_detail("과태료")
+
+interpretations = client.search_legal_interpretations("건축")
+interpretation_detail = client.get_legal_interpretation_detail(
+    interpretation_id=int(interpretations[0].법령해석례일련번호)
+)
+
+constitutional_decisions = client.search_constitutional_decisions("기본권")
+constitutional_decision_detail = client.get_constitutional_decision_detail(
+    decision_id=constitutional_decisions[0].헌재결정례일련번호
+)
+
+administrative_review_decisions = client.search_administrative_review_decisions("영업정지")
+administrative_review_decision_detail = client.get_administrative_review_decision_detail(
+    decision_id=administrative_review_decisions[0].행정심판재결례일련번호
+)
+
+treaties = client.search_treaties("FTA", treaty_class=1)
+treaty_detail = client.get_treaty_detail(treaties[0].조약일련번호)
 ```
 
-### Individual Modules (Lightweight)
+`KoreanLawClient` is a compatibility alias for `KRClient`. New code should
+prefer `KRClient`.
+
+## Public Wrapper Status
+
+| Public surface | Backing target | Status |
+|----------------|----------------|--------|
+| `KRClient`, `law.py` | `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf` | Expanded public wrapper: law search/detail/list/history plus English laws, old-new comparison, abbreviations, and change-history feeds |
+| `KRClient`, `administrative_rule.py` | `admrul` | Partial public wrapper over generated `admrul`: administrative rule search, notice search (`knd=3`), detail |
+| `KRClient`, `ordinance.py` | `ordin` | Partial public wrapper over generated `ordin`: local ordinance search, local notice search (`knd=30010`), detail |
+| `KRClient`, `legal_terminology.py` | `lstrm` | Public wrapper over generated `lstrm`: legal term search and detail |
+| `KRClient`, `legal_interpretation.py` | `expc` | Thin public wrapper over generated `expc`: legal interpretation search and detail |
+| `KRClient`, `constitutional_decision.py` | `detc` | Thin public wrapper over generated `detc`: constitutional decision search and detail |
+| `KRClient`, `administrative_review_decision.py` | `decc` | Thin public wrapper over generated `decc`: administrative review decision search and detail |
+| `KRClient`, `precedent.py` | `prec` | Partial public wrapper: precedent search and detail using handwritten XML parsing; generated `prec` also exists |
+| `KRClient`, `treaty.py` | `trty` | Public wrapper over generated `trty`: treaty search and detail |
+
+## Generated-Only Targets
+
+The generated package contains 89 law.go.kr target clients. Fourteen targets are
+wrapped by `KRClient` today (`law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`, `detc`, `decc`, `trty`), leaving 75
+generated-only target modules.
+
+Use generated-only clients directly:
 
 ```python
-from lawpy.kr.law import LawClient
+from lawpy.kr.generated.decc import GeneratedDeccClient
 
-client = LawClient(api_key="your_email_id")
-laws = client.search_laws("민법")
+client = GeneratedDeccClient(api_key="your_email_id")
+decisions = client.search_deccs(query="영업정지", display=10, page=1)
 ```
 
-## Module Details
+Generated clients return Pydantic models from
+`lawpy.kr.generated._models_generated`. Use `model_dump(by_alias=True)` when you
+need the original Korean field names.
 
-### Law (law.py)
+For the target matrix, run:
 
-**Sub-categories**: 본문, 조항호목, 영문법령, 이력, 연계, 부가서비스
+```python
+import lawpy
+
+print(lawpy.help("generated"))
+```
+
+or read `docs/kr/generated-coverage.md` in the repository.
+
+## Law Wrapper Methods
 
 - `search_laws()` - Search laws (target=law)
 - `get_law_detail()` - Get full text of a specific law
 - `get_law_list()` - Get current law list by effective date
 - `get_law_history()` - Get law amendment history list
 - `get_law_history_detail()` - Get detailed amendment history text
-- `get_law_articles()` - Get articles by item/hang/mok (to be implemented)
 - `search_english_laws()` - Search English law list (phase-1)
 - `get_english_law_detail()` - Get English law detail (phase-1)
-- `get_law_delegated()` - Get delegated ordinances (to be implemented)
-- `get_law_structure()` - Get law structure (to be implemented)
 - `search_law_old_and_new()` - Get old/new law comparison metadata (stable model contract)
 - `get_law_old_and_new_detail()` - Get old/new law comparison detail (stable model contract)
 - `search_law_abbreviations()` - Get law abbreviations (stable model contract)
 - `search_law_change_history()` - Get law-level change history feed (stable model contract)
 - `search_law_article_change_history()` - Get article-level change history feed (JO mapping in wrapper)
-- `get_law_3way_compare()` - Get 3-way comparison (to be implemented)
-- `get_law_deleted_data()` - Get deleted data (to be implemented)
-- `get_law_overview()` - Get overview (to be implemented)
-
-### Committee (committee/)
-
-**12 Committees**:
-
-| Module | Committee |
-|--------|-----------|
-| `privacy_protection.py` | 개인정보보호위원회 (Personal Information Protection Commission) |
-| `employment_insurance.py` | 고용보험심사위원회 (Employment Insurance Review Commission) |
-| `fair_trade.py` | 공정거래위원회 (Fair Trade Commission) |
-| `civil_rights.py` | 국민권익위원회 (Anti-Corruption & Civil Rights Commission) |
-| `financial_services.py` | 금융위원회 (Financial Services Commission) |
-| `labor_relations.py` | 노동위원회 (National Labor Relations Commission) |
-| `broadcasting.py` | 방송미디어통신위원회 (Korea Communications Commission) |
-| `industrial_accident.py` | 산업재해보상보험재심사위원회 (Industrial Accident Reconsideration Commission) |
-| `land_expropriation.py` | 중앙토지수용위원회 (Central Land Expropriation Committee) |
-| `environment_dispute.py` | 중앙환경분쟁조정위원회 (Central Environmental Dispute Mediation Commission) |
-| `securities_futures.py` | 증권선물위원회 (Financial Supervisory Service) |
-| `human_rights.py` | 국가인권위원회 (National Human Rights Commission) |
-
-### Ministry Interpretation (ministry_interpretation/)
-
-**26 Ministries**:
-
-| Module | Ministry |
-|--------|----------|
-| `employment_labor.py` | 고용노동部 (Ministry of Employment and Labor) |
-| `land_transport.py` | 국토교통部 (Ministry of Land, Infrastructure and Transport) |
-| `economy_finance.py` | 재정경제部 (Ministry of Economy and Finance) |
-| `maritime_fisheries.py` | 해양수산部 (Ministry of Oceans and Fisheries) |
-| `interior_safety.py` | 행정안전部 (Ministry of the Interior and Safety) |
-| `environment_energy.py` | 기후에너지환경部 (Ministry of Environment) |
-| `customs.py` | 관세청 (Korea Customs Service) |
-| `national_tax.py` | 국세청 (National Tax Service) |
-| `education.py` | 교육部 (Ministry of Education) |
-| `science_ict.py` | 과학기술정보통신部 (Ministry of Science and ICT) |
-| `veterans_affairs.py` | 국가보훈部 (Ministry of Patriots and Veterans Affairs) |
-| `defense.py` | 국방部 (Ministry of National Defense) |
-| `agriculture_food.py` | 농림축산식품部 (Ministry of Agriculture, Food and Rural Affairs) |
-| `culture_tourism.py` | 문화체육관광部 (Ministry of Culture, Sports and Tourism) |
-| `justice.py` | 법무部 (Ministry of Justice) |
-| `health_welfare.py` | 보건복지部 (Ministry of Health and Welfare) |
-| `industry_trade.py` | 산업통상자원部 (Ministry of Trade, Industry and Energy) |
-| `gender_equality.py` | 성평등가족部 (Ministry of Gender Equality and Family) |
-| `foreign_affairs.py` | 외교部 (Ministry of Foreign Affairs) |
-| `sme_startups.py` | 중소벤처기업部 (Ministry of SMEs and Startups) |
-| `unification.py` | 통일部 (Ministry of Unification) |
-| `government_legislation.py` | 법제처 (Ministry of Government Legislation) |
-| `food_drug_safety.py` | 식품의약품안전처 (Ministry of Food and Drug Safety) |
-| `personnel_management.py` | 인사혁신처 (Ministry of Personnel Management) |
-| `meteorology.py` | 기상청 (Korea Meteorological Administration) |
-| `heritage.py` | 국가유산청 (Heritage Administration) |
-
-## Implementation Status
-
-| Category | Module | Status |
-|----------|--------|--------|
-| 법령 | `law.py` | ✅ Expanded (search/detail/list/history + English/old-new/abbrev/change-history phase-1) |
-| 행정규칙 | `admin_rule.py` | ⏳ Not started |
-| 자치법규 | `ordinance.py` | ⏳ Not started |
-| 판례 | `precedent.py` | ⏳ Not started |
-| 헌재결정례 | `constitutional_decision.py` | ⏳ Not started |
-| 법령해석례 | `interpretation.py` | ⏳ Not started |
-| 행정심판례 | `admin_review.py` | ⏳ Not started |
-| 위원회결정문 | `committee/` | ⏳ Not started |
-| 조약 | `treaty.py` | ⏳ Not started |
-| 별표·서식 | `annex_form.py` | ⏳ Not started |
-| 학칙·공단·공공기관 | `school_public.py` | ⏳ Not started |
-| 법령용어 | `terminology.py` | ⏳ Not started |
-| 모바일 | `mobile/` | ⏳ Not started |
-| 맞춤형 | `customized.py` | ⏳ Not started |
-| 법령정보지식베이스 | `knowledge_base.py` | ⏳ Not started |
-| 중앙부처 1차 해석 | `ministry_interpretation/` | ⏳ Not started |
 
 ## API Key
 
-API key is your email ID registered with the [Korean National Law Information Center](https://open.law.go.kr/).
+The API key is the email ID registered with the Korean National Law Information
+Center.
 
 ```bash
 export LAWPY_API_KEY=your_email_id
 ```
 
-Or pass it directly:
+or pass it directly:
 
 ```python
-from lawpy.kr import KoreanLawClient
-client = KoreanLawClient(api_key="your_email_id")
+from lawpy.kr import KRClient
+
+client = KRClient(api_key="your_email_id")
 ```
 
 ## References

@@ -36,19 +36,34 @@
   ],
   "response": [
     {
-      "col0": "샘플 URL"
+      "요청변수": "OC",
+      "값": "string(필수)",
+      "설명": "신청한 API인증값"
     },
     {
-      "col0": "1. 자치법규 ID HTML 조회"
+      "요청변수": "target",
+      "값": "string : ordin(필수)",
+      "설명": "서비스 대상"
     },
     {
-      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=ordin&ID=2047729&type=HTML&mobileYn=Y"
+      "요청변수": "ID",
+      "값": "char",
+      "설명": "자치법규 ID"
     },
     {
-      "col0": "2. 자치법규 MST HTML 조회"
+      "요청변수": "MST",
+      "값": "string",
+      "설명": "자치법규 마스터 번호"
     },
     {
-      "col0": "http://www.law.go.kr/DRF/lawService.do?OC=test&target=ordin&type=HTML&mobileYn=Y&MST=1062134"
+      "요청변수": "type",
+      "값": "char",
+      "설명": "출력 형태 : HTML"
+    },
+    {
+      "요청변수": "mobileYn",
+      "값": "char : Y (필수)",
+      "설명": "모바일여부"
     }
   ],
   "raw_url": "https://open.law.go.kr/LSO/openApi/guideResult.do"

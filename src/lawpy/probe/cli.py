@@ -9,6 +9,7 @@ import sys
 from lawpy.probe.configs.kr import ALL_CONFIGS, CONFIGS_BY_NAME
 from lawpy.probe.runner import ProbeRunner
 from lawpy.probe.snapshot import SnapshotStore
+from lawpy.probe.verify import SNAPSHOT_MODEL_MAP, verify_snapshots
 
 
 def _get_runner(api_key: str | None) -> ProbeRunner:
@@ -52,6 +53,7 @@ def cmd_capture(names: list[str] | None, api_key: str | None, output_json: bool)
     targets = names or [c.name for c in ALL_CONFIGS]
     results = []
     exit_code = 0
+    progress_stream = sys.stderr if output_json else sys.stdout
 
     try:
         for n in targets:
@@ -59,14 +61,14 @@ def cmd_capture(names: list[str] | None, api_key: str | None, output_json: bool)
                 print(f"  ❌ Unknown probe: {n}", file=sys.stderr)
                 exit_code = 1
                 continue
-            print(f"  Capturing {n}...", end=" ", flush=True)
+            print(f"  Capturing {n}...", end=" ", flush=True, file=progress_stream)
             try:
                 result = runner.capture(n)
-                results.append({"name": n, "saved_to": result.saved_to, "status": "ok"})
-                print(f"✅  saved → {result.saved_to}")
+                results.append({"name": n, "saved_to": str(result.saved_to), "status": "ok"})
+                print(f"✅  saved → {result.saved_to}", file=progress_stream)
             except Exception as e:
                 results.append({"name": n, "error": str(e), "status": "error"})
-                print(f"❌  {e}")
+                print(f"❌  {e}", file=progress_stream)
                 exit_code = 1
     finally:
         runner.close()
@@ -112,6 +114,25 @@ def cmd_diff(names: list[str] | None, api_key: str | None, output_json: bool) ->
     return exit_code
 
 
+def cmd_verify(names: list[str] | None, output_json: bool) -> int:
+    """lawpy-probe verify — compare bundled snapshots against generated models."""
+    targets = names or sorted(SNAPSHOT_MODEL_MAP)
+    results = []
+    exit_code = 0
+    progress_stream = sys.stderr if output_json else sys.stdout
+
+    for result in verify_snapshots(targets):
+        print(result.summary(), file=progress_stream)
+        results.append(result.to_dict())
+        if not result.is_clean:
+            exit_code = 1
+
+    if output_json:
+        print(json.dumps(results, ensure_ascii=False, indent=2))
+
+    return exit_code
+
+
 def main(argv: list[str] | None = None) -> None:
     """Entry point for the ``lawpy-probe`` CLI."""
     import argparse
@@ -124,7 +145,7 @@ def main(argv: list[str] | None = None) -> None:
         "--api-key",
         metavar="KEY",
         default=None,
-        help="OC API key (default: LAWPY_API_KEY env var)",
+        help="OC API key (default: LAWPY_KR_API_KEY, then LAWPY_API_KEY)",
     )
     parser.add_argument(
         "--output",
@@ -145,16 +166,53 @@ def main(argv: list[str] | None = None) -> None:
     # capture
     p_cap = sub.add_parser("capture", help="Fetch live API and save snapshots")
     p_cap.add_argument(
+        "--api-key",
+        metavar="KEY",
+        default=argparse.SUPPRESS,
+        help="OC API key (default: LAWPY_KR_API_KEY, then LAWPY_API_KEY)",
+    )
+    p_cap.add_argument(
         "--target", metavar="NAME", action="append", help="Probe name (repeatable; default: all)"
     )
     p_cap.add_argument("--all", action="store_true", help="Capture all probes (default when no --target)")
+    p_cap.add_argument(
+        "--output",
+        choices=["text", "json"],
+        default=argparse.SUPPRESS,
+        help="Output format (default: text)",
+    )
 
     # diff
     p_diff = sub.add_parser("diff", help="Compare live API against bundled snapshots")
     p_diff.add_argument(
+        "--api-key",
+        metavar="KEY",
+        default=argparse.SUPPRESS,
+        help="OC API key (default: LAWPY_KR_API_KEY, then LAWPY_API_KEY)",
+    )
+    p_diff.add_argument(
         "--target", metavar="NAME", action="append", help="Probe name (repeatable; default: all)"
     )
     p_diff.add_argument("--all", action="store_true", help="Diff all probes (default when no --target)")
+    p_diff.add_argument(
+        "--output",
+        choices=["text", "json"],
+        default=argparse.SUPPRESS,
+        help="Output format (default: text)",
+    )
+
+    # verify
+    p_verify = sub.add_parser("verify", help="Compare snapshots against generated model aliases")
+    p_verify.add_argument(
+        "--target", metavar="NAME", action="append", help="Probe name (repeatable; default: all)"
+    )
+    p_verify.add_argument("--all", action="store_true", help="Verify all mapped snapshots")
+    p_verify.add_argument(
+        "--output",
+        choices=["text", "json"],
+        default=argparse.SUPPRESS,
+        help="Output format (default: text)",
+    )
 
     args = parser.parse_args(argv)
     output_json = args.output == "json"
@@ -172,6 +230,9 @@ def main(argv: list[str] | None = None) -> None:
 
     elif args.command == "diff":
         sys.exit(cmd_diff(args.target, args.api_key, output_json))
+
+    elif args.command == "verify":
+        sys.exit(cmd_verify(args.target, output_json))
 
 
 if __name__ == "__main__":

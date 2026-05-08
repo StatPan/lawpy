@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import LicbylList
 
 
-class LicbylClient(KoreanBaseClient):
+class GeneratedLicbylClient(KoreanBaseClient):
     """Auto-generated client for target=licbyl.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── licbyl ──────────────────────────────────────
@@ -27,7 +27,7 @@ class LicbylClient(KoreanBaseClient):
         knd: str | None = None,
         gana: str | None = None,
         mobileyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[LicbylList]:
         """[GENERATED] 법령 별표ㆍ서식 목록 조회
 
         Args:
@@ -42,7 +42,7 @@ class LicbylClient(KoreanBaseClient):
         mobileyn: 모바일여부
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of LicbylList instances.
             Response path: licBylSearch (item key not discovered)
         """
         params: dict = {"target": "licbyl", "type": "JSON"}
@@ -67,6 +67,6 @@ class LicbylClient(KoreanBaseClient):
         response = self._make_request(self.BASE_URL, params=params)
         data = response.json()
         root = data.get("licBylSearch", {})
-        result = root if isinstance(root, list) else [root] if root else []
-        return result
+        items = root if isinstance(root, list) else [root] if root else []
+        return [LicbylList.model_validate(item) for item in items]
 

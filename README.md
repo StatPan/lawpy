@@ -7,7 +7,8 @@ Universal law information API client library.
 - **Multi-country support**: Access law APIs from multiple countries (currently Korea)
 - **Simple interface**: Intuitive API design for easy integration
 - **Type-safe**: Full type hints for better IDE support
-- **Well-tested**: Comprehensive test coverage
+- **KRClient first**: One ergonomic entry point for implemented Korean APIs
+- **Generated KR coverage**: 89 Korean law.go.kr target clients are generated from specs; 80 are generated-only until public wrappers are added
 
 ## Installation
 
@@ -16,6 +17,24 @@ pip install lawpy
 ```
 
 ## Quick Start
+
+### Installed help
+
+If you installed `lawpy` without cloning the repository, start here:
+
+```python
+import lawpy
+
+print(lawpy.help())
+print(lawpy.help("kr"))
+print(lawpy.help("generated"))
+```
+
+The same guide is available from the shell:
+
+```bash
+python -m lawpy.help kr
+```
 
 ### Korean Law API
 
@@ -28,14 +47,20 @@ export LAWPY_API_KEY="your-email-id"
 Or pass it directly:
 
 ```python
-from lawpy import KoreanLawClient
+from lawpy import KRClient
 
 # Using environment variable
-client = KoreanLawClient()
+client = KRClient()
 
 # Or pass api_key directly
-client = KoreanLawClient(api_key="your-api-key")
+client = KRClient(api_key="your-api-key")
 ```
+
+`KRClient` is the main ergonomic object for Korean law.go.kr data. It combines
+the current public wrappers for laws, precedents, administrative rules, notices,
+local ordinances, local notices, legal terminology, legal interpretations,
+constitutional decisions, administrative review decisions, and treaties.
+`KoreanLawClient` remains available as a compatibility alias.
 
 #### Search for laws
 
@@ -105,30 +130,57 @@ print(history_detail)  # Returns HTML text
 #### Get old/new law comparison metadata
 
 ```python
-old_new = client.get_law_old_new(query="민법", per_page=10)
+old_new = client.search_law_old_and_new(query="민법", per_page=10)
 print(old_new[0])
 ```
 
 #### Get old/new law comparison detail
 
 ```python
-old_new_detail = client.get_law_old_new_detail(law_id="009682")
+old_new_detail = client.get_law_old_and_new_detail(law_id="009682")
 print(old_new_detail)
 ```
 
 #### Get law abbreviations
 
 ```python
-abbrs = client.get_law_abbreviations(start_date=20240101, end_date=20240131)
+abbrs = client.search_law_abbreviations(start_date=20240101, end_date=20240131)
 print(abbrs)
 ```
 
 #### Get law/article change history
 
 ```python
-changes = client.get_law_change_history(registered_date=20240101)
-article_changes = client.get_law_article_change_history(law_id="009682", article_code=200)
+changes = client.search_law_change_history(registered_date=20240101)
+article_changes = client.search_law_article_change_history(law_id="009682", article_number=2)
 ```
+
+### Generated-only KR targets
+
+KR v1 includes generated clients for 89 public law.go.kr targets. `KRClient`
+wraps 14 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
+`lsJoHstInf`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`, `detc`, `decc`,
+and `trty`. The remaining 75 targets are generated-only; import those clients directly from
+`lawpy.kr.generated`.
+
+```python
+from lawpy.kr.generated.decc import GeneratedDeccClient
+
+client = GeneratedDeccClient(api_key="your-api-key")
+decisions = client.search_deccs(query="영업정지", display=10, page=1)
+row = decisions[0].model_dump(by_alias=True)
+```
+
+Run `import lawpy; print(lawpy.help("generated"))` or see
+[docs/kr/generated-coverage.md](docs/kr/generated-coverage.md) for the generated
+target matrix.
+
+## Specs and codegen policy
+
+The Korean specs, code generator, generated clients, generated models, and
+generated tests are public. The project treats reproducible generation, coverage
+documentation, and CI as the maintenance contract rather than hiding source
+specs.
 
 ## API Key
 
@@ -174,17 +226,27 @@ lawpy/
 │   └── kr/             # Korean API modules
 │       ├── __init__.py
 │       ├── base.py       # Base class for Korean clients
-│       ├── client.py     # Integrated Korean client
+│       ├── client.py     # KRClient integrated Korean client
 │       ├── law.py       # Law (법령) APIs
+│       ├── administrative_rule.py # Administrative rule (행정규칙) wrapper
+│       ├── ordinance.py # Local ordinance (자치법규) wrapper
+│       ├── legal_terminology.py # Legal terminology (법령용어) wrapper
+│       ├── legal_interpretation.py # Legal interpretation (법령해석례) wrapper
+│       ├── constitutional_decision.py # Constitutional decision (헌재결정례) wrapper
+│       ├── administrative_review_decision.py # Administrative review decision (행정심판례) wrapper
+│       ├── precedent.py # Precedent (판례) wrapper
+│       ├── treaty.py # Treaty (조약) wrapper
+│       ├── generated/   # 89 spec-generated Korean API clients
 │       └── README.md     # Korean API documentation
 └── tests/
-    └── test_kr.py       # Korean API tests
+    ├── test_kr.py       # Korean API tests
+    └── test_generated/  # Generated client tests
 ```
 
 ## Roadmap
 
 - [ ] Add more countries (Japan, China, etc.)
-- [ ] Implement all Korean Law API categories
+- [ ] Add public wrappers for generated-only Korean targets
 - [ ] Add async support
 - [ ] Add caching layer
 

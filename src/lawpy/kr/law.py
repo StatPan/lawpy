@@ -1,13 +1,15 @@
 """Law (법령) module for Korean law API."""
 
+from typing import Any
+
 import xmltodict
 
 from lawpy.exceptions import ParseError
-from lawpy.kr.generated.elaw import ElawClient
-from lawpy.kr.generated.lsAbrv import LsabrvClient
-from lawpy.kr.generated.lsHstInf import LshstinfClient
-from lawpy.kr.generated.lsJoHstInf import LsjohstinfClient
-from lawpy.kr.generated.oldAndNew import OldandnewClient
+from lawpy.kr.generated.elaw import GeneratedElawClient
+from lawpy.kr.generated.lsAbrv import GeneratedLsabrvClient
+from lawpy.kr.generated.lsHstInf import GeneratedLshstinfClient
+from lawpy.kr.generated.lsJoHstInf import GeneratedLsjohstinfClient
+from lawpy.kr.generated.oldAndNew import GeneratedOldandnewClient
 from lawpy.models import (
     Article,
     Item,
@@ -23,7 +25,13 @@ from lawpy.models import (
 )
 
 
-class LawClient(ElawClient, OldandnewClient, LsabrvClient, LshstinfClient, LsjohstinfClient):
+class LawClient(
+    GeneratedElawClient,
+    GeneratedOldandnewClient,
+    GeneratedLsabrvClient,
+    GeneratedLshstinfClient,
+    GeneratedLsjohstinfClient,
+):
     """Client for Law (법령) APIs."""
 
     def search_laws(
@@ -306,191 +314,6 @@ class LawClient(ElawClient, OldandnewClient, LsabrvClient, LshstinfClient, Lsjoh
         response = self._make_request(self.SERVICE_URL, params)
         return response.text
 
-    def get_law_old_new(
-        self,
-        query: str | None = None,
-        page: int = 1,
-        per_page: int = 20,
-        sort: str | None = None,
-        promulgation_date: int | None = None,
-        promulgation_number: int | None = None,
-        output_type: str = "JSON",
-    ) -> list[dict]:
-        """Get old/new law comparison list (신구법 목록).
-
-        Args:
-            query: Law name search query
-            page: Page number (default: 1)
-            per_page: Number of results per page (default: 20, max: 100)
-            sort: Sort option (default: lasc)
-            promulgation_date: Promulgation date (YYYYMMDD)
-            promulgation_number: Promulgation number
-            output_type: Output type ('JSON' recommended)
-
-        Returns:
-            List of old/new comparison metadata dictionaries
-        """
-        params: dict[str, str | int] = {
-            "OC": str(self.api_key),
-            "target": "oldAndNew",
-            "type": output_type,
-            "display": per_page,
-            "page": page,
-            "sort": sort or "lasc",
-        }
-
-        if query is not None:
-            params["query"] = query
-        if promulgation_date is not None:
-            params["date"] = promulgation_date
-        if promulgation_number is not None:
-            params["nb"] = promulgation_number
-
-        response = self._make_request(self.BASE_URL, params)
-        data = response.json()
-        root = data.get("OldAndNewLawSearch", {})
-        items = root.get("oldAndNew", [])
-        if isinstance(items, dict):
-            items = [items]
-        return items or []
-
-    def get_law_old_new_detail(
-        self,
-        law_id: str | None = None,
-        mst: int | None = None,
-        law_name: str | None = None,
-        promulgation_date: int | None = None,
-        promulgation_number: int | None = None,
-        output_type: str = "JSON",
-    ) -> dict:
-        """Get old/new law comparison detail (신구법 본문).
-
-        Args:
-            law_id: Law ID (ID)
-            mst: Law master sequence (MST)
-            law_name: Law name (LM)
-            promulgation_date: Promulgation date (LD)
-            promulgation_number: Promulgation number (LN)
-            output_type: Output type ('JSON' recommended)
-
-        Returns:
-            Detail dictionary from ``OldAndNewLawSearch`` root
-        """
-        if law_id is None and mst is None:
-            msg = "Either law_id or mst must be provided"
-            raise ValueError(msg)
-
-        params: dict[str, str | int] = {
-            "OC": str(self.api_key),
-            "target": "oldAndNew",
-            "type": output_type,
-        }
-
-        if law_id is not None:
-            params["ID"] = law_id
-        if mst is not None:
-            params["MST"] = mst
-        if law_name is not None:
-            params["LM"] = law_name
-        if promulgation_date is not None:
-            params["LD"] = promulgation_date
-        if promulgation_number is not None:
-            params["LN"] = promulgation_number
-
-        response = self._make_request(self.SERVICE_URL, params)
-        data = response.json()
-        root = data.get("OldAndNewLawSearch", data)
-        if isinstance(root, dict):
-            return root
-        return {}
-
-    def get_law_abbreviations(
-        self,
-        start_date: int | None = None,
-        end_date: int | None = None,
-        output_type: str = "JSON",
-    ) -> list[dict]:
-        """Get law abbreviations (법령명 약칭)."""
-        params: dict[str, str | int] = {
-            "OC": str(self.api_key),
-            "target": "lsAbrv",
-            "type": output_type,
-        }
-
-        if start_date is not None:
-            params["stdDt"] = start_date
-        if end_date is not None:
-            params["endDt"] = end_date
-
-        response = self._make_request(self.BASE_URL, params)
-        data = response.json()
-        root = data.get("LawSearch", {})
-        items = root.get("law", [])
-        if isinstance(items, dict):
-            items = [items]
-        return items or []
-
-    def get_law_change_history(
-        self,
-        registered_date: int | None = None,
-        org_code: str | None = None,
-        page: int = 1,
-        per_page: int = 20,
-        output_type: str = "JSON",
-    ) -> list[dict]:
-        """Get law-level change history feed (법령 변경이력 목록)."""
-        params: dict[str, str | int] = {
-            "OC": str(self.api_key),
-            "target": "lsHstInf",
-            "type": output_type,
-            "display": per_page,
-            "page": page,
-        }
-
-        if registered_date is not None:
-            params["regDt"] = registered_date
-        if org_code is not None:
-            params["org"] = org_code
-
-        response = self._make_request(self.BASE_URL, params)
-        data = response.json()
-        root = data.get("LawSearch", {})
-        if isinstance(root, list):
-            return root
-        if isinstance(root, dict) and root:
-            return [root]
-        return []
-
-    def get_law_article_change_history(
-        self,
-        law_id: str,
-        article_code: int | None = None,
-        page: int = 1,
-        per_page: int = 20,
-        output_type: str = "JSON",
-    ) -> list[dict]:
-        """Get article-level change history (조문별 변경 이력 목록)."""
-        params: dict[str, str | int] = {
-            "OC": str(self.api_key),
-            "target": "lsJoHstInf",
-            "type": output_type,
-            "ID": law_id,
-            "display": per_page,
-            "page": page,
-        }
-
-        if article_code is not None:
-            params["JO"] = article_code
-
-        response = self._make_request(self.SERVICE_URL, params)
-        data = response.json()
-        root = data.get("LawSearch", {})
-        if isinstance(root, list):
-            return root
-        if isinstance(root, dict) and root:
-            return [root]
-        return []
-
     def search_english_laws(
         self,
         query: str,
@@ -525,13 +348,14 @@ class LawClient(ElawClient, OldandnewClient, LsabrvClient, LshstinfClient, Lsjoh
         rows = self.search_oldAndNews(query=query, page=page, display=per_page, sort=sort)
         return [
             LawOldAndNewSummary(
-                law_id=row.get("법령ID") or row.get("ID"),
-                law_name=row.get("법령명한글") or row.get("법령명"),
-                promulgation_date=row.get("공포일자") or row.get("LD"),
-                promulgation_number=str(row.get("공포번호") or row.get("LN") or "") or None,
-                raw=row,
+                law_id=row_data.get("신구법ID") or row_data.get("법령ID") or row_data.get("ID"),
+                law_name=row_data.get("신구법명") or row_data.get("법령명한글") or row_data.get("법령명"),
+                promulgation_date=row_data.get("공포일자") or row_data.get("LD"),
+                promulgation_number=str(row_data.get("공포번호") or row_data.get("LN") or "") or None,
+                raw=row_data,
             )
             for row in rows
+            for row_data in [self._generated_row(row)]
         ]
 
     def get_law_old_and_new_detail(
@@ -543,11 +367,11 @@ class LawClient(ElawClient, OldandnewClient, LsabrvClient, LshstinfClient, Lsjoh
         if law_id is None and mst is None:
             msg = "Either law_id or mst must be provided"
             raise ValueError(msg)
-        row = self.get_oldAndNew_detail(id=law_id, mst=mst)
+        row = self._generated_row(self.get_oldAndNew_detail(id=law_id, mst=mst))
         return LawOldAndNewDetail(
             law_id=row.get("법령ID") or row.get("ID"),
             law_name=row.get("법령명한글") or row.get("법령명"),
-            comparison_text=row.get("신구법비교") or row.get("비교내용") or row.get("contents"),
+            comparison_text=row.get("조문") or row.get("신구법비교") or row.get("비교내용") or row.get("contents"),
             raw=row,
         )
 
@@ -560,12 +384,13 @@ class LawClient(ElawClient, OldandnewClient, LsabrvClient, LshstinfClient, Lsjoh
         rows = self.search_lsAbrvs(stddt=start_date, enddt=end_date)
         return [
             LawAbbreviation(
-                law_id=row.get("법령ID") or row.get("ID"),
-                law_name=row.get("법령명한글") or row.get("법령명"),
-                abbreviation=row.get("약칭명") or row.get("abbreviation"),
-                raw=row,
+                law_id=row_data.get("법령ID") or row_data.get("ID"),
+                law_name=row_data.get("법령명한글") or row_data.get("법령명"),
+                abbreviation=row_data.get("법령약칭명") or row_data.get("약칭명") or row_data.get("abbreviation"),
+                raw=row_data,
             )
             for row in rows
+            for row_data in [self._generated_row(row)]
         ]
 
     def search_law_change_history(
@@ -584,12 +409,13 @@ class LawClient(ElawClient, OldandnewClient, LsabrvClient, LshstinfClient, Lsjoh
         )
         return [
             LawChangeHistoryEntry(
-                law_id=row.get("법령ID") or row.get("ID"),
-                law_name=row.get("법령명한글") or row.get("법령명"),
-                change_date=row.get("변경일자") or row.get("regDt"),
-                raw=row,
+                law_id=row_data.get("법령ID") or row_data.get("ID"),
+                law_name=row_data.get("법령명한글") or row_data.get("법령명"),
+                change_date=row_data.get("변경일자") or row_data.get("regDt"),
+                raw=row_data,
             )
             for row in rows
+            for row_data in [self._generated_row(row)]
         ]
 
     def search_law_article_change_history(
@@ -607,33 +433,51 @@ class LawClient(ElawClient, OldandnewClient, LsabrvClient, LshstinfClient, Lsjoh
         rows = self.search_lsJoHstInfs(id=law_id, jo=jo, page=page, display=per_page)
         return [
             LawArticleChangeHistoryEntry(
-                law_id=row.get("법령ID") or row.get("ID"),
-                article_code=str(row.get("조문번호") or row.get("JO") or jo),
-                change_date=row.get("변경일자") or row.get("regDt"),
-                raw=row,
+                law_id=row_data.get("법령ID") or row_data.get("ID"),
+                article_code=str(row_data.get("조문번호") or row_data.get("JO") or jo),
+                change_date=row_data.get("변경일자") or row_data.get("regDt"),
+                raw=row_data,
             )
             for row in rows
+            for row_data in [self._generated_row(row)]
         ]
 
-    def _law_from_generated_dict(self, row: dict) -> Law:
+    @staticmethod
+    def _generated_row(row: Any) -> dict[str, Any]:
+        if isinstance(row, dict):
+            return row
+        model_dump = getattr(row, "model_dump", None)
+        if callable(model_dump):
+            dumped = model_dump(by_alias=True)
+            if isinstance(dumped, dict):
+                return dumped
+        return {}
+
+    def _law_from_generated_dict(self, row: Any) -> Law:
+        row_data = self._generated_row(row)
         return Law(
-            law_id=row.get("법령ID") or row.get("lawId") or row.get("ID") or "",
-            law_name=row.get("법령명한글") or row.get("법령명영문") or row.get("법령명") or row.get("lawName") or "",
-            law_no=str(row.get("공포번호") or row.get("lawNo") or ""),
-            promulgation_date=row.get("공포일자") or row.get("promulgationDate"),
-            enforcement_date=row.get("시행일자") or row.get("enforcementDate"),
+            law_id=row_data.get("법령ID") or row_data.get("lawId") or row_data.get("ID") or "",
+            law_name=row_data.get("법령명한글")
+            or row_data.get("법령명영문")
+            or row_data.get("법령명")
+            or row_data.get("lawName")
+            or "",
+            law_no=str(row_data.get("공포번호") or row_data.get("lawNo") or ""),
+            promulgation_date=row_data.get("공포일자") or row_data.get("promulgationDate"),
+            enforcement_date=row_data.get("시행일자") or row_data.get("enforcementDate"),
         )
 
     def _law_detail_from_generated_dict(
         self,
-        detail: dict,
+        detail: Any,
         law_id: str | None,
         mst: str | None,
         language: str,
     ) -> LawDetail:
-        base = detail.get("기본정보") if isinstance(detail, dict) else None
+        detail_data = self._generated_row(detail)
+        base = detail_data.get("기본정보")
         if not isinstance(base, dict):
-            base = detail if isinstance(detail, dict) else {}
+            base = detail_data
         promulgation_number = base.get("공포번호") or base.get("promulgationNumber")
         try:
             pn = int(promulgation_number) if promulgation_number else None

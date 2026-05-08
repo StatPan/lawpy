@@ -1,0 +1,40 @@
+"""Auto-generated tests for target=lsHstInf."""
+
+from unittest.mock import Mock
+
+from lawpy.kr.generated._models_generated import LshstinfList
+from lawpy.kr.generated.lsHstInf import GeneratedLshstinfClient
+
+
+def _make_client() -> GeneratedLshstinfClient:
+    return GeneratedLshstinfClient(api_key="test_key")
+
+
+def _mock_response(json_data):
+    mock = Mock()
+    mock.json.return_value = json_data
+    return mock
+
+
+class TestGeneratedLshstinfClient:
+    def test_search_returns_list_of_models(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"LawSearch": [{"target": "val", "totalCnt": "val", "page": "val"}]}))
+        result = client.search_lsHstInfs()
+        assert isinstance(result, list)
+        if result:
+            assert isinstance(result[0], LshstinfList)
+
+    def test_search_empty_response(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({}))
+        result = client.search_lsHstInfs()
+        assert isinstance(result, list)
+        assert len(result) == 0
+
+    def test_search_passes_params(self):
+        client = _make_client()
+        client._make_request = Mock(return_value=_mock_response({"LawSearch": [{"target": "val", "totalCnt": "val", "page": "val"}]}))
+        client.search_lsHstInfs(regdt=1)
+        call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
+        assert "regDt" in call_params

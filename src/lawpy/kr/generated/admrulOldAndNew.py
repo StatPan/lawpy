@@ -6,13 +6,13 @@ Run scripts/codegen.py to regenerate. Do not edit.
 from __future__ import annotations
 
 from lawpy.kr.base import KoreanBaseClient
+from lawpy.kr.generated._models_generated import AdmruloldandnewDetail, AdmruloldandnewList
 
 
-class AdmruloldandnewClient(KoreanBaseClient):
+class GeneratedAdmruloldandnewClient(KoreanBaseClient):
     """Auto-generated client for target=admrulOldAndNew.
 
-    All methods return plain dicts matching the API response schema.
-    See _models_generated.py for Pydantic models.
+    All methods return Pydantic models parsed from the API response.
     """
 
 # ── admrulOldAndNew ──────────────────────────────────────
@@ -29,7 +29,7 @@ class AdmruloldandnewClient(KoreanBaseClient):
         prmlyd: str | None = None,
         nb: int | None = None,
         popyn: str | None = None,
-    ) -> list[dict]:
+    ) -> list[AdmruloldandnewList]:
         """[GENERATED] 행정규칙 신구법 비교 목록 조회
 
         Args:
@@ -46,7 +46,7 @@ class AdmruloldandnewClient(KoreanBaseClient):
         popyn: 상세화면 팝업창 여부(팝업창으로 띄우고 싶을 때만 'popYn=Y')
 
         Returns:
-            List of result dicts. Fields match the API response schema.
+            List of AdmruloldandnewList instances.
             Response path: OldAndNewLawSearch.oldAndNew
         """
         params: dict = {"target": "admrulOldAndNew", "type": "JSON"}
@@ -78,14 +78,14 @@ class AdmruloldandnewClient(KoreanBaseClient):
         items = root.get("oldAndNew", [])
         if isinstance(items, dict):
             items = [items]
-        return items or []
+        return [AdmruloldandnewList.model_validate(item) for item in items]
 
     def get_admrulOldAndNew_detail(
         self,
         id: str | None = None,
         lid: str | None = None,
         lm: str | None = None,
-    ) -> dict:
+    ) -> AdmruloldandnewDetail:
         """[GENERATED] 행정규칙 신구법 비교 본문 조회
 
         Args:
@@ -94,7 +94,7 @@ class AdmruloldandnewClient(KoreanBaseClient):
         lm: 행정규칙명 조회하고자 하는 정확한 행정규칙명을 입력
 
         Returns:
-            Detail dict. Fields match the API response schema.
+            AdmruloldandnewDetail instance.
             Response path: OldAndNewLawSearch
         """
         params: dict = {"target": "admrulOldAndNew", "type": "JSON"}
@@ -106,5 +106,6 @@ class AdmruloldandnewClient(KoreanBaseClient):
             params["LM"] = lm
         response = self._make_request(self.SERVICE_URL, params=params)
         data = response.json()
-        return data.get("OldAndNewLawSearch", data)
+        raw = data.get("OldAndNewLawSearch", data)
+        return AdmruloldandnewDetail.model_validate(raw)
 
