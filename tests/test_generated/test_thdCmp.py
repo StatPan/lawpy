@@ -49,13 +49,13 @@ class TestGeneratedThdcmpClient:
 
     def test_detail_returns_model(self):
         client = _make_client()
-        client._make_request = Mock(return_value=_mock_response({"thdCmpLawSearch": {"기본정보": "val", "법령ID": "val", "시행령ID": "val"}}))
-        result = client.get_thdCmp_detail()
+        client._make_request = Mock(return_value=_mock_response({"thdCmpLawSearch": {"기본정보": "val", "법령ID": "val", "법령일련번호": "val"}}))
+        result = client.get_thdCmp_detail(knd=1)
         assert isinstance(result, ThdcmpDetail)
 
     def test_detail_passes_params(self):
         client = _make_client()
-        client._make_request = Mock(return_value=_mock_response({"thdCmpLawSearch": {"기본정보": "val", "법령ID": "val", "시행령ID": "val"}}))
+        client._make_request = Mock(return_value=_mock_response({"thdCmpLawSearch": {"기본정보": "val", "법령ID": "val", "법령일련번호": "val"}}))
         client.get_thdCmp_detail(knd=1)
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "knd" in call_params

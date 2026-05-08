@@ -37,6 +37,12 @@ class GeneratedCouseordinClient(KoreanBaseClient):
             List of CouseordinList instances.
             Root key not discovered — using best-effort extraction
         """
+        if vcode is None:
+            msg = "vcode is required for target vcode"
+            raise ValueError(msg)
+        if lj_jo is None:
+            msg = "lj_jo is required for target lj=jo"
+            raise ValueError(msg)
         params: dict = {"target": "couseOrdin", "type": "JSON"}
         if vcode is not None:
             params["vcode"] = vcode

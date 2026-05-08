@@ -32,7 +32,7 @@ class TestGeneratedLsdelegatedClient:
             )
         )
 
-        result = client.get_lsDelegated_detail()
+        result = client.get_lsDelegated_detail(id="1")
 
         assert isinstance(result, LsdelegatedDetail)
 
@@ -55,4 +55,3 @@ class TestGeneratedLsdelegatedClient:
 
         call_params = client._make_request.call_args.kwargs.get("params", client._make_request.call_args[1].get("params", {}))
         assert "ID" in call_params
-
