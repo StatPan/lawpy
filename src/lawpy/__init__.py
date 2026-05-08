@@ -36,7 +36,7 @@ from lawpy.models import (
     SubItem,
 )
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 
 def help(topic: str = "quickstart") -> str:
