@@ -18,6 +18,7 @@ For installed guidance, run:
 from lawpy.kr.administrative_rule import AdministrativeRuleClient
 from lawpy.kr.client import KoreanLawClient, KRClient
 from lawpy.kr.law import LawClient
+from lawpy.kr.legal_interpretation import LegalInterpretationClient
 from lawpy.kr.legal_terminology import LegalTerminologyClient
 from lawpy.kr.ordinance import OrdinanceClient
 from lawpy.kr.precedent import PrecedentClient
@@ -28,6 +29,7 @@ __all__ = [
     "KRClient",
     "KoreanLawClient",
     "LawClient",
+    "LegalInterpretationClient",
     "LegalTerminologyClient",
     "OrdinanceClient",
     "PrecedentClient",

@@ -34,6 +34,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `admrul` | `AdministrativeRuleClient`, `KRClient` | implemented |
 | `ordin` | `OrdinanceClient`, `KRClient` | implemented |
 | `lstrm` | `LegalTerminologyClient`, `KRClient` | implemented |
+| `expc` | `LegalInterpretationClient`, `KRClient` | implemented |
 | `trty` | `TreatyClient`, `KRClient` | implemented |
 
 ## Generated Matrix
@@ -59,7 +60,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `eflawjosub` | `GeneratedEflawjosubClient` | `search_eflawjosubs` | yes | yes | generated only |
 | `eiac` | `GeneratedEiacClient` | `search_eiacs`, `get_eiac_detail` | yes | yes | generated only |
 | `elaw` | `GeneratedElawClient` | `search_elaws`, `get_elaw_detail` | yes | yes | generated only |
-| `expc` | `GeneratedExpcClient` | `search_expcs`, `get_expc_detail` | yes | yes | generated only |
+| `expc` | `GeneratedExpcClient` | `search_expcs`, `get_expc_detail` | yes | yes | `LegalInterpretationClient`, `KRClient` |
 | `fsc` | `GeneratedFscClient` | `search_fscs`, `get_fsc_detail` | yes | yes | generated only |
 | `ftc` | `GeneratedFtcClient` | `search_ftcs`, `get_ftc_detail` | yes | yes | generated only |
 | `iaciac` | `GeneratedIaciacClient` | `search_iaciacs`, `get_iaciac_detail` | yes | yes | generated only |
