@@ -131,4 +131,12 @@ replace = '__version__ = "{new_version}"'
 [dependency-groups]
 dev = [
     "beautifulsoup4>=4.14.3",
+    "pytest>=8.0.0",
+    "pytest-cov>=5.0.0",
+    "pytest-asyncio>=0.23.0",
+    "responses>=0.25.0",
+    "ruff>=0.6.0",
+    "mypy>=1.11.0",
+    "types-requests>=2.32.0",
+    "bump-my-version>=0.27.0",
 ]
