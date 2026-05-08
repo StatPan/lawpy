@@ -25,10 +25,10 @@ jobs:
       probe_failed: ${{ steps.probe-diff.outputs.probe_failed }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v8.1.0
 
       - name: Install dependencies
         run: uv sync --extra dev
@@ -101,7 +101,7 @@ jobs:
           NODE
 
       - name: Upload reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: detection-reports-${{ github.run_id }}
@@ -143,10 +143,10 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v8.1.0
 
       - name: Install dependencies
         run: uv sync --extra dev
@@ -190,7 +190,7 @@ jobs:
 
       # Step 6: Open a PR with all changes
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: chore/auto-spec-update-${{ github.run_id }}
@@ -228,16 +228,16 @@ jobs:
       issues: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Download reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: detection-reports-${{ github.run_id }}
           path: /tmp/
 
       - name: Create or update GitHub issue
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
