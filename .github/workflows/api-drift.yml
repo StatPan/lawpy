@@ -185,6 +185,9 @@ jobs:
       - name: Run tests
         run: uv run pytest tests/ -q --no-header --tb=short
 
+      - name: Drop dependency lock metadata churn
+        run: git restore --source=HEAD -- uv.lock || true
+
       # Step 6: Open a PR with all changes
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6

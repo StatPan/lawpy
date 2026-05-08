@@ -69,3 +69,10 @@ def test_downstream_jobs_can_still_use_spec_check_outputs() -> None:
     assert "if: needs.spec-check.outputs.drift_detected == 'true'" in workflow
     assert "name: Fail on detection infrastructure errors" not in workflow
     assert "if: always()" in workflow
+
+
+def test_auto_update_pr_drops_uv_lock_metadata_churn() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "Drop dependency lock metadata churn" in workflow
+    assert "git restore --source=HEAD -- uv.lock || true" in workflow
