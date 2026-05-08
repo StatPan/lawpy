@@ -33,5 +33,5 @@ class GeneratedLstrmrltjoClient(KoreanBaseClient):
         if query is not None:
             params["query"] = query
         response = self._make_request(self.SERVICE_URL, params=params)
-        return LstrmrltjoDetail.model_validate(response.json())
+        return LstrmrltjoDetail.model_validate(self._parse_json_response(response, target="lstrmRltJo"))
 

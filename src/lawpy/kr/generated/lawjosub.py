@@ -53,7 +53,7 @@ class GeneratedLawjosubClient(KoreanBaseClient):
         if mok is not None:
             params["MOK"] = mok
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="lawjosub")
         if isinstance(data, list):
             raw = data
         else:

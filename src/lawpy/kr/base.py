@@ -1,17 +1,20 @@
 """Base class for Korean law API clients."""
 
 import os
+import re
 import xml.etree.ElementTree as ET
 from typing import Any
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import httpx
 
 from lawpy.client import LawClient
-from lawpy.exceptions import APIError, ApiResponseTypeError, ApiSubscriptionError
+from lawpy.exceptions import APIError, ApiResponseTypeError, ApiSubscriptionError, ParseError
 
 _SUBSCRIPTION_MARKERS = ("미신청된 목록/본문",)
 
 _HTML_DOCTYPE = "<!DOCTYPE"
+_PREVIEW_CHARS = 500
 
 
 class KoreanBaseClient(LawClient):
@@ -136,6 +139,84 @@ class KoreanBaseClient(LawClient):
                 )
                 raise ApiResponseTypeError(msg, status_code=response.status_code, response=body)
 
+    def _parse_json_response(self, response: httpx.Response, target: str) -> Any:
+        """Parse a JSON API response with actionable diagnostics on failure."""
+        try:
+            return response.json()
+        except ValueError as e:
+            content_type = self._response_content_type(response)
+            url = self._response_url(response)
+            preview = self._response_preview(response)
+            msg = (
+                f"Failed to parse JSON response for target '{target}'"
+                f" (content-type: {content_type}, url: {url}): {e}; "
+                f"response preview: {preview}"
+            )
+            raise ParseError(msg) from e
+
+    @classmethod
+    def _response_content_type(cls, response: httpx.Response) -> str:
+        headers = getattr(response, "headers", {}) or {}
+        if hasattr(headers, "get"):
+            value = headers.get("content-type") or headers.get("Content-Type")
+            if value:
+                return str(value)
+        return "unknown"
+
+    @classmethod
+    def _response_url(cls, response: httpx.Response) -> str:
+        request = getattr(response, "request", None)
+        url = getattr(request, "url", None)
+        if url is None:
+            url = getattr(response, "url", None)
+        return cls._redact_url(str(url)) if url is not None else "unknown"
+
+    @classmethod
+    def _redact_url(cls, url: str) -> str:
+        try:
+            parts = urlsplit(url)
+        except ValueError:
+            return url
+        if not parts.query:
+            return url
+        query = [
+            (key, "***" if key.lower() == "oc" else value)
+            for key, value in parse_qsl(parts.query, keep_blank_values=True)
+        ]
+        return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))
+
+    @classmethod
+    def _response_preview(cls, response: httpx.Response) -> str:
+        body = getattr(response, "text", "")
+        if not isinstance(body, str):
+            content = getattr(response, "content", b"")
+            if isinstance(content, bytes):
+                encoding = getattr(response, "encoding", None)
+                if not isinstance(encoding, str):
+                    encoding = "utf-8"
+                body = content.decode(encoding, errors="replace")
+            elif isinstance(content, str):
+                body = content
+            else:
+                body = ""
+        return cls._content_preview(body)
+
+    @classmethod
+    def _content_preview(cls, content: str | bytes) -> str:
+        if isinstance(content, bytes):
+            content = content.decode("utf-8", errors="replace")
+        content = cls._redact_sensitive_text(content)
+        normalized = " ".join(content.split())
+        if len(normalized) > _PREVIEW_CHARS:
+            return normalized[:_PREVIEW_CHARS] + "..."
+        return normalized or "<empty>"
+
+    @classmethod
+    def _redact_sensitive_text(cls, text: str) -> str:
+        text = re.sub(r"(?i)(\bOC=)[^&\s<>\"']+", r"\1***", text)
+        text = re.sub(r'(?i)("OC"\s*:\s*")[^"]+(")', r"\1***\2", text)
+        return text
+
     @staticmethod
     def _xml_to_dict(element: ET.Element) -> dict[str, Any]:
         """Convert an XML element to a dict.
@@ -176,5 +257,17 @@ class KoreanBaseClient(LawClient):
         """
         full_params = {**params, "type": "XML"}
         response = self._make_request(url, params=full_params)
-        root = ET.fromstring(response.text)
+        try:
+            root = ET.fromstring(response.text)
+        except ET.ParseError as e:
+            target = str(params.get("target", ""))
+            content_type = self._response_content_type(response)
+            url = self._response_url(response)
+            preview = self._response_preview(response)
+            msg = (
+                f"Failed to parse XML response for target '{target}'"
+                f" (content-type: {content_type}, url: {url}): {e}; "
+                f"response preview: {preview}"
+            )
+            raise ParseError(msg) from e
         return self._xml_to_dict(root)

@@ -61,7 +61,7 @@ class GeneratedNhrckClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="nhrck")
         if isinstance(data, list):
             raw = data
         else:
@@ -107,5 +107,5 @@ class GeneratedNhrckClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
-        return NhrckDetail.model_validate(response.json())
+        return NhrckDetail.model_validate(self._parse_json_response(response, target="nhrck"))
 

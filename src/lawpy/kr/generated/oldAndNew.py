@@ -85,7 +85,7 @@ class GeneratedOldandnewClient(KoreanBaseClient):
         if popyn is not None:
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="oldAndNew")
         root = data.get("OldAndNewLawSearch", {})
         if isinstance(root, dict):
             items = root.get("oldAndNew", [])
@@ -128,7 +128,7 @@ class GeneratedOldandnewClient(KoreanBaseClient):
         if ln is not None:
             params["LN"] = ln
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="oldAndNew")
         raw = data.get("OldAndNewLawSearch", data)
         return OldandnewDetail.model_validate(raw)
 

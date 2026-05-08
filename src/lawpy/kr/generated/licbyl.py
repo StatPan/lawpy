@@ -73,7 +73,7 @@ class GeneratedLicbylClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="licbyl")
         root = data.get("licBylSearch", {})
         if isinstance(root, list):
             items = root

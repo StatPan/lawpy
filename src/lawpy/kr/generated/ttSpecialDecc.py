@@ -77,7 +77,7 @@ class GeneratedTtspecialdeccClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="ttSpecialDecc")
         root = data.get("Decc", {})
         if isinstance(root, dict):
             items = root.get("decc", [])
@@ -112,7 +112,7 @@ class GeneratedTtspecialdeccClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="ttSpecialDecc")
         raw = data.get("Decc", data)
         return TtspecialdeccDetail.model_validate(raw)
 

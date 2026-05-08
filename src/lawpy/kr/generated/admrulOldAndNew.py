@@ -73,7 +73,7 @@ class GeneratedAdmruloldandnewClient(KoreanBaseClient):
         if popyn is not None:
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="admrulOldAndNew")
         root = data.get("OldAndNewLawSearch", {})
         if isinstance(root, dict):
             items = root.get("oldAndNew", [])
@@ -108,7 +108,7 @@ class GeneratedAdmruloldandnewClient(KoreanBaseClient):
         if lm is not None:
             params["LM"] = lm
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="admrulOldAndNew")
         raw = data.get("OldAndNewLawSearch", data)
         return AdmruloldandnewDetail.model_validate(raw)
 

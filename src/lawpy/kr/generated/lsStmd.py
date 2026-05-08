@@ -85,7 +85,7 @@ class GeneratedLsstmdClient(KoreanBaseClient):
         if popyn is not None:
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="lsStmd")
         root = data.get("LsStmdSearch", {})
         if isinstance(root, dict):
             items = root.get("law", [])
@@ -128,7 +128,7 @@ class GeneratedLsstmdClient(KoreanBaseClient):
         if ln is not None:
             params["LN"] = ln
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="lsStmd")
         raw = data.get("LsStmdSearch", data)
         return LsstmdDetail.model_validate(raw)
 

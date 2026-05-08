@@ -77,7 +77,7 @@ class GeneratedNtscgmexpcClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="ntsCgmExpc")
         root = data.get("CgmExpc", {})
         if isinstance(root, dict):
             items = root.get("cgmExpc", [])

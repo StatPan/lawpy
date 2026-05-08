@@ -35,7 +35,7 @@ class GeneratedLsdelegatedClient(KoreanBaseClient):
         if mst is not None:
             params["MST"] = mst
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="lsDelegated")
         root = data.get("lsDelegated", {})
         beopryeong = root.get("법령", {})
         return LsdelegatedDetail.model_validate(beopryeong)

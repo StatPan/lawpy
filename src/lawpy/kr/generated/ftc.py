@@ -57,7 +57,7 @@ class GeneratedFtcClient(KoreanBaseClient):
         if popyn is not None:
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="ftc")
         if isinstance(data, list):
             raw = data
         else:
@@ -95,5 +95,5 @@ class GeneratedFtcClient(KoreanBaseClient):
         if id is not None:
             params["ID"] = id
         response = self._make_request(self.SERVICE_URL, params=params)
-        return FtcDetail.model_validate(response.json())
+        return FtcDetail.model_validate(self._parse_json_response(response, target="ftc"))
 

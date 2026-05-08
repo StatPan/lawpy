@@ -49,7 +49,7 @@ class GeneratedLnklsClient(KoreanBaseClient):
         if popyn is not None:
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="lnkLs")
         root = data.get("LawSearch", {})
         if isinstance(root, list):
             items = root

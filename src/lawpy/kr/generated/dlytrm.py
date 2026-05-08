@@ -41,7 +41,7 @@ class GeneratedDlytrmClient(KoreanBaseClient):
         if page is not None:
             params["page"] = page
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="dlytrm")
         if isinstance(data, list):
             raw = data
         else:

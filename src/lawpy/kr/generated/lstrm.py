@@ -65,7 +65,7 @@ class GeneratedLstrmClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="lstrm")
         root = data.get("LsTrmSearch", {})
         if isinstance(root, dict):
             items = root.get("lstrm", [])
@@ -96,7 +96,7 @@ class GeneratedLstrmClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="lstrm")
         raw = data.get("LsTrmSearch", data)
         return LstrmDetail.model_validate(raw)
 

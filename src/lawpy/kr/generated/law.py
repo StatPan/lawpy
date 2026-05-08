@@ -89,7 +89,7 @@ class GeneratedLawClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="law")
         root = data.get("LawSearch", {})
         if isinstance(root, dict):
             items = root.get("law", [])
@@ -164,7 +164,7 @@ class GeneratedLawClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="law")
         raw = data.get("LawSearch", data)
         return LawDetail.model_validate(raw)
 

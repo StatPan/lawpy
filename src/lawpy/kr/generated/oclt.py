@@ -57,7 +57,7 @@ class GeneratedOcltClient(KoreanBaseClient):
         if popyn is not None:
             params["popYn"] = popyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="oclt")
         if isinstance(data, list):
             raw = data
         else:
@@ -95,5 +95,5 @@ class GeneratedOcltClient(KoreanBaseClient):
         if id is not None:
             params["ID"] = id
         response = self._make_request(self.SERVICE_URL, params=params)
-        return OcltDetail.model_validate(response.json())
+        return OcltDetail.model_validate(self._parse_json_response(response, target="oclt"))
 

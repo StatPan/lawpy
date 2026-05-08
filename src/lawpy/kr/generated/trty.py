@@ -77,7 +77,7 @@ class GeneratedTrtyClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="trty")
         root = data.get("TrtySearch", {})
         if isinstance(root, dict):
             items = root.get("Trty", [])
@@ -112,7 +112,7 @@ class GeneratedTrtyClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="trty")
         raw = data.get("TrtySearch", data)
         return TrtyDetail.model_validate(raw)
 
