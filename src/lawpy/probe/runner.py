@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
+from typing import Any
 
 import httpx
 
@@ -35,6 +36,10 @@ class ProbeRunResult:
     snapshot: Snapshot | None  # baseline (bundled)
     current_schema: dict[str, FieldSpec]
     diff: DiffResult
+
+
+class ProbeResponseError(RuntimeError):
+    """Raised when a probe response is not a valid schema capture payload."""
 
 
 class ProbeRunner:
@@ -138,12 +143,16 @@ class ProbeRunner:
         response.raise_for_status()
 
         data = response.json()
+        self._raise_if_api_error(data, config)
 
         # Navigate to the representative object
         target = navigate(data, config.schema_path)
         if target is None:
-            # Fall back to full response schema
-            target = data
+            msg = (
+                f"schema_path {config.schema_path!r} not found in response for "
+                f"{config.name}; refusing to save snapshot"
+            )
+            raise ProbeResponseError(msg)
 
         schema = extract_schema(target)
 
@@ -156,3 +165,51 @@ class ProbeRunner:
             lawpy_version=_lawpy_version,
         )
         return schema, snapshot
+
+    @staticmethod
+    def _raise_if_api_error(data: Any, config: ProbeConfig) -> None:
+        """Reject known law.go.kr error payload shapes before snapshot extraction."""
+        if not isinstance(data, dict):
+            return
+
+        error_msg = _find_error_message(data)
+        if error_msg is None:
+            return
+
+        msg = f"API error response for {config.name}: {error_msg}"
+        raise ProbeResponseError(msg)
+
+
+def _find_error_message(data: Any) -> str | None:
+    if not isinstance(data, dict):
+        return None
+
+    lower_keys = {str(key).lower(): key for key in data}
+    result_key = lower_keys.get("result")
+    msg_key = lower_keys.get("msg")
+    if result_key is not None and msg_key is not None:
+        result = data[result_key]
+        if _is_error_result(result):
+            return str(data[msg_key])
+
+    code_key = lower_keys.get("resultcode")
+    message_key = lower_keys.get("resultmsg")
+    if code_key is not None and message_key is not None:
+        code = data[code_key]
+        if code not in (None, "", "00", "0", 0):
+            return str(data[message_key])
+
+    for value in data.values():
+        nested = _find_error_message(value)
+        if nested is not None:
+            return nested
+    return None
+
+
+def _is_error_result(value: Any) -> bool:
+    if value is None:
+        return False
+    normalized = str(value).strip().lower()
+    if normalized in {"", "0", "00", "ok", "success", "true"}:
+        return False
+    return normalized in {"fail", "failed", "failure", "error", "false", "n", "no"} or not normalized.isdigit()
