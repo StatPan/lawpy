@@ -1,5 +1,7 @@
 """Integrated client for Korean law APIs."""
 
+from typing import Any
+
 from lawpy.kr.administrative_review_decision import AdministrativeReviewDecisionClient
 from lawpy.kr.administrative_rule import AdministrativeRuleClient
 from lawpy.kr.annex_form import AnnexFormClient
@@ -10,6 +12,7 @@ from lawpy.kr.law_reference import LawReferenceClient
 from lawpy.kr.legal_interpretation import LegalInterpretationClient
 from lawpy.kr.legal_knowledge_base import LegalKnowledgeBaseClient
 from lawpy.kr.legal_terminology import LegalTerminologyClient
+from lawpy.kr.method_specs import get_kr_method_specs
 from lawpy.kr.ministry_interpretation import MinistryInterpretationClient
 from lawpy.kr.ordinance import OrdinanceClient
 from lawpy.kr.precedent import PrecedentClient
@@ -145,7 +148,31 @@ class KRClient(
       - :meth:`get_three_way_comparison_detail`     3단 비교 본문 조회
     """
 
-    pass
+    @classmethod
+    def get_method_specs(cls) -> dict[str, dict[str, Any]]:
+        """Return collector-oriented metadata for KRClient public methods.
+
+        The returned dict is safe for callers to mutate. It is intended for
+        target generation systems such as datapan-data that need to decide
+        whether a method can be called directly, requires seeds, or should be
+        skipped until a catalog is available.
+        """
+        return get_kr_method_specs()
+
+    @classmethod
+    def describe_methods(cls) -> dict[str, dict[str, Any]]:
+        """Alias for :meth:`get_method_specs`."""
+        return cls.get_method_specs()
+
+    @classmethod
+    def describe_method(cls, name: str) -> dict[str, Any]:
+        """Return metadata for a single KRClient method."""
+        specs = cls.get_method_specs()
+        try:
+            return specs[name]
+        except KeyError as e:
+            msg = f"Unknown KRClient method: {name}"
+            raise ValueError(msg) from e
 
 
 KoreanLawClient = KRClient

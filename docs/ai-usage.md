@@ -46,6 +46,27 @@ combines the implemented public wrappers for:
 
 `KoreanLawClient` remains available as a compatibility alias for existing code.
 
+## Method Metadata
+
+For collection target generation, use installed metadata instead of guessing
+from `inspect.signature()` alone.
+
+```python
+specs = client.get_method_specs()
+spec = client.describe_method("get_three_way_comparison_detail")
+
+print(spec["required"])
+print(spec["alternatives"])
+print(spec["seed_source"])
+```
+
+Target builders can use this contract to:
+
+- call seed-free search methods directly
+- expand enum/catalog-backed methods from `allowed_values` or `catalog`
+- create detail targets only when `seed_source` data exists
+- mark targets as skipped with a clear reason when seeds are unavailable
+
 ## One Pattern
 
 Search returns a list. Detail methods fetch one full record.

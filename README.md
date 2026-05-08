@@ -63,6 +63,25 @@ constitutional decisions, administrative review decisions, committee decisions,
 ministry interpretations, and treaties.
 `KoreanLawClient` remains available as a compatibility alias.
 
+#### Collector method metadata
+
+Automation code can ask the installed client which methods need seeds,
+catalogs, enum values, or alternative parameter sets:
+
+```python
+specs = client.get_method_specs()
+detail_spec = client.describe_method("get_law_detail")
+
+assert detail_spec["alternatives"] == [["law_id"], ["mst"]]
+```
+
+Use this metadata to generate collection targets safely:
+
+- call search methods directly when `required` is empty
+- expand catalog/enum methods when `allowed_values` or `catalog` is present
+- seed detail methods from `seed_source`
+- skip methods with missing seeds and record the reason
+
 #### Search for laws
 
 ```python
