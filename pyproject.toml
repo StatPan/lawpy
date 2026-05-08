@@ -1,6 +1,6 @@
 [project]
 name = "lawpy"
-version = "0.1.0"
+version = "0.2.0"
 description = "Universal law information API client library"
 authors = [
     { name = "statpan", email = "your-email@example.com" }
@@ -112,7 +112,7 @@ exclude_lines = [
 ]
 
 [tool.bumpversion]
-current_version = "0.1.0"
+current_version = "0.2.0"
 commit = true
 commit_args = "--no-verify"
 tag = true
