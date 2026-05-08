@@ -3443,7 +3443,21 @@ class PrecDetail(BaseModel):
     """
     model_config = {"populate_by_name": True}
 
-    pass  # no response fields in spec
+    판례정보일련번호: str | None = Field(None, alias="판례정보일련번호")
+    사건명: str | None = Field(None, alias="사건명")
+    사건번호: str | None = Field(None, alias="사건번호")
+    선고일자: str | None = Field(None, alias="선고일자")
+    선고: str | None = Field(None, alias="선고")
+    법원명: str | None = Field(None, alias="법원명")
+    법원종류코드: str | None = Field(None, alias="법원종류코드")
+    사건종류명: str | None = Field(None, alias="사건종류명")
+    사건종류코드: str | None = Field(None, alias="사건종류코드")
+    판결유형: str | None = Field(None, alias="판결유형")
+    판시사항: str | None = Field(None, alias="판시사항")
+    판결요지: str | None = Field(None, alias="판결요지")
+    참조조문: str | None = Field(None, alias="참조조문")
+    참조판례: str | None = Field(None, alias="참조판례")
+    판례내용: str | None = Field(None, alias="판례내용")
 
 class RdacgmexpcList(BaseModel):
     """[GENERATED] Response model for 농촌진흥청 법령해석 목록.

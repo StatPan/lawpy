@@ -40,6 +40,23 @@ DETAIL_COMPAT_FIELDS: dict[str, list[tuple[str, str]]] = {
     ],
     "detc": [("id", "ID"), ("lm", "LM")],
     "expc": [("id", "ID"), ("lm", "LM")],
+    "prec": [
+        ("판례정보일련번호", "판례정보일련번호"),
+        ("사건명", "사건명"),
+        ("사건번호", "사건번호"),
+        ("선고일자", "선고일자"),
+        ("선고", "선고"),
+        ("법원명", "법원명"),
+        ("법원종류코드", "법원종류코드"),
+        ("사건종류명", "사건종류명"),
+        ("사건종류코드", "사건종류코드"),
+        ("판결유형", "판결유형"),
+        ("판시사항", "판시사항"),
+        ("판결요지", "판결요지"),
+        ("참조조문", "참조조문"),
+        ("참조판례", "참조판례"),
+        ("판례내용", "판례내용"),
+    ],
     "trty": [("id", "ID")],
 }
 MODEL_COMPAT_FIELDS: dict[tuple[str, str], list[tuple[str, str]]] = {
@@ -553,6 +570,8 @@ def render_test_file(
     if target == "decc":
         sample_list_data = '{"target": "val", "키워드": "val", "section": "val", "의결일자": "20240131"}'
         sample_detail_data = '{"행정심판례일련번호": "val", "사건명": "val", "사건번호": "val", "주문": "val"}'
+    elif target == "prec":
+        sample_detail_data = '{"판례정보일련번호": "val", "사건명": "val", "사건번호": "val", "판례내용": "val"}'
 
     if root_key_search and item_key:
         list_mock_json = f'{{"{root_key_search}": {{"{item_key}": [{sample_list_data}]}}}}'
@@ -648,6 +667,8 @@ def render_test_file(
         extra_detail_asserts = ""
         if target == "decc":
             extra_detail_asserts = "\n        assert result.사건명 == \"val\"\n        assert result.주문 == \"val\""
+        elif target == "prec":
+            extra_detail_asserts = "\n        assert result.사건명 == \"val\"\n        assert result.판례내용 == \"val\""
 
         test_methods.append(f'''\
     def test_detail_returns_model(self):

@@ -56,9 +56,11 @@ class TestGeneratedPrecClient:
 
     def test_detail_returns_model(self):
         client = _make_client()
-        client._make_request = Mock(return_value=_mock_response({"PrecSearch": {"판례정보일련번호": "val", "사건명": "val", "사건번호": "val"}}))
+        client._make_request = Mock(return_value=_mock_response({"PrecSearch": {"판례정보일련번호": "val", "사건명": "val", "사건번호": "val", "판례내용": "val"}}))
         result = client.get_prec_detail()
         assert isinstance(result, PrecDetail)
+        assert result.사건명 == "val"
+        assert result.판례내용 == "val"
 
     def test_detail_passes_params(self):
         client = _make_client()
