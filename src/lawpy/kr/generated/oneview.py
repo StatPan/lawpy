@@ -41,7 +41,7 @@ class GeneratedOneviewClient(KoreanBaseClient):
         if page is not None:
             params["page"] = page
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="oneview")
         root = data.get("items", {})
         if isinstance(root, list):
             items = root
@@ -94,7 +94,7 @@ class GeneratedOneviewClient(KoreanBaseClient):
         if jo is not None:
             params["JO"] = jo
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="oneview")
         raw = data.get("items", data)
         return OneviewDetail.model_validate(raw)
 

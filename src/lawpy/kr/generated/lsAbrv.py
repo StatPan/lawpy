@@ -37,7 +37,7 @@ class GeneratedLsabrvClient(KoreanBaseClient):
         if enddt is not None:
             params["endDt"] = enddt
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="lsAbrv")
         root = data.get("LawSearch", {})
         if isinstance(root, dict):
             items = root.get("law", [])

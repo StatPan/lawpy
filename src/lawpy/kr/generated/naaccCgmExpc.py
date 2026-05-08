@@ -77,7 +77,7 @@ class GeneratedNaacccgmexpcClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="naaccCgmExpc")
         root = data.get("CgmExpc", {})
         if isinstance(root, list):
             items = root
@@ -122,7 +122,7 @@ class GeneratedNaacccgmexpcClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="naaccCgmExpc")
         raw = data.get("CgmExpc", data)
         return NaacccgmexpcDetail.model_validate(raw)
 

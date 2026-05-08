@@ -89,7 +89,7 @@ class GeneratedPrecClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="prec")
         root = data.get("PrecSearch", {})
         if isinstance(root, dict):
             items = root.get("prec", [])
@@ -124,7 +124,7 @@ class GeneratedPrecClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="prec")
         raw = data.get("PrecSearch", data)
         return PrecDetail.model_validate(raw)
 

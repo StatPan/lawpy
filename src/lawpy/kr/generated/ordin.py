@@ -109,7 +109,7 @@ class GeneratedOrdinClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="ordin")
         root = data.get("OrdinSearch", {})
         if isinstance(root, dict):
             items = root.get("law", [])
@@ -144,7 +144,7 @@ class GeneratedOrdinClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="ordin")
         raw = data.get("OrdinSearch", data)
         return OrdinDetail.model_validate(raw)
 

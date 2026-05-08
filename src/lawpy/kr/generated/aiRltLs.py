@@ -37,7 +37,7 @@ class GeneratedAirltlsClient(KoreanBaseClient):
         if query is not None:
             params["query"] = query
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="aiRltLs")
         if isinstance(data, list):
             raw = data
         else:

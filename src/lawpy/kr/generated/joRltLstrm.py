@@ -41,5 +41,5 @@ class GeneratedJorltlstrmClient(KoreanBaseClient):
         if jo is not None:
             params["JO"] = jo
         response = self._make_request(self.SERVICE_URL, params=params)
-        return JorltlstrmDetail.model_validate(response.json())
+        return JorltlstrmDetail.model_validate(self._parse_json_response(response, target="joRltLstrm"))
 

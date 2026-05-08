@@ -73,7 +73,7 @@ class GeneratedDetcClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="detc")
         root = data.get("DetcSearch", {})
         if isinstance(root, dict):
             items = root.get("Detc", [])
@@ -108,7 +108,7 @@ class GeneratedDetcClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="detc")
         raw = data.get("DetcSearch", data)
         return DetcDetail.model_validate(raw)
 

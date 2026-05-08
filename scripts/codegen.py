@@ -400,7 +400,7 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
 
     if root_key and item_key:
         parse_block = (
-            f'        data = response.json()\n'
+            f'        data = self._parse_json_response(response, target="{target}")\n'
             f'        root = data.get("{root_key}", {{}})\n'
             f'        if isinstance(root, dict):\n'
             f'            items = root.get("{item_key}", [])\n'
@@ -413,7 +413,7 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
         note = f"Response path: {root_key}.{item_key}"
     elif root_key:
         parse_block = (
-            f'        data = response.json()\n'
+            f'        data = self._parse_json_response(response, target="{target}")\n'
             f'        root = data.get("{root_key}", {{}})\n'
             f'        if isinstance(root, list):\n'
             f'            items = root\n'
@@ -436,7 +436,7 @@ def render_list_method(spec: dict, target: str, root_key: str | None, item_key: 
         note = f"Response path: {root_key} (item key not discovered)"
     else:
         parse_block = (
-            f'        data = response.json()\n'
+            f'        data = self._parse_json_response(response, target="{target}")\n'
             f'        if isinstance(data, list):\n'
             f'            raw = data\n'
             f'        else:\n'
@@ -501,14 +501,14 @@ def render_detail_method(spec: dict, target: str, root_key: str | None) -> str:
 
     if root_key:
         parse_block = (
-            f'        data = response.json()\n'
+            f'        data = self._parse_json_response(response, target="{target}")\n'
             f'        raw = data.get("{root_key}", data)\n'
             f'        return {model_cls}.model_validate(raw)\n'
         )
         note = f"Response path: {root_key}"
     else:
         parse_block = (
-            f'        return {model_cls}.model_validate(response.json())\n'
+            f'        return {model_cls}.model_validate(self._parse_json_response(response, target="{target}"))\n'
         )
         note = "Root key not discovered — returning raw response"
 

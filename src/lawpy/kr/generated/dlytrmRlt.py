@@ -41,5 +41,5 @@ class GeneratedDlytrmrltClient(KoreanBaseClient):
         if trmrltcd is not None:
             params["trmRltCd"] = trmrltcd
         response = self._make_request(self.SERVICE_URL, params=params)
-        return DlytrmrltDetail.model_validate(response.json())
+        return DlytrmrltDetail.model_validate(self._parse_json_response(response, target="dlytrmRlt"))
 

@@ -77,7 +77,7 @@ class GeneratedMojcgmexpcClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="mojCgmExpc")
         root = data.get("CgmExpc", {})
         if isinstance(root, dict):
             items = root.get("cgmExpc", [])
@@ -112,7 +112,7 @@ class GeneratedMojcgmexpcClient(KoreanBaseClient):
         if fields is not None:
             params["fields"] = fields
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="mojCgmExpc")
         raw = data.get("CgmExpc", data)
         return MojcgmexpcDetail.model_validate(raw)
 

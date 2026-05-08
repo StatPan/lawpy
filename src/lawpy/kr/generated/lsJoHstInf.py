@@ -45,7 +45,7 @@ class GeneratedLsjohstinfClient(KoreanBaseClient):
         if page is not None:
             params["page"] = page
         response = self._make_request(self.SERVICE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="lsJoHstInf")
         root = data.get("LawSearch", {})
         if isinstance(root, list):
             items = root

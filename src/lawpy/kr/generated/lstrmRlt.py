@@ -41,5 +41,5 @@ class GeneratedLstrmrltClient(KoreanBaseClient):
         if trmrltcd is not None:
             params["trmRltCd"] = trmrltcd
         response = self._make_request(self.SERVICE_URL, params=params)
-        return LstrmrltDetail.model_validate(response.json())
+        return LstrmrltDetail.model_validate(self._parse_json_response(response, target="lstrmRlt"))
 

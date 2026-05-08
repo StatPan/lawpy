@@ -538,7 +538,9 @@ class LawClient(
             return laws
 
         except Exception as e:
-            raise ParseError(f"Failed to parse response: {e}") from e
+            preview = self._content_preview(content)
+            msg = f"Failed to parse XML law list response: {e}; response preview: {preview}"
+            raise ParseError(msg) from e
 
     def _parse_law_detail(
         self, content: bytes, law_id: str | None, mst: int | None, language: str
@@ -650,4 +652,6 @@ class LawClient(
             )
 
         except Exception as e:
-            raise ParseError(f"Failed to parse response: {e}") from e
+            preview = self._content_preview(content)
+            msg = f"Failed to parse XML law detail response: {e}; response preview: {preview}"
+            raise ParseError(msg) from e

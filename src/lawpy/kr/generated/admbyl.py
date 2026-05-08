@@ -69,7 +69,7 @@ class GeneratedAdmbylClient(KoreanBaseClient):
         if mobileyn is not None:
             params["mobileYn"] = mobileyn
         response = self._make_request(self.BASE_URL, params=params)
-        data = response.json()
+        data = self._parse_json_response(response, target="admbyl")
         root = data.get("admRulBylSearch", {})
         if isinstance(root, dict):
             items = root.get("admrulbyl", [])
