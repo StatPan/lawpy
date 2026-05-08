@@ -511,7 +511,7 @@ class LawClient(
             ParseError: If parsing fails
         """
         preview = self._content_preview(content)
-        if preview.startswith("<!DOCTYPE") or preview.lower().startswith("<html"):
+        if self._looks_like_html(content):
             msg = f"Expected XML law list response but received HTML; response preview: {preview}"
             raise ApiResponseTypeError(msg, response=content)
 
