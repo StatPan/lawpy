@@ -58,7 +58,7 @@ client = KRClient(api_key="your-api-key")
 
 `KRClient` is the main ergonomic object for Korean law.go.kr data. It combines
 the current public wrappers for laws, precedents, administrative rules, notices,
-local ordinances, local notices, legal terminology, legal interpretations,
+annexes, forms, local ordinances, local notices, legal terminology, legal interpretations,
 constitutional decisions, administrative review decisions, and treaties.
 `KoreanLawClient` remains available as a compatibility alias.
 
@@ -158,9 +158,9 @@ article_changes = client.search_law_article_change_history(law_id="009682", arti
 ### Generated-only KR targets
 
 KR v1 includes generated clients for 89 public law.go.kr targets. `KRClient`
-wraps 14 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
-`lsJoHstInf`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`, `detc`, `decc`,
-and `trty`. The remaining 75 targets are generated-only; import those clients directly from
+wraps 17 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
+`lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`,
+`lstrm`, `expc`, `detc`, `decc`, and `trty`. The remaining 72 targets are generated-only; import those clients directly from
 `lawpy.kr.generated`.
 
 ```python
@@ -229,6 +229,7 @@ lawpy/
 │       ├── client.py     # KRClient integrated Korean client
 │       ├── law.py       # Law (법령) APIs
 │       ├── administrative_rule.py # Administrative rule (행정규칙) wrapper
+│       ├── annex_form.py # Annex/form (별표·서식) wrapper
 │       ├── ordinance.py # Local ordinance (자치법규) wrapper
 │       ├── legal_terminology.py # Legal terminology (법령용어) wrapper
 │       ├── legal_interpretation.py # Legal interpretation (법령해석례) wrapper

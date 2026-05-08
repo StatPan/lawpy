@@ -17,6 +17,7 @@ For installed guidance, run:
 
 from lawpy.kr.administrative_review_decision import AdministrativeReviewDecisionClient
 from lawpy.kr.administrative_rule import AdministrativeRuleClient
+from lawpy.kr.annex_form import AnnexFormClient
 from lawpy.kr.client import KoreanLawClient, KRClient
 from lawpy.kr.constitutional_decision import ConstitutionalDecisionClient
 from lawpy.kr.law import LawClient
@@ -30,6 +31,7 @@ __all__ = [
     "AdministrativeRuleClient",
     "AdministrativeReviewDecisionClient",
     "ConstitutionalDecisionClient",
+    "AnnexFormClient",
     "KRClient",
     "KoreanLawClient",
     "LawClient",

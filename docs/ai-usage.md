@@ -41,6 +41,7 @@ combines the implemented public wrappers for:
 - laws
 - precedents
 - administrative rules and notices
+- annexes and forms
 - local ordinances and local notices
 
 `KoreanLawClient` remains available as a compatibility alias for existing code.
@@ -62,6 +63,9 @@ precedent = client.get_precedent_detail(prec_id=precedents[0].prec_id)
 
 rules = client.search_administrative_rules("개인정보", per_page=5)
 rule = client.get_administrative_rule_detail(rule_id=rules[0].행정규칙ID)
+
+annexes = client.search_law_annex_forms("민법", per_page=5)
+annex_row = annexes[0].model_dump(by_alias=True)
 
 ordinances = client.search_ordinances("서울", per_page=5)
 ordinance = client.get_ordinance_detail(ordinance_id=ordinances[0].자치법규ID)
