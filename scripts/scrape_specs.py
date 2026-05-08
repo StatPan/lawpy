@@ -21,11 +21,44 @@ from bs4 import BeautifulSoup
 
 GUIDE_LIST_URL = "https://open.law.go.kr/LSO/openApi/guideList.do"
 GUIDE_RESULT_URL = "https://open.law.go.kr/LSO/openApi/guideResult.do"
+DEFAULT_RETRIES = 3
+DEFAULT_RETRY_DELAY = 1.0
 
 
-def get_all_guide_names() -> list[tuple[str, str]]:
+def request_with_retries(
+    request,
+    url: str,
+    *,
+    attempts: int = DEFAULT_RETRIES,
+    retry_delay: float = DEFAULT_RETRY_DELAY,
+    **kwargs,
+) -> httpx.Response:
+    """Run an HTTP request with small backoff for transient scrape failures."""
+    attempts = max(attempts, 1)
+    for attempt in range(1, attempts + 1):
+        try:
+            response = request(url, **kwargs)
+            if response.status_code < 500 or attempt == attempts:
+                return response
+            response.close()
+        except httpx.TransportError:
+            if attempt == attempts:
+                raise
+        time.sleep(retry_delay * (2 ** (attempt - 1)))
+    raise RuntimeError("unreachable retry state")
+
+
+def get_all_guide_names(
+    *, retries: int = DEFAULT_RETRIES, retry_delay: float = DEFAULT_RETRY_DELAY
+) -> list[tuple[str, str]]:
     """Extract all (html_name, label) from the guide list page."""
-    resp = httpx.get(GUIDE_LIST_URL, timeout=30)
+    resp = request_with_retries(
+        httpx.get,
+        GUIDE_LIST_URL,
+        timeout=30,
+        attempts=retries,
+        retry_delay=retry_delay,
+    )
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
 
@@ -64,13 +97,23 @@ def parse_table(table) -> list[dict[str, str]]:
     return rows
 
 
-def scrape_guide(html_name: str, label: str, client: httpx.Client) -> dict:
+def scrape_guide(
+    html_name: str,
+    label: str,
+    client: httpx.Client,
+    *,
+    retries: int = DEFAULT_RETRIES,
+    retry_delay: float = DEFAULT_RETRY_DELAY,
+) -> dict:
     """Fetch one guide page and extract URL + param/response tables."""
-    resp = client.post(
+    resp = request_with_retries(
+        client.post,
         GUIDE_RESULT_URL,
         data={"htmlName": html_name},
         headers={"Content-Type": "application/x-www-form-urlencoded"},
         timeout=30,
+        attempts=retries,
+        retry_delay=retry_delay,
     )
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
@@ -138,6 +181,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Scrape Korean law API guide specs")
     parser.add_argument("--output", default="specs/kr", help="Output directory")
     parser.add_argument("--delay", type=float, default=0.3, help="Delay between requests (s)")
+    parser.add_argument("--retries", type=int, default=DEFAULT_RETRIES, help="HTTP retry attempts")
+    parser.add_argument(
+        "--retry-delay",
+        type=float,
+        default=DEFAULT_RETRY_DELAY,
+        help="Initial retry delay in seconds",
+    )
     parser.add_argument("--limit", type=int, default=0, help="Max guides to scrape (0=all)")
     args = parser.parse_args()
 
@@ -145,7 +195,7 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     print("Fetching guide list...", flush=True)
-    guides = get_all_guide_names()
+    guides = get_all_guide_names(retries=args.retries, retry_delay=args.retry_delay)
     print(f"Found {len(guides)} guide pages")
 
     if args.limit:
@@ -158,7 +208,13 @@ def main() -> None:
             out_path = out_dir / f"{html_name}.json"
             print(f"  [{i:>3}/{len(guides)}] {html_name:<45} ", end="", flush=True)
             try:
-                spec = scrape_guide(html_name, label, client)
+                spec = scrape_guide(
+                    html_name,
+                    label,
+                    client,
+                    retries=args.retries,
+                    retry_delay=args.retry_delay,
+                )
                 out_path.write_text(
                     json.dumps(spec, ensure_ascii=False, indent=2), encoding="utf-8"
                 )
