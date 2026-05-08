@@ -15,6 +15,7 @@ lawpy/kr/
 ├── administrative_rule.py     # Public administrative rule (행정규칙) wrapper
 ├── ordinance.py               # Public local ordinance (자치법규) wrapper
 ├── legal_terminology.py       # Public legal terminology (법령용어) wrapper
+├── legal_interpretation.py    # Public legal interpretation (법령해석례) wrapper
 ├── precedent.py               # Public precedent (판례) wrapper
 ├── treaty.py                  # Public treaty (조약) wrapper
 ├── generated/                 # 89 spec-generated law.go.kr target clients
@@ -48,6 +49,11 @@ local_notices = client.search_local_notices("고시")
 terms = client.search_legal_terms("과태료", law_kind_code=10101)
 term_detail = client.get_legal_term_detail("과태료")
 
+interpretations = client.search_legal_interpretations("건축")
+interpretation_detail = client.get_legal_interpretation_detail(
+    interpretation_id=int(interpretations[0].법령해석례일련번호)
+)
+
 treaties = client.search_treaties("FTA", treaty_class=1)
 treaty_detail = client.get_treaty_detail(treaties[0].조약일련번호)
 ```
@@ -63,13 +69,14 @@ prefer `KRClient`.
 | `KRClient`, `administrative_rule.py` | `admrul` | Partial public wrapper over generated `admrul`: administrative rule search, notice search (`knd=3`), detail |
 | `KRClient`, `ordinance.py` | `ordin` | Partial public wrapper over generated `ordin`: local ordinance search, local notice search (`knd=30010`), detail |
 | `KRClient`, `legal_terminology.py` | `lstrm` | Public wrapper over generated `lstrm`: legal term search and detail |
+| `KRClient`, `legal_interpretation.py` | `expc` | Thin public wrapper over generated `expc`: legal interpretation search and detail |
 | `KRClient`, `precedent.py` | `prec` | Partial public wrapper: precedent search and detail using handwritten XML parsing; generated `prec` also exists |
 | `KRClient`, `treaty.py` | `trty` | Public wrapper over generated `trty`: treaty search and detail |
 
 ## Generated-Only Targets
 
-The generated package contains 89 law.go.kr target clients. Six targets are
-wrapped by `KRClient` today (`law`, `prec`, `admrul`, `ordin`, `lstrm`, `trty`), leaving 83
+The generated package contains 89 law.go.kr target clients. Seven targets are
+wrapped by `KRClient` today (`law`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`, `trty`), leaving 82
 generated-only target modules.
 
 Use generated-only clients directly:
