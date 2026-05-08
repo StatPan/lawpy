@@ -2,11 +2,18 @@
 
 from lawpy.kr.administrative_rule import AdministrativeRuleClient
 from lawpy.kr.law import LawClient
+from lawpy.kr.legal_terminology import LegalTerminologyClient
 from lawpy.kr.ordinance import OrdinanceClient
 from lawpy.kr.precedent import PrecedentClient
 
 
-class KRClient(LawClient, PrecedentClient, AdministrativeRuleClient, OrdinanceClient):
+class KRClient(
+    LawClient,
+    PrecedentClient,
+    AdministrativeRuleClient,
+    OrdinanceClient,
+    LegalTerminologyClient,
+):
     """Integrated client for Korean National Law Information Center API.
 
     Provides a single entry-point for all implemented Korean law open-data APIs.
@@ -47,6 +54,10 @@ class KRClient(LawClient, PrecedentClient, AdministrativeRuleClient, OrdinanceCl
       - :meth:`search_local_notices`   자치법규 고시 목록 조회 (자치법규 knd=30010)
       - :meth:`get_ordinance_detail`   자치법규 본문 조회
 
+    **법령용어 (Legal Terminology) — implemented**:
+      - :meth:`search_legal_terms`      법령용어 목록 조회
+      - :meth:`get_legal_term_detail`   법령용어 본문 조회
+
     **향후 구현 예정**:
       - 헌재결정례 (Constitutional Court Decisions)
       - 법령해석례 (Legal Interpretation Cases)
@@ -54,7 +65,6 @@ class KRClient(LawClient, PrecedentClient, AdministrativeRuleClient, OrdinanceCl
       - 위원회결정문 (Committee Decisions)
       - 조약 (Treaties)
       - 별표·서식 (Annexes and Forms)
-      - 법령용어 (Legal Terminology)
     """
 
     pass

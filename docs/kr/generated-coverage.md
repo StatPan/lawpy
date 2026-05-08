@@ -33,6 +33,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `prec` | `PrecedentClient`, `KRClient` | implemented |
 | `admrul` | `AdministrativeRuleClient`, `KRClient` | implemented |
 | `ordin` | `OrdinanceClient`, `KRClient` | implemented |
+| `lstrm` | `LegalTerminologyClient`, `KRClient` | implemented |
 
 ## Generated Matrix
 
@@ -82,7 +83,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `lsHstInf` | `GeneratedLshstinfClient` | `search_lsHstInfs` | yes | yes | generated only |
 | `lsJoHstInf` | `GeneratedLsjohstinfClient` | `search_lsJoHstInfs` | yes | yes | generated only |
 | `lsStmd` | `GeneratedLsstmdClient` | `search_lsStmds`, `get_lsStmd_detail` | yes | yes | generated only |
-| `lstrm` | `GeneratedLstrmClient` | `search_lstrms`, `get_lstrm_detail` | yes | yes | generated only |
+| `lstrm` | `GeneratedLstrmClient` | `search_lstrms`, `get_lstrm_detail` | yes | yes | `LegalTerminologyClient`, `KRClient` |
 | `mafraCgmExpc` | `GeneratedMafracgmexpcClient` | `search_mafraCgmExpcs`, `get_mafraCgmExpc_detail` | yes | yes | generated only |
 | `mcstCgmExpc` | `GeneratedMcstcgmexpcClient` | `search_mcstCgmExpcs`, `get_mcstCgmExpc_detail` | yes | yes | generated only |
 | `meCgmExpc` | `GeneratedMecgmexpcClient` | `search_meCgmExpcs`, `get_meCgmExpc_detail` | yes | yes | generated only |

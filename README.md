@@ -8,7 +8,7 @@ Universal law information API client library.
 - **Simple interface**: Intuitive API design for easy integration
 - **Type-safe**: Full type hints for better IDE support
 - **KRClient first**: One ergonomic entry point for implemented Korean APIs
-- **Generated KR coverage**: 89 Korean law.go.kr target clients are generated from specs; 85 are generated-only until public wrappers are added
+- **Generated KR coverage**: 89 Korean law.go.kr target clients are generated from specs; 84 are generated-only until public wrappers are added
 
 ## Installation
 
@@ -58,7 +58,7 @@ client = KRClient(api_key="your-api-key")
 
 `KRClient` is the main ergonomic object for Korean law.go.kr data. It combines
 the current public wrappers for laws, precedents, administrative rules, notices,
-local ordinances, and local notices.
+local ordinances, local notices, and legal terminology.
 `KoreanLawClient` remains available as a compatibility alias.
 
 #### Search for laws
@@ -129,8 +129,8 @@ print(history_detail)  # Returns HTML text
 ### Generated-only KR targets
 
 KR v1 includes generated clients for 89 public law.go.kr targets. `KRClient`
-wraps four of them today: `law`, `prec`, `admrul`, and `ordin`. The remaining
-85 targets are generated-only; import those clients directly from
+wraps five of them today: `law`, `prec`, `admrul`, `ordin`, and `lstrm`. The remaining
+84 targets are generated-only; import those clients directly from
 `lawpy.kr.generated`.
 
 ```python
@@ -200,6 +200,7 @@ lawpy/
 │       ├── law.py       # Law (법령) APIs
 │       ├── administrative_rule.py # Administrative rule (행정규칙) wrapper
 │       ├── ordinance.py # Local ordinance (자치법규) wrapper
+│       ├── legal_terminology.py # Legal terminology (법령용어) wrapper
 │       ├── precedent.py # Precedent (판례) wrapper
 │       ├── generated/   # 89 spec-generated Korean API clients
 │       └── README.md     # Korean API documentation
