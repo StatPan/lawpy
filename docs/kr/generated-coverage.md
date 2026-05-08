@@ -7,12 +7,13 @@ This document is the source of truth for Korean law.go.kr spec-generated API cov
 ## v1 Gate
 
 - Spec files tracked in `specs/kr`: 195
-- Generated client modules in `src/lawpy/kr/generated`: 89
-- Generated tests in `tests/test_generated`: 89
+- Generated client modules in `src/lawpy/kr/generated`: 98
+- Generated tests in `tests/test_generated`: 98
 - Missing generated tests: 0
 
-`scripts/codegen.py` handles 87 standard `ListGuide` / `InfoGuide` targets and
-keeps special generated model support for `drlaw` and `lsDelegated`, whose
+`scripts/codegen.py` handles 96 generic targets, including standard
+`ListGuide` / `InfoGuide` targets and the suffix-less 법령정보지식베이스 guides.
+It keeps special generated model support for `drlaw` and `lsDelegated`, whose
 responses do not fit the generic JSON list/detail pattern.
 
 For v1, "generated coverage" means every generated KR module has:
@@ -46,6 +47,15 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `lsAbrv` | `LawClient`, `KRClient` | implemented as law-family wrapper |
 | `lsHstInf` | `LawClient`, `KRClient` | implemented as law-family wrapper |
 | `lsJoHstInf` | `LawClient`, `KRClient` | implemented as law-family wrapper |
+| `lstrmAI` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
+| `dlytrm` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
+| `lstrmRlt` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
+| `dlytrmRlt` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
+| `lstrmRltJo` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
+| `joRltLstrm` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
+| `lsRlt` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
+| `aiSearch` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
+| `aiRltLs` | `LegalKnowledgeBaseClient`, `KRClient` | implemented as legal knowledge-base wrapper |
 
 ## Generated Matrix
 
@@ -57,6 +67,8 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `admbyl` | `GeneratedAdmbylClient` | `search_admbyls` | yes | yes | `AnnexFormClient`, `KRClient` |
 | `admrul` | `GeneratedAdmrulClient` | `search_admruls`, `get_admrul_detail` | yes | yes | `AdministrativeRuleClient`, `KRClient` |
 | `admrulOldAndNew` | `GeneratedAdmruloldandnewClient` | `search_admrulOldAndNews`, `get_admrulOldAndNew_detail` | yes | yes | generated only |
+| `aiRltLs` | `GeneratedAirltlsClient` | `search_aiRltLss` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
+| `aiSearch` | `GeneratedAisearchClient` | `search_aiSearchs` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `baiPvcs` | `GeneratedBaipvcsClient` | `search_baiPvcss`, `get_baiPvcs_detail` | yes | yes | generated only |
 | `couseAdmrul` | `GeneratedCouseadmrulClient` | `search_couseAdmruls` | yes | yes | generated only |
 | `couseLs` | `GeneratedCouselsClient` | `search_couseLss` | yes | yes | generated only |
@@ -65,6 +77,8 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `decc` | `GeneratedDeccClient` | `search_deccs`, `get_decc_detail` | yes | yes | `AdministrativeReviewDecisionClient`, `KRClient` |
 | `detc` | `GeneratedDetcClient` | `search_detcs`, `get_detc_detail` | yes | yes | `ConstitutionalDecisionClient`, `KRClient` |
 | `drlaw` | `GeneratedDrlawClient` | `search_drlaws` | yes | yes | generated only |
+| `dlytrm` | `GeneratedDlytrmClient` | `search_dlytrms` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
+| `dlytrmRlt` | `GeneratedDlytrmrltClient` | `get_dlytrmRlt_detail` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `ecc` | `GeneratedEccClient` | `search_eccs`, `get_ecc_detail` | yes | yes | generated only |
 | `eflaw` | `GeneratedEflawClient` | `search_eflaws`, `get_eflaw_detail` | yes | yes | generated only |
 | `eflawjosub` | `GeneratedEflawjosubClient` | `search_eflawjosubs` | yes | yes | generated only |
@@ -74,6 +88,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `fsc` | `GeneratedFscClient` | `search_fscs`, `get_fsc_detail` | yes | yes | generated only |
 | `ftc` | `GeneratedFtcClient` | `search_ftcs`, `get_ftc_detail` | yes | yes | generated only |
 | `iaciac` | `GeneratedIaciacClient` | `search_iaciacs`, `get_iaciac_detail` | yes | yes | generated only |
+| `joRltLstrm` | `GeneratedJorltlstrmClient` | `get_joRltLstrm_detail` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `kcc` | `GeneratedKccClient` | `search_kccs`, `get_kcc_detail` | yes | yes | generated only |
 | `kcgCgmExpc` | `GeneratedKcgcgmexpcClient` | `search_kcgCgmExpcs`, `get_kcgCgmExpc_detail` | yes | yes | generated only |
 | `kcsCgmExpc` | `GeneratedKcscgmexpcClient` | `search_kcsCgmExpcs`, `get_kcsCgmExpc_detail` | yes | yes | generated only |
@@ -94,8 +109,12 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `lsHistory` | `GeneratedLshistoryClient` | `search_lsHistorys`, `get_lsHistory_detail` | yes | yes | generated only |
 | `lsHstInf` | `GeneratedLshstinfClient` | `search_lsHstInfs` | yes | yes | `LawClient`, `KRClient` |
 | `lsJoHstInf` | `GeneratedLsjohstinfClient` | `search_lsJoHstInfs` | yes | yes | `LawClient`, `KRClient` |
+| `lsRlt` | `GeneratedLsrltClient` | `search_lsRlts` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `lsStmd` | `GeneratedLsstmdClient` | `search_lsStmds`, `get_lsStmd_detail` | yes | yes | generated only |
 | `lstrm` | `GeneratedLstrmClient` | `search_lstrms`, `get_lstrm_detail` | yes | yes | `LegalTerminologyClient`, `KRClient` |
+| `lstrmAI` | `GeneratedLstrmaiClient` | `search_lstrmAIs` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
+| `lstrmRlt` | `GeneratedLstrmrltClient` | `get_lstrmRlt_detail` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
+| `lstrmRltJo` | `GeneratedLstrmrltjoClient` | `get_lstrmRltJo_detail` | yes | yes | `LegalKnowledgeBaseClient`, `KRClient` |
 | `mafraCgmExpc` | `GeneratedMafracgmexpcClient` | `search_mafraCgmExpcs`, `get_mafraCgmExpc_detail` | yes | yes | generated only |
 | `mcstCgmExpc` | `GeneratedMcstcgmexpcClient` | `search_mcstCgmExpcs`, `get_mcstCgmExpc_detail` | yes | yes | generated only |
 | `meCgmExpc` | `GeneratedMecgmexpcClient` | `search_meCgmExpcs`, `get_meCgmExpc_detail` | yes | yes | generated only |

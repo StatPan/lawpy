@@ -6,6 +6,7 @@ from lawpy.kr.annex_form import AnnexFormClient
 from lawpy.kr.constitutional_decision import ConstitutionalDecisionClient
 from lawpy.kr.law import LawClient
 from lawpy.kr.legal_interpretation import LegalInterpretationClient
+from lawpy.kr.legal_knowledge_base import LegalKnowledgeBaseClient
 from lawpy.kr.legal_terminology import LegalTerminologyClient
 from lawpy.kr.ordinance import OrdinanceClient
 from lawpy.kr.precedent import PrecedentClient
@@ -20,6 +21,7 @@ class KRClient(
     AnnexFormClient,
     OrdinanceClient,
     LegalTerminologyClient,
+    LegalKnowledgeBaseClient,
     LegalInterpretationClient,
     ConstitutionalDecisionClient,
     AdministrativeReviewDecisionClient,
@@ -81,6 +83,17 @@ class KRClient(
     **법령용어 (Legal Terminology) — implemented**:
       - :meth:`search_legal_terms`      법령용어 목록 조회
       - :meth:`get_legal_term_detail`   법령용어 본문 조회
+
+    **법령정보지식베이스 (Legal Knowledge Base) — implemented**:
+      - :meth:`search_legal_knowledge_terms` 법령용어 조회
+      - :meth:`search_daily_terms` 일상용어 조회
+      - :meth:`get_legal_term_daily_term_relations` 법령용어-일상용어 연계 조회
+      - :meth:`get_daily_term_legal_term_relations` 일상용어-법령용어 연계 조회
+      - :meth:`get_legal_term_article_relations` 법령용어-조문 연계 조회
+      - :meth:`get_article_legal_term_relations` 조문-법령용어 연계 조회
+      - :meth:`search_related_laws` 관련법령 조회
+      - :meth:`search_ai_laws` 지능형 법령검색 조회
+      - :meth:`search_ai_related_laws` 지능형 연관법령 조회
 
     **법령해석례 (Legal Interpretation) — implemented**:
       - :meth:`search_legal_interpretations`      법령해석례 목록 조회

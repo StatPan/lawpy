@@ -8,7 +8,7 @@ Universal law information API client library.
 - **Simple interface**: Intuitive API design for easy integration
 - **Type-safe**: Full type hints for better IDE support
 - **KRClient first**: One ergonomic entry point for implemented Korean APIs
-- **Generated KR coverage**: 89 Korean law.go.kr target clients are generated from specs; 71 are generated-only until public wrappers are added
+- **Generated KR coverage**: 98 Korean law.go.kr target clients are generated from specs; 71 are generated-only until public wrappers are added
 
 ## Installation
 
@@ -157,10 +157,12 @@ article_changes = client.search_law_article_change_history(law_id="009682", arti
 
 ### Generated-only KR targets
 
-KR v1 includes generated clients for 89 public law.go.kr targets. `KRClient`
-wraps 18 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
+KR v1 includes generated clients for 98 public law.go.kr targets. `KRClient`
+wraps 27 of them today: `law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`,
 `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`,
-`lstrm`, `expc`, `detc`, `decc`, `school`, and `trty`. The remaining 71 targets are generated-only; import those clients directly from
+`lstrm`, `lstrmAI`, `dlytrm`, `lstrmRlt`, `dlytrmRlt`, `lstrmRltJo`,
+`joRltLstrm`, `lsRlt`, `aiSearch`, `aiRltLs`, `expc`, `detc`, `decc`,
+`school`, and `trty`. The remaining 71 targets are generated-only; import those clients directly from
 `lawpy.kr.generated`.
 
 ```python
@@ -232,12 +234,13 @@ lawpy/
 │       ├── annex_form.py # Annex/form (별표·서식) wrapper
 │       ├── ordinance.py # Local ordinance (자치법규) wrapper
 │       ├── legal_terminology.py # Legal terminology (법령용어) wrapper
+│       ├── legal_knowledge_base.py # Legal knowledge-base (법령정보지식베이스) wrapper
 │       ├── legal_interpretation.py # Legal interpretation (법령해석례) wrapper
 │       ├── constitutional_decision.py # Constitutional decision (헌재결정례) wrapper
 │       ├── administrative_review_decision.py # Administrative review decision (행정심판례) wrapper
 │       ├── precedent.py # Precedent (판례) wrapper
 │       ├── treaty.py # Treaty (조약) wrapper
-│       ├── generated/   # 89 spec-generated Korean API clients
+│       ├── generated/   # 98 spec-generated Korean API clients
 │       └── README.md     # Korean API documentation
 └── tests/
     ├── test_kr.py       # Korean API tests

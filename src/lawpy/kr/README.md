@@ -16,12 +16,13 @@ lawpy/kr/
 ├── annex_form.py              # Public annex/form (별표·서식) wrapper
 ├── ordinance.py               # Public local ordinance (자치법규) wrapper
 ├── legal_terminology.py       # Public legal terminology (법령용어) wrapper
+├── legal_knowledge_base.py    # Public legal knowledge-base (법령정보지식베이스) wrapper
 ├── legal_interpretation.py    # Public legal interpretation (법령해석례) wrapper
 ├── constitutional_decision.py # Public constitutional decision (헌재결정례) wrapper
 ├── administrative_review_decision.py # Public administrative review decision (행정심판례) wrapper
 ├── precedent.py               # Public precedent (판례) wrapper
 ├── treaty.py                  # Public treaty (조약) wrapper
-├── generated/                 # 89 spec-generated law.go.kr target clients
+├── generated/                 # 98 spec-generated law.go.kr target clients
 └── README.md
 ```
 
@@ -87,6 +88,7 @@ prefer `KRClient`.
 | `KRClient`, `annex_form.py` | `licbyl`, `admbyl`, `ordinbyl` | Public wrapper over generated annex/form list targets for laws, administrative rules, and ordinances |
 | `KRClient`, `ordinance.py` | `ordin` | Partial public wrapper over generated `ordin`: local ordinance search, local notice search (`knd=30010`), detail |
 | `KRClient`, `legal_terminology.py` | `lstrm` | Public wrapper over generated `lstrm`: legal term search and detail |
+| `KRClient`, `legal_knowledge_base.py` | `lstrmAI`, `dlytrm`, `lstrmRlt`, `dlytrmRlt`, `lstrmRltJo`, `joRltLstrm`, `lsRlt`, `aiSearch`, `aiRltLs` | Public wrapper over legal knowledge-base term, relation, related-law, and intelligent search targets |
 | `KRClient`, `legal_interpretation.py` | `expc` | Thin public wrapper over generated `expc`: legal interpretation search and detail |
 | `KRClient`, `constitutional_decision.py` | `detc` | Thin public wrapper over generated `detc`: constitutional decision search and detail |
 | `KRClient`, `administrative_review_decision.py` | `decc` | Thin public wrapper over generated `decc`: administrative review decision search and detail |
@@ -96,8 +98,8 @@ prefer `KRClient`.
 
 ## Generated-Only Targets
 
-The generated package contains 89 law.go.kr target clients. Eighteen targets are
-wrapped by `KRClient` today (`law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`, `lstrm`, `expc`, `detc`, `decc`, `school`, `trty`), leaving 71
+The generated package contains 98 law.go.kr target clients. Twenty-seven targets are
+wrapped by `KRClient` today (`law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`, `lstrm`, `lstrmAI`, `dlytrm`, `lstrmRlt`, `dlytrmRlt`, `lstrmRltJo`, `joRltLstrm`, `lsRlt`, `aiSearch`, `aiRltLs`, `expc`, `detc`, `decc`, `school`, `trty`), leaving 71
 generated-only target modules.
 
 Use generated-only clients directly:

@@ -162,6 +162,20 @@ def is_info_guide(html_name: str) -> bool:
     return html_name.endswith("InfoGuide")
 
 
+def is_knowledge_base_guide(spec: dict) -> bool:
+    return "법령정보지식베이스" in spec.get("request_url", "")
+
+
+def classify_spec_kind(html_name: str, spec: dict) -> str | None:
+    if is_list_guide(html_name):
+        return "list"
+    if is_info_guide(html_name):
+        return "info"
+    if is_knowledge_base_guide(spec):
+        return "info" if extract_endpoint_type(spec) == "service" else "list"
+    return None
+
+
 def extract_target(spec: dict) -> str:
     for row in spec.get("params", []):
         if row.get(PARAM_KEY, "").strip().lower() == "target":
@@ -582,7 +596,7 @@ def process_specs(specs_dir: Path, out_dir: Path | None, dry_run: bool, target_f
             continue
         if target_filter and target != target_filter:
             continue
-        kind = "list" if is_list_guide(html_name) else ("info" if is_info_guide(html_name) else None)
+        kind = classify_spec_kind(html_name, spec)
         if kind is None:
             continue
         by_target.setdefault(target, {})[kind] = spec

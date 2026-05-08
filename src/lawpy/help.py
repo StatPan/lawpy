@@ -24,9 +24,9 @@ QUICKSTART = dedent(
     Meaning:
         KRClient is the ergonomic entry point for Korean law.go.kr data.
         It combines the public wrappers for law, precedent, administrative rule,
-        annex/form, local ordinance, legal terminology, legal interpretation,
-        constitutional decision, administrative review decision, school/public rule,
-        and treaty workflows.
+        annex/form, local ordinance, legal terminology, legal knowledge-base,
+        legal interpretation, constitutional decision, administrative review
+        decision, school/public rule, and treaty workflows.
         KoreanLawClient is kept as a compatibility alias.
 
     Basic pattern:
@@ -85,6 +85,17 @@ KR = dedent(
             search_legal_terms(query=None, page=1, per_page=20)
             get_legal_term_detail(term)
 
+        Legal knowledge base:
+            search_legal_knowledge_terms(query=None, page=1, per_page=20)
+            search_daily_terms(query=None, page=1, per_page=20)
+            get_legal_term_daily_term_relations(query=None, term_id=None)
+            get_daily_term_legal_term_relations(query=None, term_id=None)
+            get_legal_term_article_relations(query)
+            get_article_legal_term_relations(query=None, law_id=None, article_number=None)
+            search_related_laws(query=None, law_id=None, relation_code=None)
+            search_ai_laws(query=None, page=1, per_page=20)
+            search_ai_related_laws(query=None)
+
         Legal interpretations:
             search_legal_interpretations(query=None, page=1, per_page=20)
             get_legal_interpretation_detail(interpretation_id=None, interpretation_name=None)
@@ -141,8 +152,8 @@ GENERATED = dedent(
         detail method:    get_{target}_detail(...)
 
     Coverage:
-        KR v1 generated coverage includes 195 spec files, 89 generated modules,
-        89 generated tests, and 18 public wrapper targets. See
+        KR v1 generated coverage includes 195 spec files, 98 generated modules,
+        98 generated tests, and 27 public wrapper targets. See
         docs/kr/generated-coverage.md in the source repository for the full
         target/method matrix.
     """
