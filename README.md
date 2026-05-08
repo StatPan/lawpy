@@ -7,7 +7,8 @@ Universal law information API client library.
 - **Multi-country support**: Access law APIs from multiple countries (currently Korea)
 - **Simple interface**: Intuitive API design for easy integration
 - **Type-safe**: Full type hints for better IDE support
-- **Well-tested**: Comprehensive test coverage
+- **KRClient first**: One ergonomic entry point for implemented Korean APIs
+- **Generated KR coverage**: 89 Korean law.go.kr target clients are generated from specs; 85 are generated-only until public wrappers are added
 
 ## Installation
 
@@ -55,9 +56,9 @@ client = KRClient()
 client = KRClient(api_key="your-api-key")
 ```
 
-`KRClient` is the main ergonomic object for Korean law.go.kr data. It
-combines the public wrappers for laws, precedents, administrative rules,
-notices, local ordinances, and local notices.
+`KRClient` is the main ergonomic object for Korean law.go.kr data. It combines
+the current public wrappers for laws, precedents, administrative rules, notices,
+local ordinances, and local notices.
 `KoreanLawClient` remains available as a compatibility alias.
 
 #### Search for laws
@@ -125,11 +126,12 @@ history_detail = client.get_law_history_detail(mst=9094)
 print(history_detail)  # Returns HTML text
 ```
 
-### Generated-only targets
+### Generated-only KR targets
 
-KR v1 includes full generated coverage for the public spec inventory. If a
-target does not have a public wrapper on `KRClient` yet, import the
-generated client directly:
+KR v1 includes generated clients for 89 public law.go.kr targets. `KRClient`
+wraps four of them today: `law`, `prec`, `admrul`, and `ordin`. The remaining
+85 targets are generated-only; import those clients directly from
+`lawpy.kr.generated`.
 
 ```python
 from lawpy.kr.generated.trty import GeneratedTrtyClient
@@ -139,9 +141,9 @@ treaties = client.search_trtys(query="FTA", display=10, page=1)
 row = treaties[0].model_dump(by_alias=True)
 ```
 
-See [docs/ai-usage.md](docs/ai-usage.md) and
-[docs/kr/generated-coverage.md](docs/kr/generated-coverage.md) for the installed
-help pattern and the generated target matrix.
+Run `import lawpy; print(lawpy.help("generated"))` or see
+[docs/kr/generated-coverage.md](docs/kr/generated-coverage.md) for the generated
+target matrix.
 
 ## Specs and codegen policy
 
@@ -194,17 +196,22 @@ lawpy/
 │   └── kr/             # Korean API modules
 │       ├── __init__.py
 │       ├── base.py       # Base class for Korean clients
-│       ├── client.py     # Integrated Korean client
+│       ├── client.py     # KRClient integrated Korean client
 │       ├── law.py       # Law (법령) APIs
+│       ├── administrative_rule.py # Administrative rule (행정규칙) wrapper
+│       ├── ordinance.py # Local ordinance (자치법규) wrapper
+│       ├── precedent.py # Precedent (판례) wrapper
+│       ├── generated/   # 89 spec-generated Korean API clients
 │       └── README.md     # Korean API documentation
 └── tests/
-    └── test_kr.py       # Korean API tests
+    ├── test_kr.py       # Korean API tests
+    └── test_generated/  # Generated client tests
 ```
 
 ## Roadmap
 
 - [ ] Add more countries (Japan, China, etc.)
-- [ ] Implement all Korean Law API categories
+- [ ] Add public wrappers for generated-only Korean targets
 - [ ] Add async support
 - [ ] Add caching layer
 
