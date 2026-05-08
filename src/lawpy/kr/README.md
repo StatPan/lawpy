@@ -22,14 +22,15 @@ lawpy/kr/
 ├── administrative_review_decision.py # Public administrative review decision (행정심판례) wrapper
 ├── committee_decision.py      # Public committee decision (위원회결정문) wrapper
 ├── ministry_interpretation.py # Public ministry interpretation (중앙부처 1차 해석) wrapper
+├── law_reference.py          # Public customized/reference law wrapper
 ├── precedent.py               # Public precedent (판례) wrapper
 ├── treaty.py                  # Public treaty (조약) wrapper
 ├── generated/                 # 98 spec-generated law.go.kr target clients
 └── README.md
 ```
 
-Mobile and customized targets are available only through generated clients until
-wrappers are added.
+Customized article, law/ordinance link, one-view, delegated-law, and three-way
+comparison targets are exposed through `KRClient` via `LawReferenceClient`.
 
 ## Primary Usage
 
@@ -112,20 +113,20 @@ prefer `KRClient`.
 | `KRClient`, `precedent.py` | `prec` | Public wrapper: stable precedent search/detail models plus inherited generated `prec` methods |
 | `KRClient`, `school_public_rule.py` | `school` | Thin public wrapper over generated `school`: school/corporation/public institution rule search and detail |
 | `KRClient`, `treaty.py` | `trty` | Public wrapper over generated `trty`: treaty search and detail |
+| `KRClient`, `law_reference.py` | `couseAdmrul`, `couseLs`, `couseOrdin`, `lawjosub`, `eflawjosub`, `lnkLs`, `lnkOrd`, `drlaw`, `lsDelegated`, `oneview`, `thdCmp` | Public wrapper over customized article, article-unit, law/ordinance link, delegated-law, one-view, and three-way comparison targets |
 
 ## Generated-Only Targets
 
-The generated package contains 98 law.go.kr target clients. Seventy-nine targets are
-wrapped by `KRClient` today (`law`, `elaw`, `oldAndNew`, `lsAbrv`, `lsHstInf`, `lsJoHstInf`, `prec`, `admrul`, `licbyl`, `admbyl`, `ordinbyl`, `ordin`, `lstrm`, `lstrmAI`, `dlytrm`, `lstrmRlt`, `dlytrmRlt`, `lstrmRltJo`, `joRltLstrm`, `lsRlt`, `aiSearch`, `aiRltLs`, `expc`, `detc`, `decc`, `acr`, `baiPvcs`, `ecc`, `eiac`, `fsc`, `ftc`, `iaciac`, `kcc`, `nhrck`, `nlrc`, `oclt`, `ppc`, `sfc`, the `*CgmExpc` ministry interpretation targets, `school`, `trty`), leaving 19
-generated-only target modules.
+The generated package contains 98 law.go.kr target clients. Ninety targets are
+wrapped by `KRClient` today, leaving 8 generated-only target modules.
 
 Use generated-only clients directly:
 
 ```python
-from lawpy.kr.generated.decc import GeneratedDeccClient
+from lawpy.kr.generated.acrSpecialDecc import GeneratedAcrspecialdeccClient
 
-client = GeneratedDeccClient(api_key="your_email_id")
-decisions = client.search_deccs(query="영업정지", display=10, page=1)
+client = GeneratedAcrspecialdeccClient(api_key="your_email_id")
+decisions = client.search_acrSpecialDeccs(query="영업정지", display=10, page=1)
 ```
 
 Generated clients return Pydantic models from
