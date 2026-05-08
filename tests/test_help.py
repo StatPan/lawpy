@@ -31,7 +31,7 @@ def test_generated_help_explains_direct_import_pattern() -> None:
 
     assert "lawpy.kr.generated.<target>" in text
     assert "model_dump(by_alias=True)" in text
-    assert "89 generated modules" in text
+    assert "98 generated modules" in text
 
 
 def test_unknown_help_topic_raises() -> None:
