@@ -8,7 +8,7 @@ Universal law information API client library.
 - **Simple interface**: Intuitive API design for easy integration
 - **Type-safe**: Full type hints for better IDE support
 - **KRClient first**: One ergonomic entry point for implemented Korean APIs
-- **Generated KR coverage**: 89 Korean law.go.kr target clients are generated from specs; 82 are generated-only until public wrappers are added
+- **Generated KR coverage**: 89 Korean law.go.kr target clients are generated from specs; 81 are generated-only until public wrappers are added
 
 ## Installation
 
@@ -58,7 +58,8 @@ client = KRClient(api_key="your-api-key")
 
 `KRClient` is the main ergonomic object for Korean law.go.kr data. It combines
 the current public wrappers for laws, precedents, administrative rules, notices,
-local ordinances, local notices, legal terminology, legal interpretations, and treaties.
+local ordinances, local notices, legal terminology, legal interpretations,
+constitutional decisions, and treaties.
 `KoreanLawClient` remains available as a compatibility alias.
 
 #### Search for laws
@@ -129,8 +130,8 @@ print(history_detail)  # Returns HTML text
 ### Generated-only KR targets
 
 KR v1 includes generated clients for 89 public law.go.kr targets. `KRClient`
-wraps seven of them today: `law`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`, and `trty`. The remaining
-82 targets are generated-only; import those clients directly from
+wraps eight of them today: `law`, `prec`, `admrul`, `ordin`, `lstrm`, `expc`,
+`detc`, and `trty`. The remaining 81 targets are generated-only; import those clients directly from
 `lawpy.kr.generated`.
 
 ```python
@@ -202,6 +203,7 @@ lawpy/
 │       ├── ordinance.py # Local ordinance (자치법규) wrapper
 │       ├── legal_terminology.py # Legal terminology (법령용어) wrapper
 │       ├── legal_interpretation.py # Legal interpretation (법령해석례) wrapper
+│       ├── constitutional_decision.py # Constitutional decision (헌재결정례) wrapper
 │       ├── precedent.py # Precedent (판례) wrapper
 │       ├── treaty.py # Treaty (조약) wrapper
 │       ├── generated/   # 89 spec-generated Korean API clients
