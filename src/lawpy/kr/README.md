@@ -14,6 +14,7 @@ lawpy/kr/
 ├── law.py                     # Public law (법령) wrapper
 ├── administrative_rule.py     # Public administrative rule (행정규칙) wrapper
 ├── ordinance.py               # Public local ordinance (자치법규) wrapper
+├── legal_terminology.py       # Public legal terminology (법령용어) wrapper
 ├── precedent.py               # Public precedent (판례) wrapper
 ├── generated/                 # 89 spec-generated law.go.kr target clients
 └── README.md
@@ -42,6 +43,9 @@ notices = client.search_notices("고시")
 
 ordinances = client.search_ordinances("서울특별시", ordinance_type="30001")
 local_notices = client.search_local_notices("고시")
+
+terms = client.search_legal_terms("과태료", law_kind_code=10101)
+term_detail = client.get_legal_term_detail("과태료")
 ```
 
 `KoreanLawClient` is a compatibility alias for `KRClient`. New code should
@@ -54,12 +58,13 @@ prefer `KRClient`.
 | `KRClient`, `law.py` | `law` | Partial public wrapper: search, detail, current list, history list, history detail |
 | `KRClient`, `administrative_rule.py` | `admrul` | Partial public wrapper over generated `admrul`: administrative rule search, notice search (`knd=3`), detail |
 | `KRClient`, `ordinance.py` | `ordin` | Partial public wrapper over generated `ordin`: local ordinance search, local notice search (`knd=30010`), detail |
+| `KRClient`, `legal_terminology.py` | `lstrm` | Public wrapper over generated `lstrm`: legal term search and detail |
 | `KRClient`, `precedent.py` | `prec` | Partial public wrapper: precedent search and detail using handwritten XML parsing; generated `prec` also exists |
 
 ## Generated-Only Targets
 
-The generated package contains 89 law.go.kr target clients. Four targets are
-wrapped by `KRClient` today (`law`, `prec`, `admrul`, `ordin`), leaving 85
+The generated package contains 89 law.go.kr target clients. Five targets are
+wrapped by `KRClient` today (`law`, `prec`, `admrul`, `ordin`, `lstrm`), leaving 84
 generated-only target modules.
 
 Use generated-only clients directly:
