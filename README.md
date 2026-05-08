@@ -17,6 +17,24 @@ pip install lawpy
 
 ## Quick Start
 
+### Installed help
+
+If you installed `lawpy` without cloning the repository, start here:
+
+```python
+import lawpy
+
+print(lawpy.help())
+print(lawpy.help("kr"))
+print(lawpy.help("generated"))
+```
+
+The same guide is available from the shell:
+
+```bash
+python -m lawpy.help kr
+```
+
 ### Korean Law API
 
 Set your API key (email ID) as an environment variable:
@@ -36,6 +54,10 @@ client = KoreanLawClient()
 # Or pass api_key directly
 client = KoreanLawClient(api_key="your-api-key")
 ```
+
+`KoreanLawClient` is the main ergonomic object for Korean law.go.kr data. It
+combines the public wrappers for laws, precedents, administrative rules,
+notices, local ordinances, and local notices.
 
 #### Search for laws
 
@@ -101,6 +123,31 @@ for h in history:
 history_detail = client.get_law_history_detail(mst=9094)
 print(history_detail)  # Returns HTML text
 ```
+
+### Generated-only targets
+
+KR v1 includes full generated coverage for the public spec inventory. If a
+target does not have a public wrapper on `KoreanLawClient` yet, import the
+generated client directly:
+
+```python
+from lawpy.kr.generated.trty import GeneratedTrtyClient
+
+client = GeneratedTrtyClient(api_key="your-api-key")
+treaties = client.search_trtys(query="FTA", display=10, page=1)
+row = treaties[0].model_dump(by_alias=True)
+```
+
+See [docs/ai-usage.md](docs/ai-usage.md) and
+[docs/kr/generated-coverage.md](docs/kr/generated-coverage.md) for the installed
+help pattern and the generated target matrix.
+
+## Specs and codegen policy
+
+The Korean specs, code generator, generated clients, generated models, and
+generated tests are public. The project treats reproducible generation, coverage
+documentation, and CI as the maintenance contract rather than hiding source
+specs.
 
 ## API Key
 

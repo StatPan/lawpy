@@ -10,6 +10,17 @@ class KoreanLawClient(LawClient, PrecedentClient, AdministrativeRuleClient, Ordi
     """Integrated client for Korean National Law Information Center API.
 
     Provides a single entry-point for all implemented Korean law open-data APIs.
+    This is the object most users and AI agents should try first.
+
+    Basic pattern:
+      >>> from lawpy import KoreanLawClient
+      >>> client = KoreanLawClient(api_key="your-open-law-email-id")
+      >>> laws = client.search_laws("민법", per_page=5)
+      >>> detail = client.get_law_detail(law_id=laws[0].law_id)
+
+    If a target is not exposed here yet, use the generated client under
+    ``lawpy.kr.generated.<target>``. Run ``import lawpy; print(lawpy.help())``
+    for installed guidance.
 
     **법령 (Law) — implemented**:
       - :meth:`search_laws`            법령명/전문 검색
