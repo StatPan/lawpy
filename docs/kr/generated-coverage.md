@@ -21,16 +21,17 @@ For v1, "generated coverage" means every generated KR module has:
 - typed Pydantic models where the endpoint response is modeled
 - at least one generated test file covering search/detail behavior available for that target
 
-Public wrappers are tracked separately. They are the ergonomic API layer intended for `KoreanLawClient` and `datapan-data` workflows.
+Public wrappers are tracked separately. They are the ergonomic API layer intended for `KRClient` and `datapan-data` workflows.
+`KoreanLawClient` is kept as a compatibility alias for existing code.
 
 ## Public Wrapper Status
 
 | Target | Public surface | Status |
 | --- | --- | --- |
-| `law` | `LawClient`, `KoreanLawClient` | implemented |
-| `prec` | `PrecedentClient`, `KoreanLawClient` | implemented |
-| `admrul` | `AdministrativeRuleClient`, `KoreanLawClient` | implemented |
-| `ordin` | `OrdinanceClient`, `KoreanLawClient` | implemented |
+| `law` | `LawClient`, `KRClient` | implemented |
+| `prec` | `PrecedentClient`, `KRClient` | implemented |
+| `admrul` | `AdministrativeRuleClient`, `KRClient` | implemented |
+| `ordin` | `OrdinanceClient`, `KRClient` | implemented |
 
 ## Generated Matrix
 
@@ -40,7 +41,7 @@ Public wrappers are tracked separately. They are the ergonomic API layer intende
 | `acrSpecialDecc` | `GeneratedAcrspecialdeccClient` | `search_acrSpecialDeccs`, `get_acrSpecialDecc_detail` | yes | yes | generated only |
 | `adapSpecialDecc` | `GeneratedAdapspecialdeccClient` | `search_adapSpecialDeccs`, `get_adapSpecialDecc_detail` | yes | yes | generated only |
 | `admbyl` | `GeneratedAdmbylClient` | `search_admbyls` | yes | yes | generated only |
-| `admrul` | `GeneratedAdmrulClient` | `search_admruls`, `get_admrul_detail` | yes | yes | `AdministrativeRuleClient`, `KoreanLawClient` |
+| `admrul` | `GeneratedAdmrulClient` | `search_admruls`, `get_admrul_detail` | yes | yes | `AdministrativeRuleClient`, `KRClient` |
 | `admrulOldAndNew` | `GeneratedAdmruloldandnewClient` | `search_admrulOldAndNews`, `get_admrulOldAndNew_detail` | yes | yes | generated only |
 | `baiPvcs` | `GeneratedBaipvcsClient` | `search_baiPvcss`, `get_baiPvcs_detail` | yes | yes | generated only |
 | `couseAdmrul` | `GeneratedCouseadmrulClient` | `search_couseAdmruls` | yes | yes | generated only |
@@ -69,7 +70,7 @@ Public wrappers are tracked separately. They are the ergonomic API layer intende
 | `kmaCgmExpc` | `GeneratedKmacgmexpcClient` | `search_kmaCgmExpcs`, `get_kmaCgmExpc_detail` | yes | yes | generated only |
 | `kmstSpecialDecc` | `GeneratedKmstspecialdeccClient` | `search_kmstSpecialDeccs`, `get_kmstSpecialDecc_detail` | yes | yes | generated only |
 | `kostatCgmExpc` | `GeneratedKostatcgmexpcClient` | `search_kostatCgmExpcs`, `get_kostatCgmExpc_detail` | yes | yes | generated only |
-| `law` | `GeneratedLawClient` | `search_laws`, `get_law_detail` | yes | yes | `LawClient`, `KoreanLawClient` |
+| `law` | `GeneratedLawClient` | `search_laws`, `get_law_detail` | yes | yes | `LawClient`, `KRClient` |
 | `lawjosub` | `GeneratedLawjosubClient` | `search_lawjosubs` | yes | yes | generated only |
 | `licbyl` | `GeneratedLicbylClient` | `search_licbyls` | yes | yes | generated only |
 | `lnkLs` | `GeneratedLnklsClient` | `search_lnkLss` | yes | yes | generated only |
@@ -114,11 +115,11 @@ Public wrappers are tracked separately. They are the ergonomic API layer intende
 | `okaCgmExpc` | `GeneratedOkacgmexpcClient` | `search_okaCgmExpcs`, `get_okaCgmExpc_detail` | yes | yes | generated only |
 | `oldAndNew` | `GeneratedOldandnewClient` | `search_oldAndNews`, `get_oldAndNew_detail` | yes | yes | generated only |
 | `oneview` | `GeneratedOneviewClient` | `search_oneviews`, `get_oneview_detail` | yes | yes | generated only |
-| `ordin` | `GeneratedOrdinClient` | `search_ordins`, `get_ordin_detail` | yes | yes | `OrdinanceClient`, `KoreanLawClient` |
+| `ordin` | `GeneratedOrdinClient` | `search_ordins`, `get_ordin_detail` | yes | yes | `OrdinanceClient`, `KRClient` |
 | `ordinbyl` | `GeneratedOrdinbylClient` | `search_ordinbyls` | yes | yes | generated only |
 | `ppc` | `GeneratedPpcClient` | `search_ppcs`, `get_ppc_detail` | yes | yes | generated only |
 | `ppsCgmExpc` | `GeneratedPpscgmexpcClient` | `search_ppsCgmExpcs`, `get_ppsCgmExpc_detail` | yes | yes | generated only |
-| `prec` | `GeneratedPrecClient` | `search_precs`, `get_prec_detail` | yes | yes | `PrecedentClient`, `KoreanLawClient` |
+| `prec` | `GeneratedPrecClient` | `search_precs`, `get_prec_detail` | yes | yes | `PrecedentClient`, `KRClient` |
 | `rdaCgmExpc` | `GeneratedRdacgmexpcClient` | `search_rdaCgmExpcs`, `get_rdaCgmExpc_detail` | yes | yes | generated only |
 | `school` | `GeneratedSchoolClient` | `search_schools`, `get_school_detail` | yes | yes | generated only |
 | `sfc` | `GeneratedSfcClient` | `search_sfcs`, `get_sfc_detail` | yes | yes | generated only |

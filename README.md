@@ -46,18 +46,19 @@ export LAWPY_API_KEY="your-email-id"
 Or pass it directly:
 
 ```python
-from lawpy import KoreanLawClient
+from lawpy import KRClient
 
 # Using environment variable
-client = KoreanLawClient()
+client = KRClient()
 
 # Or pass api_key directly
-client = KoreanLawClient(api_key="your-api-key")
+client = KRClient(api_key="your-api-key")
 ```
 
-`KoreanLawClient` is the main ergonomic object for Korean law.go.kr data. It
+`KRClient` is the main ergonomic object for Korean law.go.kr data. It
 combines the public wrappers for laws, precedents, administrative rules,
 notices, local ordinances, and local notices.
+`KoreanLawClient` remains available as a compatibility alias.
 
 #### Search for laws
 
@@ -127,7 +128,7 @@ print(history_detail)  # Returns HTML text
 ### Generated-only targets
 
 KR v1 includes full generated coverage for the public spec inventory. If a
-target does not have a public wrapper on `KoreanLawClient` yet, import the
+target does not have a public wrapper on `KRClient` yet, import the
 generated client directly:
 
 ```python

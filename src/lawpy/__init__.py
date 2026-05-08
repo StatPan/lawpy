@@ -5,16 +5,22 @@ Installed quickstart:
     print(lawpy.help())
 
 Main Korean API object:
-    from lawpy import KoreanLawClient
+    from lawpy import KRClient
 
-    client = KoreanLawClient(api_key="your-open-law-email-id")
+    client = KRClient(api_key="your-open-law-email-id")
     laws = client.search_laws("민법", per_page=5)
 
 Use lawpy.help("kr") for public wrapper methods and
 lawpy.help("generated") for generated-only KR targets.
 """
 
-from lawpy.kr import AdministrativeRuleClient, KoreanLawClient, OrdinanceClient, PrecedentClient
+from lawpy.kr import (
+    AdministrativeRuleClient,
+    KoreanLawClient,
+    KRClient,
+    OrdinanceClient,
+    PrecedentClient,
+)
 from lawpy.kr.generated._models_generated import AdmrulDetail, AdmrulList, OrdinDetail, OrdinList
 from lawpy.models import (
     Article,
@@ -48,6 +54,7 @@ __all__ = [
     "AdministrativeRuleClient",
     "AdmrulDetail",
     "AdmrulList",
+    "KRClient",
     "KoreanLawClient",
     "OrdinanceClient",
     "OrdinDetail",

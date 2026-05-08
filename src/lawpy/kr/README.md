@@ -63,9 +63,9 @@ lawpy/kr/
 ### Integrated Client (All APIs)
 
 ```python
-from lawpy.kr import KoreanLawClient
+from lawpy.kr import KRClient
 
-client = KoreanLawClient(api_key="your_email_id")
+client = KRClient(api_key="your_email_id")
 
 # Law APIs
 laws = client.search_laws("민법")
@@ -200,8 +200,8 @@ export LAWPY_API_KEY=your_email_id
 Or pass it directly:
 
 ```python
-from lawpy.kr import KoreanLawClient
-client = KoreanLawClient(api_key="your_email_id")
+from lawpy.kr import KRClient
+client = KRClient(api_key="your_email_id")
 ```
 
 ## References

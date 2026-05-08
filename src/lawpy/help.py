@@ -19,17 +19,18 @@ QUICKSTART = dedent(
     =================
 
     Main object:
-        KoreanLawClient
+        KRClient
 
     Meaning:
-        KoreanLawClient is the ergonomic entry point for Korean law.go.kr data.
+        KRClient is the ergonomic entry point for Korean law.go.kr data.
         It combines the public wrappers for law, precedent, administrative rule,
         and local ordinance workflows.
+        KoreanLawClient is kept as a compatibility alias.
 
     Basic pattern:
-        from lawpy import KoreanLawClient
+        from lawpy import KRClient
 
-        client = KoreanLawClient(api_key="your-open-law-email-id")
+        client = KRClient(api_key="your-open-law-email-id")
         results = client.search_laws("민법", per_page=5)
         detail = client.get_law_detail(law_id=results[0].law_id)
 
@@ -46,11 +47,11 @@ QUICKSTART = dedent(
 
 KR = dedent(
     """
-    KoreanLawClient pattern
-    =======================
+    KRClient pattern
+    ================
 
-    Use KoreanLawClient first. It is the stable public surface for common
-    datapan-data workflows.
+    Use KRClient first. It is the stable public surface for common datapan-data
+    workflows. KoreanLawClient is a compatibility alias for existing code.
 
     Public wrapper methods:
         Law:
@@ -90,7 +91,7 @@ GENERATED = dedent(
     Generated-only target pattern
     =============================
 
-    If KoreanLawClient does not expose a public wrapper yet, import the generated
+    If KRClient does not expose a public wrapper yet, import the generated
     client directly from lawpy.kr.generated.<target>.
 
     Example:
@@ -124,7 +125,7 @@ CODEGEN = dedent(
     models, and generated tests public.
 
     Support contract:
-        - Prefer KoreanLawClient for stable public workflows.
+        - Prefer KRClient for stable public workflows.
         - Use generated clients for covered targets without a wrapper.
         - Generated code is reviewed through deterministic diffs, coverage docs,
           and CI tests.
