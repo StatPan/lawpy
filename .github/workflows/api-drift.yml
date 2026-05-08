@@ -22,6 +22,7 @@ jobs:
       spec_changed: ${{ steps.spec-diff.outputs.changed }}
       snapshot_verify_failed: ${{ steps.probe-verify.outputs.failed }}
       drift_detected: ${{ steps.probe-diff.outputs.drift }}
+      probe_failed: ${{ steps.probe-diff.outputs.probe_failed }}
 
     steps:
       - uses: actions/checkout@v4
@@ -70,10 +71,34 @@ jobs:
         env:
           LAWPY_KR_API_KEY: ${{ secrets.LAWPY_KR_API_KEY }}
         run: |
-          uv run lawpy-probe --output json diff --all > /tmp/probe_drift.json \
-            && echo "drift=false" >> $GITHUB_OUTPUT \
-            || echo "drift=true" >> $GITHUB_OUTPUT
-        continue-on-error: true
+          set +e
+          uv run lawpy-probe --output json diff --all > /tmp/probe_drift.json
+          probe_exit=$?
+          set -e
+
+          PROBE_EXIT="$probe_exit" node <<'NODE'
+          const fs = require('fs');
+          const output = process.env.GITHUB_OUTPUT;
+          const probeExit = Number(process.env.PROBE_EXIT || '0');
+          let parsed = [];
+          let parseFailed = false;
+
+          try {
+            const raw = fs.readFileSync('/tmp/probe_drift.json', 'utf8').trim();
+            if (raw) parsed = JSON.parse(raw);
+          } catch (e) {
+            parseFailed = true;
+            console.warn(`Could not parse probe_drift.json: ${e.message}`);
+          }
+
+          const rows = Array.isArray(parsed) ? parsed : [];
+          const hasBreaking = rows.some((row) => row && row.has_breaking_changes === true);
+          const hasProbeError = rows.some((row) => row && (row.status === 'error' || row.error));
+          const probeFailed = parseFailed || hasProbeError || (probeExit !== 0 && !hasBreaking);
+
+          fs.appendFileSync(output, `drift=${hasBreaking}\n`);
+          fs.appendFileSync(output, `probe_failed=${probeFailed}\n`);
+          NODE
 
       - name: Upload reports
         uses: actions/upload-artifact@v4
@@ -85,6 +110,25 @@ jobs:
             /tmp/probe_verify.json
             /tmp/probe_drift.json
           retention-days: 30
+
+  # ──────────────────────────────────────────────
+  # Job 1b: Fail visibly on detection infrastructure errors
+  # ──────────────────────────────────────────────
+  detection-health:
+    name: Detection health gate
+    needs: spec-check
+    if: always() && (needs.spec-check.outputs.snapshot_verify_failed == 'true' || needs.spec-check.outputs.probe_failed == 'true')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report detection infrastructure failure
+        run: |
+          if [ "${{ needs.spec-check.outputs.snapshot_verify_failed }}" = "true" ]; then
+            echo "Snapshot/model verification failed; inspect the detection report artifact."
+          fi
+          if [ "${{ needs.spec-check.outputs.probe_failed }}" = "true" ]; then
+            echo "Live API probe failed before a breaking drift decision; inspect the detection report artifact."
+          fi
+          exit 1
 
   # ──────────────────────────────────────────────
   # Job 2: If specs changed → full pipeline + PR
