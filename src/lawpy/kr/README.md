@@ -16,11 +16,12 @@ lawpy/kr/
 ├── ordinance.py               # Public local ordinance (자치법규) wrapper
 ├── legal_terminology.py       # Public legal terminology (법령용어) wrapper
 ├── precedent.py               # Public precedent (판례) wrapper
+├── treaty.py                  # Public treaty (조약) wrapper
 ├── generated/                 # 89 spec-generated law.go.kr target clients
 └── README.md
 ```
 
-Files such as `treaty.py`, `constitutional_decision.py`, `committee/`, or
+Files such as `constitutional_decision.py`, `committee/`, or
 `ministry_interpretation/` are not public wrapper modules today. Their targets
 are available only through generated clients until wrappers are added.
 
@@ -46,6 +47,9 @@ local_notices = client.search_local_notices("고시")
 
 terms = client.search_legal_terms("과태료", law_kind_code=10101)
 term_detail = client.get_legal_term_detail("과태료")
+
+treaties = client.search_treaties("FTA", treaty_class=1)
+treaty_detail = client.get_treaty_detail(treaties[0].조약일련번호)
 ```
 
 `KoreanLawClient` is a compatibility alias for `KRClient`. New code should
@@ -60,20 +64,21 @@ prefer `KRClient`.
 | `KRClient`, `ordinance.py` | `ordin` | Partial public wrapper over generated `ordin`: local ordinance search, local notice search (`knd=30010`), detail |
 | `KRClient`, `legal_terminology.py` | `lstrm` | Public wrapper over generated `lstrm`: legal term search and detail |
 | `KRClient`, `precedent.py` | `prec` | Partial public wrapper: precedent search and detail using handwritten XML parsing; generated `prec` also exists |
+| `KRClient`, `treaty.py` | `trty` | Public wrapper over generated `trty`: treaty search and detail |
 
 ## Generated-Only Targets
 
-The generated package contains 89 law.go.kr target clients. Five targets are
-wrapped by `KRClient` today (`law`, `prec`, `admrul`, `ordin`, `lstrm`), leaving 84
+The generated package contains 89 law.go.kr target clients. Six targets are
+wrapped by `KRClient` today (`law`, `prec`, `admrul`, `ordin`, `lstrm`, `trty`), leaving 83
 generated-only target modules.
 
 Use generated-only clients directly:
 
 ```python
-from lawpy.kr.generated.trty import GeneratedTrtyClient
+from lawpy.kr.generated.decc import GeneratedDeccClient
 
-client = GeneratedTrtyClient(api_key="your_email_id")
-treaties = client.search_trtys(query="FTA", display=10, page=1)
+client = GeneratedDeccClient(api_key="your_email_id")
+decisions = client.search_deccs(query="영업정지", display=10, page=1)
 ```
 
 Generated clients return Pydantic models from

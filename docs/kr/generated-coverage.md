@@ -34,6 +34,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `admrul` | `AdministrativeRuleClient`, `KRClient` | implemented |
 | `ordin` | `OrdinanceClient`, `KRClient` | implemented |
 | `lstrm` | `LegalTerminologyClient`, `KRClient` | implemented |
+| `trty` | `TreatyClient`, `KRClient` | implemented |
 
 ## Generated Matrix
 
@@ -126,7 +127,7 @@ See [KR Generated Client to Public Wrapper Policy](public-wrapper-policy.md) for
 | `school` | `GeneratedSchoolClient` | `search_schools`, `get_school_detail` | yes | yes | generated only |
 | `sfc` | `GeneratedSfcClient` | `search_sfcs`, `get_sfc_detail` | yes | yes | generated only |
 | `thdCmp` | `GeneratedThdcmpClient` | `search_thdCmps`, `get_thdCmp_detail` | yes | yes | generated only |
-| `trty` | `GeneratedTrtyClient` | `search_trtys`, `get_trty_detail` | yes | yes | generated only |
+| `trty` | `GeneratedTrtyClient` | `search_trtys`, `get_trty_detail` | yes | yes | `TreatyClient`, `KRClient` |
 | `ttSpecialDecc` | `GeneratedTtspecialdeccClient` | `search_ttSpecialDeccs`, `get_ttSpecialDecc_detail` | yes | yes | generated only |
 
 ## Verification
